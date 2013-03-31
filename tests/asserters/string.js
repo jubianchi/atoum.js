@@ -51,7 +51,7 @@ var util = require('util'),
                 .and(object = new testedClass(unit))
                 .and(object.setWith(''))
                 .then()
-                    .object(object.hasLength(0)).isIdenticalTo(unit)
+                    .object(object.hasLength(0)).isIdenticalTo(object)
                 .if(object.setWith(value = Math.random().toString(36).substring(7)))
                 .then()
                     .error(function() {
@@ -59,7 +59,7 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('String(%d) has not length 0', value.length))
-                    .object(object.hasLength(value.length)).isIdenticalTo(unit)
+                    .object(object.hasLength(value.length)).isIdenticalTo(object)
             ;
         }
     };

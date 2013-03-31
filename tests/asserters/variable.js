@@ -3,7 +3,7 @@ var util = require('util'),
     testedClass = require('../../lib/asserters/variable'),
     unit = module.exports = {
         testClass: function() {
-            var unit, object;
+            var unit, object, testClass;
 
             this
                 .if(testClass = Math.random().toString(36).substring(7))
@@ -15,7 +15,7 @@ var util = require('util'),
         },
 
         testSetWith: function() {
-            var unit, object, value;
+            var unit, object, value, testClass;
 
             this
                 .if(testClass = Math.random().toString(36).substring(7))
@@ -40,5 +40,21 @@ var util = require('util'),
                     .object(object.setWith(value)).isEqualTo(object)
                     .string(object.value).isEqualTo(value)
             ;
+        },
+
+        testFail: function() {
+            var unit, object, message, testClass;
+
+            this
+                .if(testClass = Math.random().toString(36).substring(7))
+                .and(unit = new test(testClass))
+                .and(message = Math.random().toString(36).substring(7))
+                .and(object = new testedClass(unit))
+                .then()
+                    .error(function() {
+                        object.fail(message)
+                    })
+                        .hasName('Failure')
+                        .hasMessage(message)
         }
     };

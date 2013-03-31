@@ -50,7 +50,7 @@ var test = require('../../lib/test'),
                 .and(object = new array(unit))
                 .and(object.setWith([]))
                 .then()
-                    .object(object.hasLength(0)).isIdenticalTo(unit)
+                    .object(object.hasLength(0)).isIdenticalTo(object)
                 .if(object.setWith([ 0 ]))
                 .then()
                     .error(function() {
@@ -58,7 +58,7 @@ var test = require('../../lib/test'),
                     })
                         .hasName('Failure')
                         .hasMessage('Array(1) has not length 0')
-                    .object(object.hasLength(1)).isIdenticalTo(unit)
+                    .object(object.hasLength(1)).isIdenticalTo(object)
             ;
         }
     };

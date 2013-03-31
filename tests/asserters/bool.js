@@ -50,7 +50,7 @@ var test = require('../../lib/test'),
                 .and(object = new bool(unit))
                 .and(object.setWith(true))
                 .then()
-                    .object(object.isTrue()).isIdenticalTo(unit)
+                    .object(object.isTrue()).isIdenticalTo(object)
                 .if(object.setWith(false))
                 .then()
                     .error(function() {

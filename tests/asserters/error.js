@@ -39,7 +39,7 @@ var util = require('util'),
                 .and(erroring = function() { throw exception; })
                 .then()
                     .object(object.setWith(erroring)).isEqualTo(object)
-                    .object(object.error).isIdenticalTo(exception)
+                    .object(object.exception).isIdenticalTo(exception)
             ;
         },
 
@@ -81,7 +81,7 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('Error message \'%s\' is not equal to \'%s\'', message, wrongMsg))
-                    .object(object.hasMessage(message)).isIdenticalTo(unit)
+                    .object(object.hasMessage(message)).isIdenticalTo(object)
             ;
         }
     };
