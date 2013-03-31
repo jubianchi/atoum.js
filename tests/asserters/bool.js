@@ -1,16 +1,15 @@
 var test = require('../../lib/test'),
-    bool = require('../../lib/asserters/bool'),
     variable = require('../../lib/asserters/variable'),
+    testedClass = require('../../lib/asserters/bool'),
     unit = module.exports = {
         testClass: function() {
-            var unit, object;
+            var object, generator;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
+                .if(generator = {})
                 .then()
-                    .object(object = new bool(unit)).isInstanceOf(variable)
-                    .object(object.test).isEqualTo(unit)
+                    .object(object = new testedClass(generator)).isInstanceOf(variable)
+                    .object(object.generator).isEqualTo(generator)
             ;
         },
 
@@ -20,7 +19,7 @@ var test = require('../../lib/test'),
             this
                 .if(testClass = Math.random().toString(36).substring(7))
                 .and(unit = new test(testClass))
-                .and(object = new bool(unit))
+                .and(object = new testedClass(unit))
                 .then()
                     .error(function() {
                         object.setWith(value)
@@ -47,7 +46,7 @@ var test = require('../../lib/test'),
             this
                 .if(testClass = Math.random().toString(36).substring(7))
                 .and(unit = new test(testClass))
-                .and(object = new bool(unit))
+                .and(object = new testedClass(unit))
                 .and(object.setWith(true))
                 .then()
                     .object(object.isTrue()).isIdenticalTo(object)

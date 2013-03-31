@@ -1,9 +1,10 @@
-var test = require('../../lib/test'),
+var util = require('util'),
+    test = require('../../lib/test'),
     variable = require('../../lib/asserters/variable'),
-    testedClass = require('../../lib/asserters/array'),
+    testedClass = require('../../lib/asserters/number'),
     unit = module.exports = {
         testClass: function() {
-            var object, generator;
+            var generator, object;
 
             this
                 .if(generator = {})
@@ -23,37 +24,18 @@ var test = require('../../lib/test'),
                         object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('Value is not an array')
+                        .hasMessage('Value is not a number')
                 .if(value = {})
                 .then()
                     .error(function() {
                         object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('Value is not an array')
-                .if(value = [])
+                        .hasMessage('Value is not a number')
+                .if(value = Math.random())
                 .then()
                     .object(object.setWith(value)).isEqualTo(object)
-                    .array(object.value).isEqualTo(value)
-            ;
-        },
-
-        testHasLength: function() {
-            var object;
-
-            this
-                .if(object = new testedClass({}))
-                .and(object.setWith([]))
-                .then()
-                    .object(object.hasLength(0)).isIdenticalTo(object)
-                .if(object.setWith([ 0 ]))
-                .then()
-                    .error(function() {
-                        object.hasLength(0);
-                    })
-                        .hasName('Failure')
-                        .hasMessage('Array(1) has not length 0')
-                    .object(object.hasLength(1)).isIdenticalTo(object)
+                    .number(object.value).isEqualTo(value)
             ;
         }
     };

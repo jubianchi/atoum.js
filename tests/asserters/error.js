@@ -1,27 +1,24 @@
 var util = require('util'),
     test = require('../../lib/test'),
-    error = require('../../lib/asserters/error'),
     variable = require('../../lib/asserters/variable'),
+    testedClass = require('../../lib/asserters/error'),
     unit = module.exports = {
         testClass: function() {
-            var unit, object;
+            var object, generator;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
+                .if(generator = {})
                 .then()
-                    .object(object = new error(unit)).isInstanceOf(variable)
-                    .object(object.test).isEqualTo(unit)
+                    .object(object = new testedClass(generator)).isInstanceOf(variable)
+                    .object(object.generator).isEqualTo(generator)
             ;
         },
 
         testSetWith: function() {
-            var unit, object, notErroring, erroring, exception;
+            var object, notErroring, erroring, exception;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
-                .and(object = new error(unit))
+                .if(object = new testedClass({}))
                 .then()
                     .error(function() {
                         object.setWith('')
@@ -44,12 +41,10 @@ var util = require('util'),
         },
 
         testHasName: function() {
-            var unit, object, erroring, exception, name, wrongName;
+            var object, erroring, exception, name, wrongName;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
-                .and(object = new error(unit))
+                .if(object = new testedClass({}))
                 .and(exception = new Error())
                 .and(exception.name = name = Math.random().toString(36).substring(7))
                 .and(erroring = function() { throw exception; })
@@ -65,12 +60,10 @@ var util = require('util'),
         },
 
         testHasMessage: function() {
-            var unit, object, erroring, exception, message, wrongMsg;
+            var object, erroring, exception, message, wrongMsg;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
-                .and(object = new error(unit))
+                .if(object = new testedClass({}))
                 .and(exception = new Error())
                 .and(exception.message = message = Math.random().toString(36).substring(7))
                 .and(erroring = function() { throw exception; })

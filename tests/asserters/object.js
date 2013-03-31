@@ -3,14 +3,13 @@ var test = require('../../lib/test'),
     testedClass = require('../../lib/asserters/object'),
     unit = module.exports = {
         testClass: function() {
-            var unit, object;
+            var generator, object;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
+                .if(generator = {})
                 .then()
-                    .object(object = new testedClass(unit)).isInstanceOf(array)
-                    .object(object.test).isEqualTo(unit)
+                    .object(object = new testedClass(generator)).isInstanceOf(array)
+                    .object(object.generator).isEqualTo(generator)
             ;
         },
 
@@ -18,9 +17,7 @@ var test = require('../../lib/test'),
             var unit, object, value;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
-                .and(object = new testedClass(unit))
+                .if(object = new testedClass({}))
                 .then()
                     .error(function() {
                         object.setWith(value)

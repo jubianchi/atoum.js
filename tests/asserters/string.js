@@ -4,24 +4,21 @@ var util = require('util'),
     testedClass = require('../../lib/asserters/string'),
     unit = module.exports = {
         testClass: function() {
-            var unit, object;
+            var generator, object;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
+                .if(generator = {})
                 .then()
-                    .object(object = new testedClass(unit)).isInstanceOf(variable)
-                    .object(object.test).isEqualTo(unit)
+                    .object(object = new testedClass(generator)).isInstanceOf(variable)
+                    .object(object.generator).isEqualTo(generator)
             ;
         },
 
         testSetWith: function() {
-            var unit, object, value;
+            var object, value;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
-                .and(object = new testedClass(unit))
+                .if(object = new testedClass({}))
                 .then()
                     .error(function() {
                         object.setWith(value)
@@ -43,12 +40,10 @@ var util = require('util'),
         },
 
         testHasLength: function() {
-            var unit, object, value;
+            var object, value;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
-                .and(object = new testedClass(unit))
+                .if(object = new testedClass({}))
                 .and(object.setWith(''))
                 .then()
                     .object(object.hasLength(0)).isIdenticalTo(object)
