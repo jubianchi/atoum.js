@@ -14,5 +14,17 @@ var testedClass = require('../../lib/asserter/generator'),
                         .hasMember('dump')
                     .number(object.assertionsCount).isEqualTo(0)
             ;
+        },
+
+        testReset: function() {
+            var object;
+
+            this
+                .if(object = new testedClass())
+                .and(object.assertionsCount = 5)
+                .then()
+                    .object(object.reset()).isIdenticalTo(object)
+                    .number(object.assertionsCount).isEqualTo(0)
+            ;
         }
     };
