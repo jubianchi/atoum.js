@@ -10,8 +10,6 @@ try {
         atoum(new runner(process.stdout, new generator()))
             .run(path, _.contains(process.argv, '--loop'))
     ;
-
-    process.exit(0);
 } catch(exception) {
     process.exit(1);
 }
