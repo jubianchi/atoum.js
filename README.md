@@ -1,4 +1,4 @@
-# atoum.js
+# atoum.js [![Build Status](https://travis-ci.org/jubianchi/atoum.js.png?branch=master)](https://travis-ci.org/jubianchi/atoum.js)
 
 The modern, simple and intuitive PHP 5.3+ unit testing framework, now for JS
 
