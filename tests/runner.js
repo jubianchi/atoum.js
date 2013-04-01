@@ -1,13 +1,13 @@
-var runner = module.exports = {
+var testedClass = require('../lib/runner'),
+    unit = module.exports = {
     testClass: function() {
-        var runner = require('../lib/runner'),
-            stdout, generator, object;
+        var stdout, generator, object;
 
         this
             .if(generator = {})
             .and(stdout = {})
             .then()
-                .object(object = new runner(stdout, generator)).isInstanceOf(runner)
+                .object(object = new testedClass(stdout, generator))
                 .object(object.stdout).isIdenticalTo(stdout)
                 .object(object.generator).isIdenticalTo(generator)
         ;

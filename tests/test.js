@@ -1,4 +1,4 @@
-var test = require('../lib/test')
+var testedClass = require('../lib/test')
     unit = module.exports = {
         testClass: function() {
             var object;
@@ -6,7 +6,7 @@ var test = require('../lib/test')
             this
                 .if(testClass = Math.random().toString(36).substring(7))
                 .then()
-                    .object(object = new test(testClass)).isInstanceOf(test)
+                    .object(object = new testedClass(testClass))
                     .string(object.class).isEqualTo(testClass)
             ;
         }

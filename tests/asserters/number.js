@@ -1,5 +1,4 @@
-var util = require('util'),
-    test = require('../../lib/test'),
+var test = require('../../lib/test'),
     variable = require('../../lib/asserters/variable'),
     testedClass = require('../../lib/asserters/number'),
     unit = module.exports = {

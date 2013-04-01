@@ -1,4 +1,4 @@
-var atoum = require('../lib/atoum'),
+var testedClass = require('../lib/atoum'),
     unit = module.exports = {
         testClass: function() {
             var runner, object;
@@ -6,7 +6,7 @@ var atoum = require('../lib/atoum'),
             this
                 .if(runner = {})
                 .then()
-                    .object(object = new atoum(runner)).isInstanceOf(atoum)
+                    .object(object = new testedClass(runner))
                     .string(object.version).isEqualTo('dev-alpha')
                     .object(object.runner).isIdenticalTo(runner)
             ;
@@ -18,7 +18,7 @@ var atoum = require('../lib/atoum'),
             this
                 .if(wasRun = false)
                 .if(runner = { run: function() { wasRun = true; } })
-                .and(object = new atoum(runner))
+                .and(object = new testedClass(runner))
                 .then()
                     .object(object.run()).isIdenticalTo(object)
                     .bool(wasRun).isTrue()

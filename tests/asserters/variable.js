@@ -14,7 +14,7 @@ var util = require('util'),
         },
 
         testSetWith: function() {
-            var unit, object, value, testClass;
+            var object, value;
 
             this
                 .if(object = new testedClass({}))
@@ -40,7 +40,7 @@ var util = require('util'),
         },
 
         testFail: function() {
-            var unit, object, message;
+            var object, message;
 
             this
                 .if(message = Math.random().toString(36).substring(7))

@@ -31,7 +31,7 @@ var test = require('../../lib/test'),
                     })
                         .hasName('Failure')
                         .hasMessage('Value is not an object')
-                .if(value = new Object())
+                .if(value = {})
                 .then()
                     .object(object.setWith(value)).isEqualTo(object)
                     .object(object.value).isEqualTo(value)
