@@ -1,14 +1,13 @@
-var test = require('../../lib/test'),
-    array = require('../../lib/asserters/array'),
-    testedClass = require('../../lib/asserters/object'),
+var callback = require('../../lib/test/callback'),
+    testedClass = require('../../lib/asserters/callback'),
     unit = module.exports = {
         testClass: function() {
-            var generator, object;
+            var object, generator;
 
             this
                 .if(generator = {})
                 .then()
-                    .object(object = new testedClass(generator)).isInstanceOf(array)
+                    .object(object = new testedClass(generator))
                     .object(object.generator).isEqualTo(generator)
             ;
         },
@@ -23,18 +22,18 @@ var test = require('../../lib/test'),
                         object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('Value is not an object')
-                .if(value = [])
+                        .hasMessage('Value is not a callback')
+                .if(value = {})
                 .then()
                     .error(function() {
                         object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('Value is not an object')
-                .if(value = {})
+                        .hasMessage('Value is not a callback')
+                .if(value = callback())
                 .then()
                     .object(object.setWith(value)).isEqualTo(object)
-                    .object(object.value).isEqualTo(value)
+                    .variable(object.value).isEqualTo(value)
             ;
-        }
+        },
     };

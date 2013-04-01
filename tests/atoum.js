@@ -1,4 +1,5 @@
-var testedClass = require('../lib/atoum'),
+var callback = require('../lib/test/callback'),
+    testedClass = require('../lib/atoum'),
     unit = module.exports = {
         testClass: function() {
             var runner, object;
@@ -13,15 +14,15 @@ var testedClass = require('../lib/atoum'),
         },
 
         testRun: function() {
-            var wasRun, runner, object;
+            var cb, runner, object;
 
             this
-                .if(wasRun = false)
-                .if(runner = { run: function() { wasRun = true; } })
+                .if(runner = { run: cb = callback() })
+                .dump(typeof cb)
                 .and(object = new testedClass(runner))
                 .then()
                     .object(object.run()).isIdenticalTo(object)
-                    .bool(wasRun).isTrue()
+                    .callback(cb).wasRun()
             ;
         }
     };

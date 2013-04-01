@@ -14,12 +14,10 @@ var test = require('../../lib/test'),
         },
 
         testSetWith: function() {
-            var unit, object, value;
+            var object, value;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
-                .and(object = new testedClass(unit))
+                .if(object = new testedClass({}))
                 .then()
                     .error(function() {
                         object.setWith(value)
@@ -41,12 +39,10 @@ var test = require('../../lib/test'),
         },
 
         testIsTrue: function() {
-            var unit, object;
+            var object;
 
             this
-                .if(testClass = Math.random().toString(36).substring(7))
-                .and(unit = new test(testClass))
-                .and(object = new testedClass(unit))
+                .if(object = new testedClass({}))
                 .and(object.setWith(true))
                 .then()
                     .object(object.isTrue()).isIdenticalTo(object)
