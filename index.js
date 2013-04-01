@@ -11,8 +11,9 @@ try {
             .run(path, _.contains(process.argv, '--loop'))
     ;
 } catch(exception) {
-    //process.stdout.write(exception);
-    console.log(exception);
+    process.stderr.write('\033[31m[' + exception.name + '] ' + exception.message);
+    process.stderr.write(exception.stack);
+    process.stderr.write('\033[0m\n');
 
     process.exit(1);
 }
