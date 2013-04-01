@@ -1,5 +1,4 @@
-var test = require('../../lib/test'),
-    variable = require('../../lib/asserters/variable'),
+var variable = require('../../lib/asserters/variable'),
     testedClass = require('../../lib/asserters/bool'),
     unit = module.exports = {
         testClass: function() {

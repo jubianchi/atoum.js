@@ -1,5 +1,4 @@
-var util = require('util'),
-    test = require('../../lib/test'),
+var asserter = require('../../lib/asserter'),
     testedClass = require('../../lib/asserters/variable'),
     unit = module.exports = {
         testClass: function() {
@@ -8,7 +7,7 @@ var util = require('util'),
             this
                 .if(generator = {})
                 .then()
-                    .object(object = new testedClass(generator)).isInstanceOf(testedClass)
+                    .object(object = new testedClass(generator)).isInstanceOf(asserter)
                     .object(object.generator).isEqualTo(generator)
             ;
         },

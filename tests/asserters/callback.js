@@ -1,4 +1,5 @@
 var callback = require('../../lib/test/callback'),
+    asserter = require('../../lib/asserter'),
     testedClass = require('../../lib/asserters/callback'),
     unit = module.exports = {
         testClass: function() {
@@ -7,7 +8,7 @@ var callback = require('../../lib/test/callback'),
             this
                 .if(generator = {})
                 .then()
-                    .object(object = new testedClass(generator))
+                    .object(object = new testedClass(generator)).isInstanceOf(asserter)
                     .object(object.generator).isEqualTo(generator)
             ;
         },
