@@ -15,16 +15,16 @@ var util = require('util'),
         },
 
         testSetWith: function() {
-            var object, notErroring, erroring, exception;
+            var value, object, notErroring, erroring, exception;
 
             this
                 .if(object = new testedClass({}))
                 .then()
                     .error(function() {
-                        object.setWith('')
+                        object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('Value is not callable')
+                        .hasMessage(util.format('%s is not callable', value))
                 .if(notErroring = function() {})
                 .then()
                     .error(function() {

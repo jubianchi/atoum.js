@@ -24,14 +24,14 @@ var util = require('util'),
                         object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('Value is not a string')
+                        .hasMessage('undefined is not a string')
                 .if(value = {})
                 .then()
                     .error(function() {
                         object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('Value is not a string')
+                        .hasMessage('[object Object] is not a string')
                 .if(value = Math.random().toString(36).substring(7))
                 .then()
                     .object(object.setWith(value)).isEqualTo(object)
@@ -53,7 +53,7 @@ var util = require('util'),
                         object.hasLength(0);
                     })
                         .hasName('Failure')
-                        .hasMessage(util.format('String(%d) has not length 0', value.length))
+                        .hasMessage(util.format('%s has not length 0', value))
                     .object(object.hasLength(value.length)).isIdenticalTo(object)
             ;
         }

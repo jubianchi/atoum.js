@@ -1,4 +1,5 @@
-var test = require('../../lib/test'),
+var util = require('util'),
+    test = require('../../lib/test'),
     array = require('../../lib/asserters/array'),
     testedClass = require('../../lib/asserters/object'),
     unit = module.exports = {
@@ -23,14 +24,14 @@ var test = require('../../lib/test'),
                         object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('Value is not an object')
+                        .hasMessage('undefined is not an object')
                 .if(value = [])
                 .then()
                     .error(function() {
                         object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('Value is not an object')
+                        .hasMessage(util.format('%s is not an object', value))
                 .if(value = {})
                 .then()
                     .object(object.setWith(value)).isEqualTo(object)
