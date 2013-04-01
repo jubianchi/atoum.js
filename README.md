@@ -13,10 +13,17 @@ $ npm install
 ## How to use
 
 ```sh
-# Launch the atoum.js test suite
-$ bin/atoum tests/
+# This will run all tests in the given directory
+$ bin/atoum path/to/tests/directory
 ```
 
 ## How to write tests
 
 Here is an [example test](https://github.com/jubianchi/atoum.js/blob/master/tests/asserters/error.js)
+
+## Hacking atoum.js
+
+```sh
+# This will run the atoum.js' test suite with loop mode enabled
+$ make tdd
+```

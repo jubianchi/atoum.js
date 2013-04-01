@@ -10,6 +10,7 @@
     },
     "engine": "node >= 0.10.0",
     "scripts": {
+        "tdd": "make tdd",
         "test": "make test"
     }
 }
