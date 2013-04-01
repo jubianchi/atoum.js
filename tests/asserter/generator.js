@@ -25,6 +25,8 @@ var testedClass = require('../../lib/asserter/generator'),
                 .then()
                     .object(object.reset()).isIdenticalTo(object)
                     .number(object.assertionsCount).isEqualTo(0)
+                    .object(object.asserters).isNotEmpty()
+                    .object(object.aliases).isNotEmpty()
             ;
         }
     };
