@@ -18,7 +18,6 @@ var callback = require('../lib/test/callback'),
 
             this
                 .if(runner = { run: cb = callback() })
-                .dump(typeof cb)
                 .and(object = new testedClass(runner))
                 .then()
                     .object(object.run()).isIdenticalTo(object)
