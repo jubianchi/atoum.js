@@ -1,4 +1,5 @@
 var _ = require('underscore'),
+    util = require('util'),
     atoum = require('./lib/atoum'),
     runner = require('./lib/runner'),
     generator = require('./lib/asserter/generator'),
@@ -11,9 +12,12 @@ try {
             .run(path, _.contains(process.argv, '--loop'))
     ;
 } catch(exception) {
-    process.stderr.write('\033[31m[' + exception.name + '] ' + exception.message);
-    process.stderr.write(exception.stack);
-    process.stderr.write('\033[0m\n');
+    process.stderr.write(util.format(
+        '\033[31m[%s] %s\n%s\033[0m\n',
+        exception.name,
+        exception.message,
+        exception.stack
+    ));
 
     process.exit(1);
 }

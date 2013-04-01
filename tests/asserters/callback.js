@@ -13,6 +13,44 @@ var callback = require('../../lib/test/callback'),
             ;
         },
 
+        testWasCalled: function() {
+            var object, value;
+
+            this
+                .if(value = callback())
+                .and(object = new testedClass({}))
+                .and(object.setWith(value))
+                .then()
+                    .error(function() {
+                        object.wasCalled()
+                    })
+                        .hasName('Failure')
+                        .hasMessage('Callback was not called')
+                .if(value())
+                .then()
+                    .object(object.wasCalled()).isIdenticalTo(object)
+            ;
+        },
+
+        testWasNotCalled: function() {
+            var object, value;
+
+            this
+                .if(value = callback())
+                .and(object = new testedClass({}))
+                .and(object.setWith(value))
+                .then()
+                    .object(object.wasNotCalled()).isIdenticalTo(object)
+                .if(value())
+                .then()
+                    .error(function() {
+                        object.wasNotCalled()
+                    })
+                        .hasName('Failure')
+                        .hasMessage('Callback was called')
+            ;
+        },
+
         testSetWith: function() {
             var object, value;
 
@@ -36,5 +74,5 @@ var callback = require('../../lib/test/callback'),
                     .object(object.setWith(value)).isEqualTo(object)
                     .variable(object.value).isEqualTo(value)
             ;
-        },
+        }
     };
