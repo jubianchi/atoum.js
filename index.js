@@ -11,5 +11,8 @@ try {
             .run(path, _.contains(process.argv, '--loop'))
     ;
 } catch(exception) {
+    //process.stdout.write(exception);
+    console.log(exception);
+
     process.exit(1);
 }

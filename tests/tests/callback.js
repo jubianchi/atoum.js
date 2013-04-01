@@ -10,14 +10,19 @@ var testedClass = require('../../lib/test/callback'),
         },
 
         testWasRun: function() {
-            var object;
+            var object, callback, args;
 
             this
                 .if(object = testedClass())
                 .then()
                     .bool(object.controller.wasRun).isFalse()
-                    .undefined(object.call(object))
+                    .undefined(object())
                     .bool(object.controller.wasRun).isTrue()
+                .if(callback = testedClass())
+                .and(object = testedClass(callback))
+                .and(object(args = ['foo', 'bar']))
+                .then()
+                    .callback(callback).wasCalled().withArguments(args)
             ;
         }
     };
