@@ -1,11 +1,17 @@
-var atoum = require('./lib/atoum'),
+var _ = require('underscore'),
+    atoum = require('./lib/atoum'),
     runner = require('./lib/runner'),
     generator = require('./lib/asserter/generator'),
     fs = require('fs');
 
-fs.realpath(process.argv[2], function(err, path) {
+try {
+    var path = fs.realpathSync(process.argv[2]);
     new
         atoum(new runner(process.stdout, new generator()))
-            .run(path)
+            .run(path, _.contains(process.argv, '--loop'))
     ;
-});
+
+    process.exit(0);
+} catch(exception) {
+    process.exit(1);
+}

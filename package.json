@@ -5,10 +5,11 @@
     "version": "0.0.1",
     "dependencies": {
         "microtime-x": "0.1.0",
-        "node.extend": "1.0.0"
+        "node.extend": "1.0.0",
+        "underscore": "1.4.4"
     },
     "engine": "node >= 0.10.0",
     "scripts": {
-        "test": "bin/atoum tests/"
+        "test": "make test"
     }
 }

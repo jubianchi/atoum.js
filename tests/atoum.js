@@ -5,7 +5,7 @@ var callback = require('../lib/test/callback'),
             var runner, object;
 
             this
-                .if(runner = {})
+                .if(runner = { setLoop: function() {} })
                 .then()
                     .object(object = new testedClass(runner))
                     .string(object.version).isEqualTo('dev-alpha')
@@ -17,10 +17,10 @@ var callback = require('../lib/test/callback'),
             var cb, runner, object;
 
             this
-                .if(runner = { run: cb = callback() })
+                .if(runner = { run: (cb = callback()), setLoop: function() { return this; } })
                 .and(object = new testedClass(runner))
                 .then()
-                    .object(object.run()).isIdenticalTo(object)
+                    .object(object.run(null, false)).isIdenticalTo(object)
                     .callback(cb).wasRun()
             ;
         }
