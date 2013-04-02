@@ -1,6 +1,7 @@
-var callback = require('../../lib/test/callback'),
+var atoum = require('../..'),
+    callback = require('../../lib/test/callback'),
     asserter = require('../../lib/asserter'),
-    testedClass = require('../../lib/asserters/callback'),
+    testedClass = atoum.require('lib/asserters/callback', module),
     unit = module.exports = {
         testClass: function() {
             var object, generator;

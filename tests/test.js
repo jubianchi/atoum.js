@@ -1,4 +1,5 @@
-var testedClass = require('../lib/test')
+var atoum = require('..'),
+    testedClass = require('../lib/test')
     unit = module.exports = {
         testClass: function() {
             var object;

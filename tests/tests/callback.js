@@ -1,4 +1,5 @@
-var testedClass = require('../../lib/test/callback'),
+var atoum = require('../..'),
+    testedClass = atoum.require('lib/test/callback', module),
     unit = module.exports = {
         testClass: function() {
             var object;

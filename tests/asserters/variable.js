@@ -1,6 +1,7 @@
 var util = require('util'),
+    atoum = require('../..'),
     asserter = require('../../lib/asserter'),
-    testedClass = require('../../lib/asserters/variable'),
+    testedClass = atoum.require('lib/asserters/variable', module),
     unit = module.exports = {
         testClass: function() {
             var generator, object;
