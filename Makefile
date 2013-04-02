@@ -18,4 +18,4 @@ clean:
 	@rm -rf ./coverage
 
 coverage: clean
-	@./node_modules/.bin/istanbul cover index.js -- tests/
+	@./node_modules/.bin/istanbul cover bin/atoum -- tests/
