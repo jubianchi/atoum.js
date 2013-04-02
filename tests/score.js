@@ -14,6 +14,7 @@ var atoum = require('..'),
                 .number(object.failures).isEqualTo(0)
                 .number(object.methods).isEqualTo(0)
                 .number(object.failedMethods).isEqualTo(0)
+                .number(object.duration).isEqualTo(0)
                 .bool(object.passed).isTrue()
             ;
         },
@@ -33,8 +34,8 @@ var atoum = require('..'),
                     .number(object.failedMethods).isEqualTo(0)
                     .bool(object.passed).isTrue()
                 .if(test.score.passed = false)
-                .if(test.score.methods = 5)
-                .if(test.score.failedMethods = 10)
+                .and(test.score.methods = 5)
+                .and(test.score.failedMethods = 10)
                 .and(object.addTest(test))
                 .then()
                     .bool(object.passed).isFalse()
@@ -45,6 +46,13 @@ var atoum = require('..'),
                     .bool(object.passed).isFalse()
                     .number(object.methods).isEqualTo(test.score.methods * 2)
                     .number(object.failedMethods).isEqualTo(test.score.failedMethods * 2)
+                .if(test.score.duration = Math.random())
+                .and(object.addTest(test))
+                .then()
+                    .number(object.duration).isEqualTo(test.score.duration)
+                .if(object.addTest(test))
+                .then()
+                    .number(object.duration).isEqualTo(test.score.duration * 2)
             ;
         }
     };

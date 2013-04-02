@@ -10,8 +10,21 @@ var atoum = require('../..'),
                 .array(object.exceptions).isEmpty()
                 .array(object.failures).isEmpty()
                 .number(object.methods).isEqualTo(0)
+                .number(object.duration).isEqualTo(0)
                 .number(object.failedMethods).isEqualTo(0)
                 .bool(object.passed).isTrue()
+            ;
+        },
+
+        testSetDuration: function() {
+            var object, duration;
+
+            this
+                .if(object = new testedClass())
+                .and(duration = Math.random())
+                .then()
+                .object(object.setDuration(duration)).isIdenticalTo(object)
+                    .number(object.duration).isEqualTo(duration)
             ;
         },
 
