@@ -1,5 +1,9 @@
 TESTS = test/*.js
 
+egg:
+	@echo "                                  Happy Easter !!!"
+	@node_modules/.bin/picture-tube resources/images/egg.png --cols 60
+
 tdd:
 	@./bin/atoum tests --loop
 
