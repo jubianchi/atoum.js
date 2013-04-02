@@ -1,0 +1,50 @@
+var atoum = require('..'),
+    score = atoum.require('lib/test/score', module),
+    testedClass = atoum.require('lib/score', module),
+    unit = module.exports = {
+        testClass: function() {
+            var object;
+
+            this
+                .object(object = new testedClass())
+                .array(object.tests).isEmpty()
+                .number(object.failedTests).isEqualTo(0)
+                .number(object.errors).isEqualTo(0)
+                .number(object.exceptions).isEqualTo(0)
+                .number(object.failures).isEqualTo(0)
+                .number(object.methods).isEqualTo(0)
+                .number(object.failedMethods).isEqualTo(0)
+                .bool(object.passed).isTrue()
+            ;
+        },
+
+        testAddTest: function() {
+            var object, test;
+
+            this
+                .if(test = { 'score': new score() })
+                .and(object = new testedClass())
+                .then()
+                    .object(object.addTest(test)).isIdenticalTo(object)
+                    .number(object.errors).isEqualTo(0)
+                    .number(object.exceptions).isEqualTo(0)
+                    .number(object.failures).isEqualTo(0)
+                    .number(object.methods).isEqualTo(0)
+                    .number(object.failedMethods).isEqualTo(0)
+                    .bool(object.passed).isTrue()
+                .if(test.score.passed = false)
+                .if(test.score.methods = 5)
+                .if(test.score.failedMethods = 10)
+                .and(object.addTest(test))
+                .then()
+                    .bool(object.passed).isFalse()
+                    .number(object.methods).isEqualTo(test.score.methods)
+                    .number(object.failedMethods).isEqualTo(test.score.failedMethods)
+                .if(object.addTest(test))
+                .then()
+                    .bool(object.passed).isFalse()
+                    .number(object.methods).isEqualTo(test.score.methods * 2)
+                    .number(object.failedMethods).isEqualTo(test.score.failedMethods * 2)
+            ;
+        }
+    };
