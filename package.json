@@ -12,7 +12,8 @@
         "node.extend": "1.0.0",
         "underscore": "1.4.4",
         "istanbul": "0.1.34",
-        "picture-tube": "0.0.4"
+        "picture-tube": "0.0.4",
+        "cli-color": "0.2.2"
     },
     "engine": "node >= 0.10.0",
     "scripts": {
