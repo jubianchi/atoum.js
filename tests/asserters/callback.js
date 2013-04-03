@@ -1,4 +1,5 @@
-var atoum = require('../..'),
+var util = require('util'),
+    atoum = require('../..'),
     callback = require('../../lib/test/callback'),
     asserter = require('../../lib/asserter'),
     testedClass = atoum.require('lib/asserters/callback', module),
@@ -74,6 +75,32 @@ var atoum = require('../..'),
                 .then()
                     .object(object.setWith(value)).isEqualTo(object)
                     .variable(object.value).isEqualTo(value)
+            ;
+        },
+
+        testWithArguments: function() {
+            var object, value, args, otherArgs;
+
+            this
+                .if(value = callback())
+                .and(object = new testedClass({}))
+                .and(object.setWith(value))
+                .and(value.apply(value, args = ['foo', 'bar']))
+                .then()
+                    .object(object.withArguments(args)).isIdenticalTo(object)
+                    .object(object.withArguments(args[0], args[1])).isIdenticalTo(object)
+                    .error(function() {
+                        object.withArguments(args[1], args[0]);
+                    })
+                        .hasName('Failure')
+                        .hasMessage('Callback was not called with arguments ' + [args[1], args[0]].join(',') + ': ' + args.join(','))
+                .if(value = callback())
+                .and(object.setWith(value))
+                .and(value.apply(value, args = ['foo', 'bar']))
+                .and(value.apply(value, otherArgs = ['lorem', 'ipsum']))
+                .then()
+                    .object(object.withArguments(args)).isIdenticalTo(object)
+                    .object(object.withArguments(otherArgs)).isIdenticalTo(object)
             ;
         }
     };
