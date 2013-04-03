@@ -8,10 +8,10 @@ egg:
 	@echo "                                  Happy Easter !!!"
 	@node_modules/.bin/picture-tube resources/images/egg.png --cols 60
 
-tdd:
+tdd: logo
 	@./bin/atoum tests --loop
 
-test:
+test: logo
 	@./bin/atoum tests
 
 clean:
