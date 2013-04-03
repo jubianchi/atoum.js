@@ -14,15 +14,15 @@ var callback = require('../lib/test/callback'),
         },
 
         testRun: function() {
-            var cbRun, cbSetLoop, runner, object;
+            var run, setLoop, runner, object;
 
             this
-                .if(runner = { run: (cbRun = callback()), setLoop: (cbSetLoop = callback(function() { return runner; })) })
+                .if(runner = { 'run': (run = callback()), 'setLoop': (setLoop = callback(function() { return runner; })) })
                 .and(object = new testedClass(runner))
                 .then()
                     .object(object.run('path', false)).isIdenticalTo(object)
-                    .callback(cbRun).wasCalled().withArguments('path')
-                    .callback(cbSetLoop).wasCalled().withArguments(false)
+                    .callback(run).wasCalled().withArguments([ 'path' ])
+                    .callback(setLoop).wasCalled().withArguments(false)
             ;
         }
     };

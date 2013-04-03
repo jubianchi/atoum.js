@@ -21,7 +21,7 @@ var atoum = require('../..'),
                     .bool(object.controller.wasRun).isTrue()
                 .if(callback = testedClass())
                 .and(object = testedClass(callback))
-                .and(object(args = ['foo', 'bar']))
+                .and(object.apply(object, args = ['foo', 'bar']))
                 .then()
                     .callback(callback).wasCalled().withArguments(args)
             ;
