@@ -1,5 +1,5 @@
-var atoum = require('..'),
-    testedClass = atoum.require('lib/runner', module),
+var atoum = require('..')(module),
+    testedClass = require('../lib/runner'),
     unit = module.exports = {
     testClass: function() {
         var report, generator, object;

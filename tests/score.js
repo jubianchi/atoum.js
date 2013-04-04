@@ -1,6 +1,6 @@
-var atoum = require('..'),
-    score = atoum.require('lib/test/score', module),
-    testedClass = atoum.require('lib/score', module),
+var atoum = require('..')(module),
+    score = require('../lib/test/score'),
+    testedClass = require('../lib/score'),
     unit = module.exports = {
         testClass: function() {
             var object;

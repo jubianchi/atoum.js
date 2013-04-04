@@ -1,8 +1,8 @@
 var util = require('util'),
-    atoum = require('../..'),
+    atoum = require('../..')(module),
     callback = require('../../lib/test/callback'),
     asserter = require('../../lib/asserter'),
-    testedClass = atoum.require('lib/asserters/callback', module),
+    testedClass = require('../../lib/asserters/callback'),
     unit = module.exports = {
         testClass: function() {
             var object, generator;

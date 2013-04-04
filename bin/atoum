@@ -2,7 +2,7 @@
 
 var _ = require('underscore'),
     util = require('util'),
-    atoum = require('..'),
+    atoum = require('..')(),
     runner = require('../lib/runner'),
     report = require('../lib/report'),
     generator = require('../lib/asserter/generator'),
