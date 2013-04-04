@@ -2,14 +2,14 @@
 
 var atoum = module.exports = function(target) {
     if(typeof target !== 'undefined') {
-        target.require = function(path) {
-            var modulepath;
-
+        target.require = function(modulepath) {
             if(require.cache[target.filename]) {
                 delete require.cache[target.filename];
             }
 
-            modulepath = require('path').resolve(require('path').dirname(target.filename), path);
+            if(modulepath.indexOf('./') === 0 || modulepath.indexOf('../') === 0) {
+                modulepath = require('path').resolve(require('path').dirname(target.filename), modulepath);
+            }
 
             if(require.cache[modulepath + '.js']) {
                 delete require.cache[modulepath + '.js'];
