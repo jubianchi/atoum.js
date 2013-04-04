@@ -1,18 +1,21 @@
+"use strict";
+
 var atoum = module.exports = require('./lib/atoum.js');
 
 atoum.require = function(module, from) {
     var modulepath;
 
     if(typeof from !== 'undefined') {
-        var basedir = require('path').dirname(module.filename);
-        modulepath = arguments[0] = require('path').resolve(basedir, arguments[0]);
-    } else {
-        modulepath = require.resolve(arguments[0]);
+        if(require.cache[from.filename]) {
+            delete require.cache[from.filename];
+        }
     }
 
-    if(require.cache[modulepath]) {
-        delete require.cache[modulepath];
+    modulepath = require('path').resolve(module);
+
+    if(require.cache[modulepath + '.js']) {
+        delete require.cache[modulepath + '.js'];
     }
 
-    return require.apply(require, arguments);
+    return require.call(require, modulepath);
 };
