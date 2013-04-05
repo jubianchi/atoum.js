@@ -1,4 +1,5 @@
-var atoum = require('../..')(module),
+var util = require('util'),
+    atoum = require('../..')(module),
     variable = require('../../lib/asserters/variable'),
     testedClass = require('../../lib/asserters/array'),
     unit = module.exports = {
@@ -55,5 +56,21 @@ var atoum = require('../..')(module),
                         .hasMessage('Array(1) has not length 0')
                     .object(object.hasLength(1)).isIdenticalTo(object)
             ;
-        }
+        },
+
+        testIsEqualTo: function() {
+            var object, value, wrongValue;
+
+            this
+                .if(object = new testedClass({}))
+                .and(object.setWith(value = [ 'foobar' ]))
+                .then()
+                    .error(function() {
+                        object.isEqualTo(wrongValue = [ Math.random().toString(36).substring(7) ]);
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('%s is not equal to %s', value, wrongValue))
+                .object(object.isEqualTo([ 'foobar' ])).isEqualTo(object)
+            ;
+        },
     };
