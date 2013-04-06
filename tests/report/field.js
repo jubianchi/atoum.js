@@ -13,6 +13,7 @@ var util = require('util'),
                     .object(object = new testedClass(events))
                     .array(object.events).isEmpty()
                     .string(object.value).isEmpty()
+                    .string(object.event).isEmpty()
                 .if(events = [])
                 .then()
                     .object(object = new testedClass(events))
@@ -37,7 +38,8 @@ var util = require('util'),
                         .withArguments('runnerStop', object.render())
                     .callback(object.render)
                         .wasCalled()
-                        .withArguments(output)
+                        .withArguments('runnerStart', output)
+                        .withArguments('runnerStop', output)
             ;
         },
 

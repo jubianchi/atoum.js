@@ -8,8 +8,8 @@ var atoum = require('..')(module),
             .if(generator = {})
             .and(report = { register: function() { return this; } })
             .then()
-                .object(object = new testedClass(report, generator))
-                .object(object.report).isIdenticalTo(report)
+                .object(object = new testedClass(generator))
+                .array(object.reports).isEmpty()
                 .object(object.generator).isIdenticalTo(generator)
         ;
     },

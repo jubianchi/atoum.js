@@ -6,9 +6,9 @@ var atoum = require('../..')(module),
 
             this
                 .object(object = new testedClass())
-                .array(object.errors).isEmpty()
-                .array(object.exceptions).isEmpty()
-                .array(object.failures).isEmpty()
+                .object(object.errors).isEmpty()
+                .object(object.exceptions).isEmpty()
+                .object(object.failures).isEmpty()
                 .number(object.methods).isEqualTo(0)
                 .number(object.duration).isEqualTo(0)
                 .number(object.failedMethods).isEqualTo(0)
@@ -57,40 +57,43 @@ var atoum = require('../..')(module),
         },
 
         testAddFailure: function() {
-            var object, exception;
+            var object, method, exception;
 
             this
                 .if(object = new testedClass())
                 .and(exception = new Error())
+                .and(method = Math.random().toString(36).substring(7))
                 .then()
-                    .object(object.addFailure(exception)).isIdenticalTo(object)
-                    .object(object.failures[0]).isIdenticalTo(exception)
+                    .object(object.addFailure(method, exception)).isIdenticalTo(object)
+                    .object(object.failures[method]).isIdenticalTo(exception)
                     .bool(object.passed).isFalse()
             ;
         },
 
         testAddException: function() {
-            var object, exception;
+            var object, method, exception;
 
             this
                 .if(object = new testedClass())
                 .and(exception = new Error())
+                .and(method = Math.random().toString(36).substring(7))
                 .then()
-                    .object(object.addException(exception)).isIdenticalTo(object)
-                    .object(object.exceptions[0]).isIdenticalTo(exception)
+                    .object(object.addException(method, exception)).isIdenticalTo(object)
+                    .object(object.exceptions[method]).isIdenticalTo(exception)
                     .bool(object.passed).isFalse()
             ;
         },
 
         testAddError: function() {
-            var object, exception;
+            var object, method, exception;
 
             this
                 .if(object = new testedClass())
                 .and(exception = new Error())
+                .and(method = Math.random().toString(36).substring(7))
                 .then()
-                    .object(object.addError(exception)).isIdenticalTo(object)
-                    .object(object.errors[0]).isIdenticalTo(exception)
+                    .object(object.addError(method, exception)).isIdenticalTo(object)
+                    .object(object.errors[method]).isIdenticalTo(exception)
                     .bool(object.passed).isFalse()
             ;
         }
