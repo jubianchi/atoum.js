@@ -1,6 +1,6 @@
-var util = require('util'),
+var atoum = require('../../../../')(module),
+    util = require('util'),
     color = require('cli-color'),
-    atoum = require('../../../../')(module),
     score = require('../../../../lib/score'),
     generator = require('../../../../lib/asserter/generator'),
     field = require('../../../../lib/report/field'),
