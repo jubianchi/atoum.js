@@ -13,7 +13,8 @@
         "underscore": "1.4.4",
         "istanbul": "0.1.34",
         "picture-tube": "0.0.4",
-        "cli-color": "0.2.2"
+        "cli-color": "0.2.2",
+        "diff": "1.0.4"
     },
     "engine": "node >= 0.10.0",
     "scripts": {

@@ -1,4 +1,5 @@
 var util = require('util'),
+    diff = require('diff'),
     atoum = require('../..')(module),
     variable = require('../../lib/asserters/variable'),
     testedClass = require('../../lib/asserters/string'),
@@ -55,6 +56,31 @@ var util = require('util'),
                         .hasName('Failure')
                         .hasMessage(util.format('%s has not length 0', value))
                     .object(object.hasLength(value.length)).isIdenticalTo(object)
+            ;
+        },
+
+        testIsEqualTo: function() {
+            var object, value, wrongValue;
+
+            this
+                .if(object = new testedClass({}))
+                .and(value = Math.random().toString(36).substring(7))
+                .and(wrongValue = Math.random().toString(36).substring(7))
+                .and(object.setWith(wrongValue))
+                .then()
+                    .error(function() {
+                        object.isEqualTo(value);
+                    })
+                        .hasName('Failure')
+                        .hasMessage(
+                            'Strings are not equal:\n'
+                                .concat(
+                                    diff.createPatch('string.isEqualTo', value, wrongValue, 'Reference', 'Data')
+                                        .split('\n')
+                                        .slice(2)
+                                        .join('\n')
+                                )
+                        )
             ;
         }
     };
