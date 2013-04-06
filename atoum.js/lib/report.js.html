@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for atoum.js/lib/atoum.js</title>
+    <title>Code coverage report for atoum.js/lib/report.js</title>
     <meta charset="utf-8">
 
     <link rel="stylesheet" href="../../prettify.css">
@@ -180,22 +180,22 @@
 </head>
 <body>
 <div class="header high">
-    <h1>Code coverage report for <span class="entity">atoum.js/lib/atoum.js</span></h1>
+    <h1>Code coverage report for <span class="entity">atoum.js/lib/report.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">100% <small>(8 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">100% <small>(10 / 10)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">100% <small>(2 / 2)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(4 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">100% <small>(8 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(10 / 10)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
     </h2>
-    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">atoum.js/lib/</a> &#187; atoum.js</div>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">atoum.js/lib/</a> &#187; report.js</div>
 </div>
 <div class="body">
 <pre><table class="coverage">
@@ -220,44 +220,77 @@
 19
 20
 21
-22</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33</td><td class="line-coverage"><span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
 &nbsp;
-var atoum = module.exports = function atoum(runner) {
-        this.runner = runner;
-&nbsp;
-        return this;
+var util = require('util'),
+    underscore = require('underscore'),
+    microtime = require('microtime-x'),
+    atoum = require('./atoum'),
+    color = require('./report/color'),
+    fields = require('./report/fields'),
+    report = module.exports = function report(output) {
+        this.output = output;
+        this.fields = [];
     };
 &nbsp;
-atoum.version = 'dev-alpha';
+report.prototype = {
+    addField: function(field) {
+        this.fields.push(field);
 &nbsp;
-atoum.prototype = {
-    version: atoum.version,
+        return this;
+    },
 &nbsp;
-    run: function (tests, loop) {
-        this.runner
-            .setLoop(loop)
-            .run(tests);
+    register: function (dispatcher) {
+        underscore.each(
+            this.fields,
+            function(field) {
+                field.register(dispatcher, this.output);
+            },
+            this
+        );
 &nbsp;
         return this;
     }

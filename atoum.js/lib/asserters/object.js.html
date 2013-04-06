@@ -183,7 +183,7 @@
     <h1>Code coverage report for <span class="entity">atoum.js/lib/asserters/object.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">71.43% <small>(15 / 21)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">72.73% <small>(16 / 22)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Branches: <span class="metric">60% <small>(6 / 10)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -192,7 +192,7 @@
         Functions: <span class="metric">80% <small>(4 / 5)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">71.43% <small>(15 / 21)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">72.73% <small>(16 / 22)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
     </h2>
     <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">atoum.js/lib/asserters/</a> &#187; object.js</div>
@@ -251,35 +251,39 @@
 50
 51
 52
-53</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+53
+54
+55</td><td class="line-coverage"><span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">58</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">59</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">59</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-yes">104</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">105</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">105</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">103</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">18</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -303,7 +307,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var extend = require('node.extend'),
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
+&nbsp;
+var extend = require('node.extend'),
     array = require('./array'),
     object = module.exports = function object(generator) {
         array.call(this, generator);
@@ -314,7 +320,7 @@ object.prototype.constructor = object;
 object.prototype = extend(
     object.prototype,
     {
-        check: function() {
+        check: function () {
             var type = Object.prototype.toString.call(this.value);
 &nbsp;
             if(typeof this.value !== 'object' || type === '[object Array]') {
@@ -324,8 +330,8 @@ object.prototype = extend(
             return this;
         },
 &nbsp;
-        isInstanceOf: function(expected) {
-            this.generator.assertionsCount++;
+        isInstanceOf: function (expected) {
+            this.generator.assertionsCount += 1;
 &nbsp;
             <span class="missing-if-branch" title="if path not taken"" >I</span>if(false === (this.value instanceof expected)) {
 <span class="cstat-no" title="statement not covered" >                this.fail('%s is not an instance of %s', this.value, expected);</span>
@@ -334,8 +340,8 @@ object.prototype = extend(
             return this;
         },
 &nbsp;
-        isNotInstanceOf: <span class="fstat-no" title="function not covered" >function(expected) {</span>
-<span class="cstat-no" title="statement not covered" >            this.generator.assertionsCount++;</span>
+        isNotInstanceOf: <span class="fstat-no" title="function not covered" >function (expected) {</span>
+<span class="cstat-no" title="statement not covered" >            this.generator.assertionsCount += 1;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >            if(this.value instanceof expected) {</span>
 <span class="cstat-no" title="statement not covered" >                this.fail('%s is an instance of %s', this.value, expected);</span>
@@ -344,8 +350,8 @@ object.prototype = extend(
 <span class="cstat-no" title="statement not covered" >            return this;</span>
         },
 &nbsp;
-        hasMember: function(expected) {
-            this.generator.assertionsCount++;
+        hasMember: function (expected) {
+            this.generator.assertionsCount += 1;
 &nbsp;
             <span class="missing-if-branch" title="if path not taken"" >I</span>if(false === this.value.hasOwnProperty(expected)) {
 <span class="cstat-no" title="statement not covered" >                this.fail('Value does not have member %s', expected);</span>
@@ -360,7 +366,7 @@ object.prototype = extend(
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Apr 02 2013 16:13:00 GMT+0200 (CEST)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Apr 06 2013 13:54:43 GMT+0200 (CEST)</div>
 </div>
 
 <script src="../../../prettify.js"></script>

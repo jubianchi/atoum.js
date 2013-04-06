@@ -179,20 +179,20 @@
     </style>
 </head>
 <body>
-<div class="header medium">
+<div class="header high">
     <h1>Code coverage report for <span class="entity">atoum.js/index.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">66.67% <small>(4 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">100% <small>(12 / 12)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">90% <small>(9 / 10)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(2 / 2)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">66.67% <small>(4 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(12 / 12)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
     </h2>
     <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">atoum.js/</a> &#187; index.js</div>
@@ -224,56 +224,56 @@
 23
 24</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">31</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-yes">56</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56</span>
+<span class="cline-any cline-yes">56</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56</span>
+<span class="cline-any cline-yes">55</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">31</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var _ = require('underscore'),
-    util = require('util'),
-    atoum = require('./lib/atoum'),
-    runner = require('./lib/runner'),
-    generator = require('./lib/asserter/generator'),
-    fs = require('fs');
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
 &nbsp;
-try {
-    var path = fs.realpathSync(process.argv[2]);
-    new
-        atoum(new runner(process.stdout, new generator()))
-            .run(path, _.contains(process.argv, '--loop'))
-    ;
-} catch(exception) {
-<span class="cstat-no" title="statement not covered" >    process.stderr.write(util.format(</span>
-        '\033[31m[%s] %s\n%s\033[0m\n',
-        exception.name,
-        exception.message,
-        exception.stack
-    ));
+var atoum = module.exports = function(target) {
+    if(typeof target !== 'undefined') {
+        target.require = function(modulepath) {
+            if(require.cache[target.filename]) {
+                delete require.cache[target.filename];
+            }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    process.exit(1);</span>
-}
+            <span class="missing-if-branch" title="else path not taken"" >E</span>if(modulepath.indexOf('./') === 0 || modulepath.indexOf('../') === 0) {
+                modulepath = require('path').resolve(require('path').dirname(target.filename), modulepath);
+            }
+&nbsp;
+            if(require.cache[modulepath + '.js']) {
+                delete require.cache[modulepath + '.js'];
+            }
+&nbsp;
+            return require.call(require, modulepath);
+        };
+    }
+&nbsp;
+    return require('./lib/atoum.js');
+};
 &nbsp;</pre></td></tr>
 </table></pre>
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Apr 02 2013 16:13:00 GMT+0200 (CEST)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Apr 06 2013 13:54:43 GMT+0200 (CEST)</div>
 </div>
 
 <script src="../prettify.js"></script>

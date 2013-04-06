@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for atoum.js/lib/atoum.js</title>
+    <title>Code coverage report for atoum.js/lib/report/fields/runner/stat.js</title>
     <meta charset="utf-8">
 
-    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../../../../prettify.css">
 
     <style>
         body, html {
@@ -180,7 +180,7 @@
 </head>
 <body>
 <div class="header high">
-    <h1>Code coverage report for <span class="entity">atoum.js/lib/atoum.js</span></h1>
+    <h1>Code coverage report for <span class="entity">atoum.js/lib/report/fields/runner/stat.js</span></h1>
     <h2>
         
         Statements: <span class="metric">100% <small>(8 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -195,7 +195,7 @@
         Lines: <span class="metric">100% <small>(8 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
     </h2>
-    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">atoum.js/lib/</a> &#187; atoum.js</div>
+    <div class="path"><a href="../../../../../index.html">All files</a> &#187; <a href="index.html">atoum.js/lib/report/fields/runner/</a> &#187; stat.js</div>
 </div>
 <div class="body">
 <pre><table class="coverage">
@@ -220,48 +220,75 @@
 19
 20
 21
-22</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31</td><td class="line-coverage"><span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
 &nbsp;
-var atoum = module.exports = function atoum(runner) {
-        this.runner = runner;
-&nbsp;
-        return this;
+var extend = require('node.extend'),
+    util = require('util'),
+    color = require('../../color'),
+    field = require('../../field'),
+    stat = module.exports = function stat() {
+        field.call(this, [ 'runnerStop' ]);
     };
 &nbsp;
-atoum.version = 'dev-alpha';
+stat.prototype = new field();
+stat.prototype.constructor = stat;
+stat.prototype = extend(
+    stat.prototype,
+    {
+        toString: function () {
+            var runner = this.value[0];
 &nbsp;
-atoum.prototype = {
-    version: atoum.version,
-&nbsp;
-    run: function (tests, loop) {
-        this.runner
-            .setLoop(loop)
-            .run(tests);
-&nbsp;
-        return this;
+            return util.format(
+                    '\n&gt; ' + color.header('Total test duration') + ': %d second(s).\n',
+                    Math.round(runner.score.duration * 10000) / 10000
+                )
+                .concat(util.format(
+                    '&gt; ' + color.header('Total test memory usage') + ': %s\n',
+                    util.inspect(runner.score.usage.format('KB', 4).stat)
+                ))
+            ;
+        }
     }
-};
+);
 &nbsp;</pre></td></tr>
 </table></pre>
 
@@ -270,7 +297,7 @@ atoum.prototype = {
     <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Apr 06 2013 13:54:43 GMT+0200 (CEST)</div>
 </div>
 
-<script src="../../prettify.js"></script>
+<script src="../../../../../prettify.js"></script>
 
 <script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
 <script>

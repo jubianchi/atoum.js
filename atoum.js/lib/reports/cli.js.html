@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for atoum.js/lib/atoum.js</title>
+    <title>Code coverage report for atoum.js/lib/reports/cli.js</title>
     <meta charset="utf-8">
 
-    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../../prettify.css">
 
     <style>
         body, html {
@@ -180,22 +180,22 @@
 </head>
 <body>
 <div class="header high">
-    <h1>Code coverage report for <span class="entity">atoum.js/lib/atoum.js</span></h1>
+    <h1>Code coverage report for <span class="entity">atoum.js/lib/reports/cli.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">100% <small>(8 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">100% <small>(6 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">100% <small>(2 / 2)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(1 / 1)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">100% <small>(8 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(6 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
     </h2>
-    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">atoum.js/lib/</a> &#187; atoum.js</div>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">atoum.js/lib/reports/</a> &#187; cli.js</div>
 </div>
 <div class="body">
 <pre><table class="coverage">
@@ -220,48 +220,63 @@
 19
 20
 21
-22</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
+22
+23
+24
+25
+26
+27</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
 &nbsp;
-var atoum = module.exports = function atoum(runner) {
-        this.runner = runner;
+var extend = require('node.extend'),
+    report = require('../report'),
+    fields = require('../report/fields'),
+    cli = module.exports = function cli(output) {
+        report.call(this, output);
 &nbsp;
-        return this;
+        this
+            .addField(new fields.runner.atoum())
+            .addField(new fields.runner.stat())
+            .addField(new fields.runner.result())
+            .addField(new fields.test.header())
+            .addField(new fields.test.success())
+            .addField(new fields.test.failure())
+            .addField(new fields.test.exception())
+            .addField(new fields.test.error())
+            .addField(new fields.test.footer())
+            .addField(new fields.runner.tests.failures())
+            .addField(new fields.runner.tests.exceptions())
+            .addField(new fields.runner.tests.errors())
+        ;
     };
 &nbsp;
-atoum.version = 'dev-alpha';
-&nbsp;
-atoum.prototype = {
-    version: atoum.version,
-&nbsp;
-    run: function (tests, loop) {
-        this.runner
-            .setLoop(loop)
-            .run(tests);
-&nbsp;
-        return this;
-    }
-};
+cli.prototype = new report();
+cli.prototype.constructor = cli;
 &nbsp;</pre></td></tr>
 </table></pre>
 
@@ -270,7 +285,7 @@ atoum.prototype = {
     <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Apr 06 2013 13:54:43 GMT+0200 (CEST)</div>
 </div>
 
-<script src="../../prettify.js"></script>
+<script src="../../../prettify.js"></script>
 
 <script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
 <script>
