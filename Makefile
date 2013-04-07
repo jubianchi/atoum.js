@@ -13,10 +13,10 @@ test: logo
 	@./bin/atoum tests
 
 clean:
-	@rm -rf ./coverage
+	@rm -rf ./doc/*
 
 coverage: clean
 	@./node_modules/.bin/istanbul cover --root lib bin/atoum -- tests
-	@cp -rf ./coverage/lcov-report ./doc
+	@cp -rf ./coverage/lcov-report/* ./doc
 	@rm -rf ./coverage
 	@open ./doc/index.html
