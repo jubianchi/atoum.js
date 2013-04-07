@@ -1,16 +1,17 @@
 var util = require('util'),
     atoum = require('../..')(module),
     variable = require('../../lib/asserters/variable'),
+    failure = require('../../lib/asserter/exception'),
     testedClass = require('../../lib/asserters/error'),
     unit = module.exports = {
         testClass: function() {
-            var object, generator;
+            var asserter, generator;
 
             this
                 .if(generator = {})
                 .then()
-                    .object(object = new testedClass(generator)).isInstanceOf(variable)
-                    .object(object.generator).isEqualTo(generator)
+                    .object(asserter = new testedClass(generator)).isInstanceOf(variable)
+                    .object(asserter.generator).isEqualTo(generator)
             ;
         },
 
@@ -21,14 +22,14 @@ var util = require('util'),
                 .if(object = new testedClass({}))
                 .then()
                     .error(function() {
-                        object.setWith(value)
+                        object.setWith(value);
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is not callable', value))
                 .if(notErroring = function() {})
                 .then()
                     .error(function() {
-                        object.setWith(notErroring)
+                        object.setWith(notErroring);
                     })
                         .hasName('Failure')
                         .hasMessage('There was no error')

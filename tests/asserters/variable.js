@@ -84,5 +84,80 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(message)
+        },
+
+        testIsFalsy: function() {
+            var object, value;
+
+            this
+                .if(object = new testedClass({}))
+                .and(object.setWith(value = 1))
+                .then()
+                    .error(function() {
+                        object.isFalsy();
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('%s is not false', value))
+                    .object(object.setWith(0).isFalsy()).isEqualTo(object)
+                    .object(object.setWith(0.0).isFalsy()).isEqualTo(object)
+                    .object(object.setWith('').isFalsy()).isEqualTo(object)
+                    .object(object.setWith(null).isFalsy()).isEqualTo(object)
+                    .object(object.setWith({}).isFalsy()).isEqualTo(object)
+                    .object(object.setWith([]).isFalsy()).isEqualTo(object)
+                    .object(object.setWith([ 0 ]).isFalsy()).isEqualTo(object)
+                    .object(object.setWith(NaN).isFalsy()).isEqualTo(object)
+            ;
+        },
+
+        testIsTruthy: function() {
+            var object, value;
+
+            this
+                .if(object = new testedClass({}))
+                .and(object.setWith(value = 0))
+                .then()
+                    .error(function() {
+                        object.isTruthy();
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('%s is not true', value))
+                    .object(object.setWith(1).isTruthy()).isEqualTo(object)
+                    .object(object.setWith(0.1).isTruthy()).isEqualTo(object)
+                    .object(object.setWith(Math.random().toString(36).substring(7)).isTruthy()).isEqualTo(object)
+                    .object(object.setWith({ foo: 'bar' }).isTruthy()).isEqualTo(object)
+                    .object(object.setWith([ 0, 1 ]).isTruthy()).isEqualTo(object)
+            ;
+        },
+
+        testIsIdenticalTo: function() {
+            var object, value;
+
+            this
+                .if(object = new testedClass({}))
+                .and(object.setWith(value = 0))
+                .then()
+                    .error(function() {
+                        object.isIdenticalTo(value.toString());
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('%s is not identical to %s', value, value))
+                    .object(object.isIdenticalTo(value)).isEqualTo(object)
+            ;
+        },
+
+        testIsNotIdenticalTo: function() {
+            var object, value;
+
+            this
+                .if(object = new testedClass({}))
+                .and(object.setWith(value = 0))
+                .then()
+                    .error(function() {
+                        object.isNotIdenticalTo(value);
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('%s is identical to %s', value, value))
+                    .object(object.isNotIdenticalTo(value.toString())).isEqualTo(object)
+            ;
         }
     };
