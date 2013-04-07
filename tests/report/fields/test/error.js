@@ -10,7 +10,7 @@ var util = require('util'),
 
             this
                 .object(object = new testedClass()).isInstanceOf(field)
-                .array(object.events).isEqualTo([ 'testMethodError' ])
+                .array(object.events).isEqualTo([ 'testError' ])
             ;
         },
 
