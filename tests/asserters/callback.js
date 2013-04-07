@@ -102,5 +102,28 @@ var util = require('util'),
                     .object(object.withArguments(args)).isIdenticalTo(object)
                     .object(object.withArguments(otherArgs)).isIdenticalTo(object)
             ;
+        },
+
+        testWithoutArgument: function() {
+            var object, value, args, otherArgs;
+
+            this
+                .if(value = callback())
+                .and(object = new testedClass({}))
+                .and(object.setWith(value))
+                .and(value.apply(value, args = ['foo', 'bar']))
+                .then()
+                    .error(function() {
+                        object.withoutArgument();
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format(
+                            'Callback was not called without argument: %s',
+                            [ args ]
+                        ))
+                .if(value.call(value))
+                .then()
+                    .object(object.withoutArgument()).isIdenticalTo(object)
+            ;
         }
     };
