@@ -5,15 +5,20 @@ var _ = require('underscore'),
     atoum = require('..')(),
     runner = require('../lib/runner'),
     cli = require('../lib/reports/cli'),
+    xunit = require('../lib/reports/xunit'),
     generator = require('../lib/asserter/generator'),
     fs = require('fs');
 
 try {
-    var path = fs.realpathSync(process.argv[2]);
-    new
-        atoum(new runner(new cli(process.stdout), new generator()))
-            .run(path, _.contains(process.argv, '--loop'))
+    var path = fs.realpathSync(process.argv[2]),
+        runner = new runner(new generator());
+
+    runner
+        .addReport(new cli(process.stdout))
+        .addReport(new xunit(fs.createWriteStream('./xunit.xml')))
     ;
+
+    new atoum(runner).run(path, _.contains(process.argv, '--loop'));
 } catch(exception) {
     process.stderr.write(util.format(
         '\033[31m[%s] %s\n%s\033[0m\n',
