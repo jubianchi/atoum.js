@@ -21,6 +21,9 @@ var atoum = require('..')(module),
                 .object(provided = object.provide(path)).isEqualTo({})
                 .object(object.require(path, target)).isIdenticalTo(provided)
                 .object(object.require(Math.random().toString(36).substring(7) + '/' + path, target)).isIdenticalTo(provided)
+            .if(provided = {})
+            .then()
+                .object(object.provide(path, provided)).isIdenticalTo(provided)
         ;
     }
 };
