@@ -72,15 +72,25 @@ var util = require('util'),
                         object.isEqualTo(value);
                     })
                         .hasName('Failure')
-                        .hasMessage(
-                            'Strings are not equal:\n'
-                                .concat(
-                                    diff.createPatch('string.isEqualTo', value, wrongValue, 'Reference', 'Data')
-                                        .split('\n')
-                                        .slice(2)
-                                        .join('\n')
-                                )
-                        )
+                        .hasMessage(util.format('String %s is not equal to %s', wrongValue, value))
+            ;
+        },
+
+        testContains: function() {
+            var object, value, wrongValue;
+
+            this
+                .if(object = new testedClass({}))
+                .and(value = Math.random().toString(36).substring(7))
+                .and(wrongValue = Math.random().toString(36).substring(7))
+                .and(object.setWith(value))
+                .then()
+                    .error(function() {
+                        object.contains(wrongValue);
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('String %s does not contain %s', value, wrongValue))
+                    .object(object.contains(value.substring(0, 5))).isIdenticalTo(object)
             ;
         }
     };
