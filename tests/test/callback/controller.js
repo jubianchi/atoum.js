@@ -1,5 +1,5 @@
 var atoum = require('../../..')(module),
-    callback = require('../../../lib/test/Callback'),
+    callback = require('../../../lib/test/callback'),
     testedClass = require('../../../lib/test/callback/controller'),
     unit = module.exports = {
         testClass: function() {
