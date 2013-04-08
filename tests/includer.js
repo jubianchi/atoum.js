@@ -19,6 +19,7 @@ var atoum = require('..')(module),
                 .then()
                     .string(object.resolve(module, target)).isEqualTo('/path/module')
                 .if(module = './lib/module')
+                .and(object.replace('lib', 'lib-cov'))
                 .and(fs = { existsSync: callback(function() { return false; }) })
                 .then()
                     .string(object.resolve(module, target, fs)).isEqualTo('/path/to/lib/module')

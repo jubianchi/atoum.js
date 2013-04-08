@@ -16,10 +16,15 @@ test: logo
 	@./bin/atoum tests --xunit=xunit.xml
 
 clean:
+	@rm -rf ./lib-cov
+	@rm -rf ./covershot
 	@rm -rf ./doc/*
 
 coverage: clean
-	@./node_modules/.bin/istanbul cover --root lib bin/atoum -- tests
-	@cp -rf ./coverage/lcov-report/* ./doc
-	@rm -rf ./coverage
+	@jscoverage --no-highlight lib lib-cov
+	@./bin/atoum tests --coverage
+	@./node_modules/covershot/bin/covershot covershot/data -f html
+	@mv -f ./covershot/* ./doc
+	@rm -rf ./covershot
+	@rm -rf ./lib-cov
 	@open ./doc/index.html
