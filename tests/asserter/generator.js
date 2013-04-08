@@ -29,5 +29,23 @@ var atoum = require('../..')(module),
                     .object(object.asserters).isNotEmpty()
                     .object(object.aliases).isNotEmpty()
             ;
+        },
+
+        testSkip: function() {
+            var object, test, message;
+
+            this
+                .if(object = new testedClass())
+                .and(test = {})
+                .and(message = Math.random().toString(36).substring(7))
+                .and(object.injectInto(test))
+                .then()
+                    .error(function() {
+                        test.skip(message, function() { return true; });
+                    })
+                        .hasName('Skipped')
+                        .hasMessage(message)
+                    .object(test.skip(message, function() { return false; })).isIdenticalTo(test)
+            ;
         }
     };
