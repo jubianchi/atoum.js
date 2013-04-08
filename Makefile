@@ -13,7 +13,7 @@ tdd: logo
 	@./bin/atoum tests --loop
 
 test: logo
-	@./bin/atoum tests
+	@./bin/atoum tests --xunit=xunit.xml
 
 clean:
 	@rm -rf ./doc/*
