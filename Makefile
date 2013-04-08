@@ -6,6 +6,9 @@ egg:
 	@echo "                               Happy Easter !!!"
 	@node_modules/.bin/picture-tube resources/images/egg.png --cols 60
 
+lint:
+	@jshint --config jshintrc.json ./lib
+
 tdd: logo
 	@./bin/atoum tests --loop
 
