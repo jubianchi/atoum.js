@@ -1,29 +1,31 @@
 var atoum = require('..')(module),
+    underscore = require('underscore'),
+    callback = require('../lib/test/callback'),
     testedClass = require('../lib/includer'),
     unit = module.exports = {
-    testClass: function() {
-        var object;
+        testResolve: function() {
+            var object, module, target, fs;
 
-        this
-            .object(object = new testedClass())
-            .array(object.replacements).isEmpty()
-        ;
-    },
-
-    testProvide: function() {
-        var object, target, path, provided;
-
-        this
-            .if(object = new testedClass())
-            .and(target = { filename: Math.random().toString(36).substring(7) })
-            .and(path = Math.random().toString(36).substring(7))
-            .then()
-                .object(provided = object.provide(path)).isEqualTo({})
-                .object(object.require(path, target)).isIdenticalTo(provided)
-                .object(object.require(Math.random().toString(36).substring(7) + '/' + path, target)).isIdenticalTo(provided)
-            .if(provided = {})
-            .then()
-                .object(object.provide(path, provided)).isIdenticalTo(provided)
-        ;
-    }
-};
+            this
+                .if(object = new testedClass())
+                .and(target = { filename: '/path/to/target.js' })
+                .and(module = 'module')
+                .then()
+                    .string(object.resolve(module, target)).isEqualTo(module)
+                .if(module = './module')
+                .then()
+                    .string(object.resolve(module, target)).isEqualTo('/path/to/module')
+                .if(module = '../module')
+                .then()
+                    .string(object.resolve(module, target)).isEqualTo('/path/module')
+                .if(module = './lib/module')
+                .and(fs = { existsSync: callback(function() { return false; }) })
+                .then()
+                    .string(object.resolve(module, target, fs)).isEqualTo('/path/to/lib/module')
+                    .callback(fs.existsSync).wasCalled().withArguments('/path/to/lib-cov/module.js')
+                .if(fs = { existsSync: callback(function() { return true; }) })
+                    .string(object.resolve(module, target, fs)).isEqualTo('/path/to/lib-cov/module')
+                    .callback(fs.existsSync).wasCalled().withArguments('/path/to/lib-cov/module.js')
+            ;
+        }
+    };
