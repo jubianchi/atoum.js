@@ -1,7 +1,7 @@
 var util = require('util'),
     atoum = require('../..')(module),
     callback = require('../../lib/test/callback'),
-    asserter = require('../../lib/asserter'),
+    func = require('../../lib/asserters/function'),
     testedClass = require('../../lib/asserters/callback'),
     unit = module.exports = {
         testClass: function() {
@@ -10,7 +10,7 @@ var util = require('util'),
             this
                 .if(generator = {})
                 .then()
-                    .object(object = new testedClass(generator)).isInstanceOf(asserter)
+                    .object(object = new testedClass(generator)).isInstanceOf(func)
                     .object(object.generator).isEqualTo(generator)
             ;
         },
@@ -63,14 +63,14 @@ var util = require('util'),
                         object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('undefined is not a callback')
+                        .hasMessage('undefined is not a function')
                 .if(value = {})
                 .then()
                     .error(function() {
                         object.setWith(value)
                     })
                         .hasName('Failure')
-                        .hasMessage('[object Object] is not a callback')
+                        .hasMessage('[object Object] is not a function')
                 .if(value = callback())
                 .then()
                     .object(object.setWith(value)).isEqualTo(object)
