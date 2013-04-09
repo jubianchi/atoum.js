@@ -21,10 +21,8 @@ clean:
 	@rm -rf ./doc/*
 
 coverage: clean
-	@jscoverage --no-highlight lib lib-cov
-	@./bin/atoum tests --coverage
-	@./node_modules/covershot/bin/covershot covershot/data -f html
+	@./bin/atoum --coverage=lib tests
 	@mv -f ./covershot/* ./doc
 	@rm -rf ./covershot
 	@rm -rf ./lib-cov
-	@open ./doc/index.html
+	@open ./doc/index.html 2>/dev/null || google-chrome ./doc/index.html 2>/dev/null

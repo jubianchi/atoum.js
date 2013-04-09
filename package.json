@@ -15,7 +15,8 @@
         "picture-tube": "0.0.4",
         "cli-color": "0.2.2",
         "diff": "1.0.4",
-        "covershot": "0.1.1"
+        "covershot": "0.1.1",
+        "jscoverage": "0.3.6"
     },
     "engine": "node >= 0.10.0",
     "scripts": {

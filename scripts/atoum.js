@@ -21,7 +21,7 @@ try {
     }
 
     if(argv.coverage) {
-        run.addReport(new coverage(run));
+        run.addReport(new coverage(process.stdout, run, argv.coverage));
     }
 
     if(argv.loop) {
