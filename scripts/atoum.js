@@ -1,3 +1,5 @@
+"use strict";
+
 var underscore = require('underscore'),
     util = require('util'),
     color = require('cli-color'),
@@ -8,10 +10,53 @@ var underscore = require('underscore'),
     coverage = require('../lib/reports/coverage'),
     generator = require('../lib/asserter/generator'),
     fs = require('fs'),
-    argv = require('optimist').argv;
+    optimist,
+    argv;
+
+optimist = require('optimist')
+    .usage('Usage: atoum [options]')
+    .options('help', {
+        alias : 'h',
+        description: 'Display this help message',
+        boolean : true
+    })
+    .options('directory', {
+        alias : 'd',
+        description: 'Test directory',
+        default : 'tests'
+    })
+    .options('loop', {
+        alias : 'l',
+        description: 'Enable loop mode',
+        boolean : true
+    })
+    .options('xunit', {
+        description: 'Enable xUnit report',
+        default: 'xunit.xml'
+    })
+    .options('coverage', {
+        description: 'Enable code coverage report',
+        default: 'lib'
+    })
+    .check(function(args) {
+        if(fs.existsSync(args.directory) === false) {
+            throw new Error(util.format(color.red("Directory '%s' does not exist"), args.directory));
+        }
+
+        if(typeof args.coverage !== undefined && fs.existsSync(args.coverage) === false) {
+            throw new Error(util.format(color.red("Directory '%s' does not exist"), args.coverage));
+        }
+    })
+;
+argv = optimist.argv;
+
+if(argv.help) {
+    optimist.showHelp();
+    process.exit();
+}
 
 try {
-    var path = fs.realpathSync(argv['_'][0]),
+    var path = fs.realpathSync(argv.directory),
         run = new runner(new generator(), atoum.includer);
 
     run.addReport(new cli(process.stdout));
