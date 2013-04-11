@@ -26,7 +26,7 @@ var atoum = require('../../../../')(module),
                 .then()
                     .string(object.toString()).isEqualTo(
                         util.format(
-                            color.bgGreen.white('Success (%d test(s), %d method(s), %d assertion(s)) !\n'),
+                            color.bgGreen.white('Success (%d test(s), %d method(s), %d assertion(s)) !').concat('\n'),
                             run.passedTests,
                             run.methods,
                             asserters.assertionsCount
@@ -36,7 +36,7 @@ var atoum = require('../../../../')(module),
                 .then()
                     .string(object.toString()).isEqualTo(
                         util.format(
-                            color.bgRed.white('Failure (%d/%d test(s), %d/%d method(s), %d assertion(s)) !\n'),
+                            color.bgRed.white('Failure (%d/%d test(s), %d/%d method(s), %d assertion(s)) !').concat('\n'),
                             run.passedTests,
                             run.passedTests + run.failedTests,
                             (run.methods - run.failedMethods),
