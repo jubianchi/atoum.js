@@ -16,6 +16,7 @@ var atoum = require('..')(module),
                 .number(object.methods).isEqualTo(0)
                 .number(object.failedMethods).isEqualTo(0)
                 .number(object.duration).isEqualTo(0)
+                .number(object.runningDuration).isEqualTo(0)
                 .bool(object.passed).isTrue()
             ;
         },
