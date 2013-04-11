@@ -9,6 +9,7 @@ var underscore = require('underscore'),
     xunit = require('../lib/reports/xunit'),
     coverage = require('../lib/reports/coverage'),
     generator = require('../lib/asserter/generator'),
+    inline = require('../lib/test/engines/inline'),
     fs = require('fs'),
     optimist,
     argv;
@@ -38,6 +39,10 @@ optimist = require('optimist')
         description: 'Enable code coverage report',
         default: 'lib'
     })
+    .options('inline', {
+        description: 'Use inline engine instead of concurrent',
+        boolean: true
+    })
     .check(function(args) {
         if(fs.existsSync(args.directory) === false) {
             throw new Error(util.format(color.red("Directory '%s' does not exist"), args.directory));
@@ -57,7 +62,10 @@ if(argv.help) {
 
 try {
     var path = fs.realpathSync(argv.directory),
-        run = new runner(new generator(), atoum.includer);
+        run = new runner(
+            atoum.includer,
+            argv.inline ? new inline(new generator()) : null
+        );
 
     run.addReport(new cli(process.stdout));
 

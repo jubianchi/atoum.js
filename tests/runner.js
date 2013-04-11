@@ -1,29 +1,27 @@
 var atoum = require('..')(module),
     callback = require('../lib/test/callback'),
+    concurrent = require('../lib/test/engines/concurrent'),
+    includer = require('../lib/includer'),
     testedClass = require('../lib/runner'),
     unit = module.exports = {
         testClass: function() {
-            var report, generator, object;
+            var object;
 
             this
-                .if(generator = {})
-                .and(report = { register: function() { return this; } })
-                .then()
-                    .object(object = new testedClass(generator))
-                    .array(object.reports).isEmpty()
-                    .object(object.generator).isIdenticalTo(generator)
+                .object(object = new testedClass())
+                .array(object.reports).isEmpty()
+                .object(object.includer).isInstanceOf(includer)
+                .object(object.engine).isInstanceOf(concurrent)
             ;
         },
 
         testSetLoop: function() {
-            var report, generator, object, readline, interface;
+            var object, readline, interface;
 
             this
-                .if(generator = {})
-                .and(report = {})
-                .and(readline = { createInterface: callback(function() { return (interface = { close: callback() }); }) })
+                .if(readline = { createInterface: callback(function() { return (interface = { close: callback() }); }) })
                 .then()
-                    .object(object = new testedClass(report, generator))
+                    .object(object = new testedClass())
                     .bool(object.loop).isFalse()
                     .object(object.setLoop(true, readline)).isIdenticalTo(object)
                     .bool(object.loop).isTrue()
