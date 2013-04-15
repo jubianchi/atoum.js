@@ -4,12 +4,12 @@ var underscore = require('underscore'),
     util = require('util'),
     color = require('cli-color'),
     atoum = require('..')(),
-    runner = require('../lib/runner'),
-    cli = require('../lib/reports/cli'),
-    xunit = require('../lib/reports/xunit'),
-    coverage = require('../lib/reports/coverage'),
-    generator = require('../lib/asserter/generator'),
-    inline = require('../lib/test/engines/inline'),
+    Runner = require('../lib/runner'),
+    Cli = require('../lib/reports/cli'),
+    Xunit = require('../lib/reports/xunit'),
+    Coverage = require('../lib/reports/coverage'),
+    Generator = require('../lib/asserter/generator'),
+    Inline = require('../lib/test/engines/inline'),
     fs = require('fs'),
     optimist,
     argv;
@@ -32,6 +32,11 @@ optimist = require('optimist')
     })
     .options('coverage', {
         description: 'Enable code coverage report',
+        boolean: true,
+        default: false
+    })
+    .options('coverage-dir', {
+        description: 'Path to sources to instrument',
         default: 'lib'
     })
     .options('inline', {
@@ -43,8 +48,10 @@ optimist = require('optimist')
             throw new Error(util.format(color.red("Directory '%s' does not exist"), args.directory));
         }
 
-        if(typeof args.coverage !== undefined && fs.existsSync(args.coverage) === false) {
-            throw new Error(util.format(color.red("Directory '%s' does not exist"), args.coverage));
+        if(args.coverage) {
+            if(typeof args['coverage-dir'] !== undefined && fs.existsSync(args['coverage-dir']) === false) {
+                throw new Error(util.format(color.red("Directory '%s' does not exist"), args['coverage-dir']));
+            }
         }
     })
 ;
@@ -57,19 +64,24 @@ if(argv.help) {
 
 try {
     var path = fs.realpathSync(argv.directory),
-        run = new runner(
+        runner = new Runner(
             atoum.includer,
-            argv.inline ? new inline(new generator()) : null
+            argv.inline ? new Inline(new Generator()) : null
         );
 
-    run.addReport(new cli(process.stdout));
+    runner.addReport(new Cli(process.stdout));
 
     if(argv.xunit) {
-        run.addReport(new xunit(fs.createWriteStream(argv.xunit)));
+        runner.addReport(new Xunit(fs.createWriteStream(argv.xunit)));
     }
 
     if(argv.coverage) {
-        run.addReport(new coverage(process.stdout, run, argv.coverage));
+        runner
+            .setCoverage(true)
+            .addReport(
+                new Coverage(process.stdout, runner, argv['coverage-dir'])
+            )
+        ;
     }
 
     run.run(path);
