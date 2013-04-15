@@ -84,7 +84,7 @@ try {
         ;
     }
 
-    run.run(path);
+    runner.run(path);
 } catch(exception) {
     process.stderr.write(util.format(
         color.red('[%s] %s\n%s\n'),
