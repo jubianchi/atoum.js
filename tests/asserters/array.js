@@ -70,7 +70,14 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is not equal to %s', value, wrongValue))
-                .object(object.isEqualTo([ 'foobar' ])).isEqualTo(object)
+                    .object(object.isEqualTo([ 'foobar' ])).isEqualTo(object)
+                .if(object.setWith(value = [ Math.random().toString(36).substring(7), Math.random().toString(36).substring(7) ]))
+                .then()
+                    .error(function() {
+                        object.isEqualTo(wrongValue = []);
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('%s is not equal to %s', value, wrongValue))
             ;
         },
     };
