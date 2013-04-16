@@ -1,7 +1,4 @@
 var atoum = require('../../..')(module),
-    mock = require('../../../lib/test/mock'),
-    Dispatcher = mock(require("events").EventEmitter),
-    Test = mock(require("../../../lib/test")),
     testedClass = require('../../../lib/test/engines/concurrent'),
     unit = module.exports = {
         testClass: function() {
