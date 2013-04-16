@@ -20,20 +20,22 @@ var atoum = require('../../..')(module),
             this
                 .if(returned = Math.random().toString(36).substring(7))
                 .and(mock = {
-                    method: prototype = callback(function method() { return returned; })
+                    method: prototype = callback(function () { return returned; })
                 })
                 .and(object = new testedClass(mock))
                 .then()
-                    .variable(object.run(prototype)).isIdenticalTo(returned)
+                    .variable(object.run('method', prototype)).isIdenticalTo(returned)
                     .callback(mock.method).wasCalled().withoutArgument()
-                    .object(object.args).hasLength(1)
+                    .object(object.args).hasLength(1).hasMember('method')
+                    .array(object.args.method).hasLength(1)
+                    .array(object.args.method[0]).isEmpty()
                 .if(args = ['foo', 'bar'])
-                .and(mock = {
-                    method: prototype = callback(function method() { return returned; })
-                })
                 .then()
-                    .variable(object.run(prototype, args)).isIdenticalTo(returned)
+                    .variable(object.run('method', prototype, args)).isIdenticalTo(returned)
                     .callback(mock.method).wasCalled().withArguments(args[0], args[1])
+                    .object(object.args).hasLength(1).hasMember('method')
+                    .array(object.args.method).hasLength(2)
+                    .array(object.args.method[1]).isEqualTo(args)
             ;
         }
     };
