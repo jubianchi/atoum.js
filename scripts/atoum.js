@@ -26,11 +26,6 @@ optimist = require('optimist')
         description: 'Test directory',
         default : 'tests'
     })
-    .options('loop', {
-        alias : 'l',
-        description: 'Enable loop mode',
-        boolean : true
-    })
     .options('xunit', {
         description: 'Enable xUnit report',
         default: 'xunit.xml'
@@ -75,10 +70,6 @@ try {
 
     if(argv.coverage) {
         run.addReport(new coverage(process.stdout, run, argv.coverage));
-    }
-
-    if(argv.loop) {
-        run.setLoop(true);
     }
 
     run.run(path);
