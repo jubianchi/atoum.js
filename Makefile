@@ -6,21 +6,24 @@ egg:
 	@echo "                               Happy Easter !!!"
 	@node_modules/.bin/picture-tube resources/images/egg.png --cols 60
 
+clean:
+	@rm -rf ./lib-cov
+	@rm -rf ./covershot
+	@rm -f ./xunit.xml
+
 lint:
 	@jshint --config jshintrc.json ./lib
 
 test: clean logo
-	@./bin/atoum -d tests --xunit --coverage
+	@./bin/atoum -d tests --xunit
 
-clean:
-	@rm -rf ./lib-cov
-	@rm -rf ./covershot
-	@rm -rf ./doc/*
-	@rm -f ./xunit.xml
+covershot: logo
+	@./bin/atoum -d tests --coverage
+	@rm -rf covershot/data
 
-coverage: clean
-	@./bin/atoum --coverage=lib tests
-	@mv -f ./covershot/* ./doc
-	@rm -rf ./covershot
-	@rm -rf ./lib-cov
-	@open ./doc/index.html 2>/dev/null || google-chrome ./doc/index.html 2>/dev/null
+doc: clean covershot
+	@git submodule update
+	@rm -rf doc/*
+	@mv -f covershot/* doc
+	@rm -rf covershot
+	@open doc/index.html 2>/dev/null || google-chrome doc/index.html 2>/dev/null
