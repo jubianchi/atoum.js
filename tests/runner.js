@@ -10,7 +10,6 @@ var atoum = require('..')(module),
             this
                 .object(object = new testedClass())
                 .array(object.reports).isEmpty()
-                .object(object.includer).isInstanceOf(includer)
                 .object(object.engine).isInstanceOf(concurrent)
             ;
         }

@@ -1,5 +1,6 @@
 var util = require('util'),
     atoum = require('../..')(module),
+    Controller = require('../../lib/test/mock/controller'),
     testedClass = require('../../lib/asserters/mock'),
     unit = module.exports = {
         testClass: function() {
@@ -25,7 +26,7 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage('Value is not a mock')
-                .if(mockClass = this.generateMock())
+                .if(mockClass = function mock() { this.controller = new Controller(); })
                 .and(mockInstance = new mockClass())
                 .then()
                     .object(object.setWith(mockInstance)).isIdenticalTo(object)

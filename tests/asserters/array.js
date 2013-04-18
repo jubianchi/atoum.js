@@ -1,5 +1,5 @@
-var util = require('util'),
-    atoum = require('../..')(module),
+var atoum = require('../..')(module),
+    util = require('util'),
     variable = require('../../lib/asserters/variable'),
     testedClass = require('../../lib/asserters/array'),
     unit = module.exports = {

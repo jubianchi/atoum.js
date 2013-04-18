@@ -1,13 +1,13 @@
 "use strict";
 
-var includer = require('./lib/includer'),
+var Includer = require("./lib/includer"),
     atoum = module.exports = function (target) {
-        if(typeof target !== 'undefined') {
-            atoum.includer.applyTo(target);
+        if(typeof target !== "undefined") {
+            atoum.includer.register(target);
         }
 
         return atoum;
     };
 
 atoum.version = "dev-alpha";
-atoum.includer = new includer();
+atoum.includer = new Includer();
