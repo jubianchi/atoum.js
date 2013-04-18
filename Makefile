@@ -9,16 +9,14 @@ egg:
 lint:
 	@jshint --config jshintrc.json ./lib
 
-tdd: logo
-	@./bin/atoum tests --loop
-
-test: logo
-	@./bin/atoum tests --xunit=xunit.xml
+test: clean logo
+	@./bin/atoum -d tests --xunit --coverage
 
 clean:
 	@rm -rf ./lib-cov
 	@rm -rf ./covershot
 	@rm -rf ./doc/*
+	@rm -f ./xunit.xml
 
 coverage: clean
 	@./bin/atoum --coverage=lib tests

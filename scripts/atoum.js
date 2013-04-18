@@ -17,16 +17,44 @@ try {
         .addOption("directory", {
             alias: "d",
             description: "Test directory",
-            default: "tests",
+            default: [],
             type: "string",
             check: function(args) {
-                if(fs.existsSync(args.directory) === false) {
-                    throw new Error(util.format(color.red("Directory '%s' does not exist"), args.directory));
+                if(typeof args.directory === 'string') {
+                    args.directory = [ args.directory ];
                 }
+
+                args.directory.forEach(function(directory) {
+                    if(fs.existsSync(directory) === false) {
+                        throw new Error(util.format(color.red("Directory '%s' does not exist"), directory));
+                    }
+                });
+            }
+        })
+        .addOption("file", {
+            alias: "f",
+            description: "Test file",
+            default: [],
+            type: "string",
+            check: function(args) {
+                if(typeof args.file === 'string') {
+                    args.file = [ args.file ];
+                }
+
+                args.file.forEach(function(file) {
+                    if(fs.existsSync(file) === false) {
+                        throw new Error(util.format(color.red("File '%s' does not exist"), file));
+                    }
+                });
             }
         })
         .addOption("xunit", {
             description: "Enable xUnit report",
+            type: "boolean",
+            default: false
+        })
+        .addOption("xunit-output", {
+            description: "Path to xUnit report file",
             default: "xunit.xml",
             type: "string"
         })
