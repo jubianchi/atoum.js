@@ -32,7 +32,7 @@ var atoum = require('..')(module),
             ;
         },
 
-        testAddDirectory: function() {
+        testAddFile: function() {
             var object, file, otherFile;
 
             this
