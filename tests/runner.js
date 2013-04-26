@@ -48,5 +48,25 @@ var atoum = require('..')(module),
                     .array(object.files).hasLength(2)
                     .string(object.files[1]).isEqualTo(otherFile)
             ;
+        },
+
+        testGetCurrentTest: function() {
+            var object;
+
+            this
+                .if(object = new testedClass())
+                .then()
+                    .undefined(object.getCurrentTest())
+            ;
+        },
+
+        testGetCurrentTestMethod: function() {
+            var object;
+
+            this
+                .if(object = new testedClass())
+                .then()
+                    .undefined(object.getCurrentTestMethod())
+            ;
         }
     };
