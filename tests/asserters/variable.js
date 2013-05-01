@@ -98,14 +98,14 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is not false', value))
-                    .object(object.setWith(0).isFalsy()).isEqualTo(object)
-                    .object(object.setWith(0.0).isFalsy()).isEqualTo(object)
-                    .object(object.setWith('').isFalsy()).isEqualTo(object)
-                    .object(object.setWith(null).isFalsy()).isEqualTo(object)
-                    .object(object.setWith({}).isFalsy()).isEqualTo(object)
-                    .object(object.setWith([]).isFalsy()).isEqualTo(object)
-                    .object(object.setWith([ 0 ]).isFalsy()).isEqualTo(object)
-                    .object(object.setWith(NaN).isFalsy()).isEqualTo(object)
+                    .object(object.setWith(0).isFalsy()).isIdenticalTo(object)
+                    .object(object.setWith(0.0).isFalsy()).isIdenticalTo(object)
+                    .object(object.setWith('').isFalsy()).isIdenticalTo(object)
+                    .object(object.setWith(null).isFalsy()).isIdenticalTo(object)
+                    .object(object.setWith({}).isFalsy()).isIdenticalTo(object)
+                    .object(object.setWith([]).isFalsy()).isIdenticalTo(object)
+                    .object(object.setWith([ 0 ]).isFalsy()).isIdenticalTo(object)
+                    .object(object.setWith(NaN).isFalsy()).isIdenticalTo(object)
             ;
         },
 
