@@ -34,6 +34,4 @@ var atoum = require('../../..')(module),
                     .callback(otherMethod).wasCalled().withoutArgument()
             ;
         }
-
-
     };

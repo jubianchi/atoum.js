@@ -10,5 +10,9 @@ var atoum = require('../../..')(module),
                     .object(object = new testedClass(dispatcher))
                     .object(object.dispatcher).isIdenticalTo(dispatcher)
             ;
+        },
+
+        testGetTestCode: function() {
+
         }
     };
