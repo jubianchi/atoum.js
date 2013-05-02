@@ -215,5 +215,72 @@ var testedClass = require('../../../lib/test/score/coverage'),
                         }
                     })
             ;
+        },
+
+        testMerge: function() {
+            var object, stat, otherScore, otherStat;
+
+            this
+                .if(object = new testedClass())
+                .and(otherScore = new testedClass())
+                .and(stat = {
+                    "lib/foo.js": {
+                        1: 1,
+                        2: null,
+                        3: null,
+                        4: null,
+                        source: [
+                            Math.random().toString(36).substring(7),
+                            Math.random().toString(36).substring(7),
+                            Math.random().toString(36).substring(7),
+                            Math.random().toString(36).substring(7)
+                        ]
+                    }
+                })
+                .and(otherStat = {
+                    "lib/foo.js": {
+                        1: 0,
+                        2: 0,
+                        3: 0,
+                        4: 1,
+                        source: [
+                            stat["lib/foo.js"].source[0],
+                            stat["lib/foo.js"].source[1],
+                            stat["lib/foo.js"].source[2],
+                            stat["lib/foo.js"].source[3]
+                        ]
+                    }
+                })
+                .and(object.addFromStat(stat))
+                .and(otherScore.addFromStat(otherStat))
+                .then()
+                    .object(object.merge(otherScore)).isIdenticalTo(object)
+                    .object(object.files).isEqualTo({
+                        "lib/foo.js": {
+                            "filename": "lib/foo.js",
+                            "coverage": 50,
+                            "hits": 2,
+                            "misses": 2,
+                            "sloc": 4,
+                            "source": {
+                                "1": {
+                                    "line": stat["lib/foo.js"].source[0],
+                                    "coverage": 1
+                                },
+                                "2": {
+                                    "line": stat["lib/foo.js"].source[1],
+                                    "coverage": 0
+                                },
+                                "3": {
+                                    "line": stat["lib/foo.js"].source[2],
+                                    "coverage": 0
+                                },
+                                "4": {
+                                    "line": stat["lib/foo.js"].source[3],
+                                    "coverage": 1
+                                }
+                            }
+                        }
+                    })
         }
     };
