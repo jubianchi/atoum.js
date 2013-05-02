@@ -11,7 +11,7 @@ var util = require('util'),
                 .if(generator = {})
                 .then()
                     .object(asserter = new testedClass(generator)).isInstanceOf(variable)
-                    .object(asserter.generator).isEqualTo(generator)
+                    .object(asserter.generator).isIdenticalTo(generator)
             ;
         },
 
@@ -36,7 +36,7 @@ var util = require('util'),
                 .if(exception = new Error())
                 .and(erroring = function() { throw exception; })
                 .then()
-                    .object(object.setWith(erroring)).isEqualTo(object)
+                    .object(object.setWith(erroring)).isIdenticalTo(object)
                     .object(object.exception).isIdenticalTo(exception)
             ;
         },

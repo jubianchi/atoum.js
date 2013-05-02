@@ -10,7 +10,7 @@ var util = require('util'),
                 .if(generator = {})
                 .then()
                     .object(object = new testedClass(generator)).isInstanceOf(array)
-                    .object(object.generator).isEqualTo(generator)
+                    .object(object.generator).isIdenticalTo(generator)
             ;
         },
 
@@ -34,8 +34,8 @@ var util = require('util'),
                         .hasMessage(util.format('%s is not an object', value))
                 .if(value = {})
                 .then()
-                    .object(object.setWith(value)).isEqualTo(object)
-                    .object(object.value).isEqualTo(value)
+                    .object(object.setWith(value)).isIdenticalTo(object)
+                    .object(object.value).isIdenticalTo(value)
             ;
         },
 
@@ -95,7 +95,7 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is not identical to %s', value, value))
-                    .object(object.isIdenticalTo(value)).isEqualTo(object)
+                    .object(object.isIdenticalTo(value)).isIdenticalTo(object)
             ;
         },
 
@@ -111,7 +111,38 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is identical to %s', value, value))
-                    .object(object.isNotIdenticalTo({})).isEqualTo(object)
+                    .object(object.isNotIdenticalTo({})).isIdenticalTo(object)
+            ;
+        },
+
+        testIsEqualTo: function() {
+            var object, value, expected;
+
+            this
+                .if(object = new testedClass({}))
+                .and(object.setWith(value = {}))
+                .then()
+                    .object(object.isEqualTo(value)).isIdenticalTo(object)
+                    .object(object.isEqualTo({})).isIdenticalTo(object)
+                .if(expected = { "foo": "foo" })
+                .then()
+                    .error(function() {
+                        object.isEqualTo(expected);
+                    })
+                        .hasName('Failure')
+                        .hasMessage('[object Object] is not equal to [object Object]')
+                .if(value = { "child": { "foo": "foo" } })
+                .and(expected = { "child": { "foo": "bar" } })
+                .and(object.setWith(value))
+                .then()
+                    .error(function() {
+                        object.isEqualTo(expected);
+                    })
+                        .hasName('Failure')
+                        .hasMessage('[object Object] is not equal to [object Object]')
+                .if(expected = { "child": { "foo": "foo" } })
+                .then()
+                    .object(object.isEqualTo(expected)).isIdenticalTo(object)
             ;
         }
     };

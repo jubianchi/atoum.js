@@ -9,7 +9,7 @@ var atoum = require('../..')(module),
                 .if(generator = {})
                 .then()
                     .object(object = new testedClass(generator)).isInstanceOf(variable)
-                    .object(object.generator).isEqualTo(generator)
+                    .object(object.generator).isIdenticalTo(generator)
             ;
         },
 
@@ -33,11 +33,11 @@ var atoum = require('../..')(module),
                         .hasMessage('[object Object] is not a number')
                 .if(value = 0)
                 .then()
-                    .object(object.setWith(value)).isEqualTo(object)
+                    .object(object.setWith(value)).isIdenticalTo(object)
                     .number(object.value).isEqualTo(value)
                 .if(value = Math.random())
                 .then()
-                    .object(object.setWith(value)).isEqualTo(object)
+                    .object(object.setWith(value)).isIdenticalTo(object)
                     .number(object.value).isEqualTo(value)
             ;
         }

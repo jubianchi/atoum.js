@@ -27,15 +27,15 @@ var util = require('util'),
                         .hasMessage('Value is undefined')
                 .if(value = {})
                 .then()
-                    .object(object.setWith(value)).isEqualTo(object)
+                    .object(object.setWith(value)).isIdenticalTo(object)
                     .object(object.value).isIdenticalTo(value)
                 .if(value = [])
                 .then()
-                    .object(object.setWith(value)).isEqualTo(object)
+                    .object(object.setWith(value)).isIdenticalTo(object)
                     .array(object.value).isIdenticalTo(value)
                 .if(value = Math.random().toString(36).substring(7))
                 .then()
-                    .object(object.setWith(value)).isEqualTo(object)
+                    .object(object.setWith(value)).isIdenticalTo(object)
                     .string(object.value).isEqualTo(value)
             ;
         },
@@ -53,7 +53,7 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is not equal to %s', value, wrongValue))
-                    .object(object.isEqualTo(value)).isEqualTo(object)
+                    .object(object.isEqualTo(value)).isIdenticalTo(object)
         },
 
         testIsNotEqualTo: function() {
@@ -69,7 +69,7 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is equal to %s', value, value))
-                    .object(object.isNotEqualTo(Math.random().toString(36).substring(7))).isEqualTo(object)
+                    .object(object.isNotEqualTo(Math.random().toString(36).substring(7))).isIdenticalTo(object)
         },
 
         testFail: function() {
@@ -121,11 +121,11 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is not true', value))
-                    .object(object.setWith(1).isTruthy()).isEqualTo(object)
-                    .object(object.setWith(0.1).isTruthy()).isEqualTo(object)
-                    .object(object.setWith(Math.random().toString(36).substring(7)).isTruthy()).isEqualTo(object)
-                    .object(object.setWith({ foo: 'bar' }).isTruthy()).isEqualTo(object)
-                    .object(object.setWith([ 0, 1 ]).isTruthy()).isEqualTo(object)
+                    .object(object.setWith(1).isTruthy()).isIdenticalTo(object)
+                    .object(object.setWith(0.1).isTruthy()).isIdenticalTo(object)
+                    .object(object.setWith(Math.random().toString(36).substring(7)).isTruthy()).isIdenticalTo(object)
+                    .object(object.setWith({ foo: 'bar' }).isTruthy()).isIdenticalTo(object)
+                    .object(object.setWith([ 0, 1 ]).isTruthy()).isIdenticalTo(object)
             ;
         },
 
@@ -141,7 +141,7 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is not identical to %s', value, value))
-                    .object(object.isIdenticalTo(value)).isEqualTo(object)
+                    .object(object.isIdenticalTo(value)).isIdenticalTo(object)
             ;
         },
 
@@ -157,7 +157,7 @@ var util = require('util'),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is identical to %s', value, value))
-                    .object(object.isNotIdenticalTo(value.toString())).isEqualTo(object)
+                    .object(object.isNotIdenticalTo(value.toString())).isIdenticalTo(object)
             ;
         }
     };

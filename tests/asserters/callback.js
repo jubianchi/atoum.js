@@ -11,7 +11,7 @@ var util = require('util'),
                 .if(generator = {})
                 .then()
                     .object(object = new testedClass(generator)).isInstanceOf(func)
-                    .object(object.generator).isEqualTo(generator)
+                    .object(object.generator).isIdenticalTo(generator)
             ;
         },
 
@@ -73,7 +73,7 @@ var util = require('util'),
                         .hasMessage('[object Object] is not a function')
                 .if(value = callback())
                 .then()
-                    .object(object.setWith(value)).isEqualTo(object)
+                    .object(object.setWith(value)).isIdenticalTo(object)
                     .variable(object.value).isEqualTo(value)
             ;
         },

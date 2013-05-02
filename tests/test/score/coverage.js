@@ -9,13 +9,28 @@ var testedClass = require('../../../lib/test/score/coverage'),
         },
 
         testAddFromStat: function() {
-            var object, stat, file, otherFile;
+            var object, stat;
 
             this
                 .if(object = new testedClass())
                 .and(stat = {
-                    "files":  [
-                        file = {
+                    "lib/foo.js": {
+                        1: 1,
+                        2: null,
+                        3: null,
+                        4: null,
+                        source: [
+                            Math.random().toString(36).substring(7),
+                            Math.random().toString(36).substring(7),
+                            Math.random().toString(36).substring(7),
+                            Math.random().toString(36).substring(7)
+                        ]
+                    }
+                })
+                .then()
+                    .object(object.addFromStat(stat)).isIdenticalTo(object)
+                    .object(object.files).isEqualTo({
+                        "lib/foo.js": {
                             "filename": "lib/foo.js",
                             "coverage": 25,
                             "hits": 1,
@@ -23,201 +38,182 @@ var testedClass = require('../../../lib/test/score/coverage'),
                             "sloc": 4,
                             "source": {
                                 "1": {
-                                    "line": Math.random().toString(36).substring(7),
+                                    "line": stat["lib/foo.js"].source[0],
                                     "coverage": 1
                                 },
                                 "2": {
-                                    "line": Math.random().toString(36).substring(7),
+                                    "line": stat["lib/foo.js"].source[1],
                                     "coverage": ""
                                 },
                                 "3": {
-                                    "line": Math.random().toString(36).substring(7),
+                                    "line": stat["lib/foo.js"].source[2],
                                     "coverage": ""
                                 },
                                 "4": {
-                                    "line": Math.random().toString(36).substring(7),
+                                    "line": stat["lib/foo.js"].source[3],
                                     "coverage": ""
                                 }
-                            }
-                        }
-                    ]
-                })
-                .then()
-                    .object(object.addFromStat(stat)).isIdenticalTo(object)
-                    .object(object.files).isEqualTo({ "lib/foo.js": file })
-                .if(stat = {
-                    "files": [
-                         {
-                            "filename": file.filename,
-                            "coverage": 25,
-                            "hits": 1,
-                            "misses": 3,
-                            "sloc": file.sloc,
-                            "source": {
-                                "1": {
-                                    "line": file.source[1].line,
-                                    "coverage": ""
-                                },
-                                "2": {
-                                    "line": file.source[2].line,
-                                    "coverage": ""
-                                },
-                                "3": {
-                                    "line": file.source[3].line,
-                                    "coverage": ""
-                                },
-                                "4": {
-                                    "line": file.source[4].line,
-                                    "coverage": 1
-                                }
-                            }
-                        }
-                    ]
-                })
-                .then()
-                    .object(object.addFromStat(stat)).isIdenticalTo(object)
-                    .object(object.files[file.filename]).isEqualTo({
-                        "filename": file.filename,
-                        "coverage": 50,
-                        "hits": 2,
-                        "misses": 2,
-                        "sloc": file.sloc,
-                        "source": {
-                            "1": {
-                                "line": file.source[1].line,
-                                "coverage": 1
-                            },
-                            "2": {
-                                "line": file.source[2].line,
-                                "coverage": 0
-                            },
-                            "3": {
-                                "line": file.source[3].line,
-                                "coverage": 0
-                            },
-                            "4": {
-                                "line": file.source[4].line,
-                                "coverage": 1
                             }
                         }
                     })
                 .if(stat = {
-                    "files": [
-                        {
-                            "filename": file.filename,
+                    "lib/foo.js": {
+                        1: 0,
+                        2: 0,
+                        3: 0,
+                        4: 1,
+                        source: [
+                            stat["lib/foo.js"].source[0],
+                            stat["lib/foo.js"].source[1],
+                            stat["lib/foo.js"].source[2],
+                            stat["lib/foo.js"].source[3]
+                        ]
+                    }
+                })
+                .then()
+                    .object(object.addFromStat(stat)).isIdenticalTo(object)
+                    .object(object.files).isEqualTo({
+                        "lib/foo.js": {
+                            "filename": "lib/foo.js",
+                            "coverage": 50,
+                            "hits": 2,
+                            "misses": 2,
+                            "sloc": 4,
+                            "source": {
+                                "1": {
+                                    "line": stat["lib/foo.js"].source[0],
+                                    "coverage": 1
+                                },
+                                "2": {
+                                    "line": stat["lib/foo.js"].source[1],
+                                    "coverage": 0
+                                },
+                                "3": {
+                                    "line": stat["lib/foo.js"].source[2],
+                                    "coverage": 0
+                                },
+                                "4": {
+                                    "line": stat["lib/foo.js"].source[3],
+                                    "coverage": 1
+                                }
+                            }
+                        }
+                    })
+                .if(stat = {
+                    "lib/foo.js": {
+                        1: 1,
+                        2: 1,
+                        3: 1,
+                        4: 1,
+                        source: [
+                            stat["lib/foo.js"].source[0],
+                            stat["lib/foo.js"].source[1],
+                            stat["lib/foo.js"].source[2],
+                            stat["lib/foo.js"].source[3]
+                        ]
+                    }
+                })
+                .then()
+                    .object(object.addFromStat(stat)).isIdenticalTo(object)
+                    .object(object.files).isEqualTo({
+                        "lib/foo.js": {
+                            "filename": "lib/foo.js",
                             "coverage": 100,
                             "hits": 4,
                             "misses": 0,
-                            "sloc": file.sloc,
+                            "sloc": 4,
                             "source": {
                                 "1": {
-                                    "line": file.source[1].line,
-                                    "coverage": 1
+                                    "line": stat["lib/foo.js"].source[0],
+                                    "coverage": 2
                                 },
                                 "2": {
-                                    "line": file.source[2].line,
+                                    "line": stat["lib/foo.js"].source[1],
                                     "coverage": 1
                                 },
                                 "3": {
-                                    "line": file.source[3].line,
+                                    "line": stat["lib/foo.js"].source[2],
                                     "coverage": 1
                                 },
                                 "4": {
-                                    "line": file.source[4].line,
-                                    "coverage": 1
+                                    "line": stat["lib/foo.js"].source[3],
+                                    "coverage": 2
                                 }
                             }
                         }
+                    })
+                .if(stat["lib/bar.js"] = {
+                    1: 1,
+                    2: 1,
+                    3: 1,
+                    4: 1,
+                    5: 1,
+                    source: [
+                        Math.random().toString(36).substring(7),
+                        Math.random().toString(36).substring(7),
+                        Math.random().toString(36).substring(7),
+                        Math.random().toString(36).substring(7),
+                        Math.random().toString(36).substring(7)
                     ]
                 })
                 .then()
                     .object(object.addFromStat(stat)).isIdenticalTo(object)
-                    .object(object.files[file.filename]).isEqualTo({
-                        "filename": file.filename,
-                        "coverage": 100,
-                        "hits": 4,
-                        "misses": 0,
-                        "sloc": file.sloc,
-                        "source": {
-                            "1": {
-                                "line": file.source[1].line,
-                                "coverage": 2
-                            },
-                            "2": {
-                                "line": file.source[2].line,
-                                "coverage": 1
-                            },
-                            "3": {
-                                "line": file.source[3].line,
-                                "coverage": 1
-                            },
-                            "4": {
-                                "line": file.source[4].line,
-                                "coverage": 2
-                            }
-                        }
-                    })
-                .if(stat = {
-                    "files": [
-                        otherFile = {
-                            "filename": "lib/bar.js",
-                            "coverage": 80,
+                    .object(object.files).isEqualTo({
+                        "lib/foo.js": {
+                            "filename": "lib/foo.js",
+                            "coverage": 100,
                             "hits": 4,
-                            "misses": 1,
+                            "misses": 0,
+                            "sloc": 4,
+                            "source": {
+                                "1": {
+                                    "line": stat["lib/foo.js"].source[0],
+                                    "coverage": 3
+                                },
+                                "2": {
+                                    "line": stat["lib/foo.js"].source[1],
+                                    "coverage": 2
+                                },
+                                "3": {
+                                    "line": stat["lib/foo.js"].source[2],
+                                    "coverage": 2
+                                },
+                                "4": {
+                                    "line": stat["lib/foo.js"].source[3],
+                                    "coverage": 3
+                                }
+                            }
+                        },
+                        "lib/bar.js": {
+                            "filename": "lib/bar.js",
+                            "coverage": 100,
+                            "hits": 5,
+                            "misses": 0,
                             "sloc": 5,
                             "source": {
                                 "1": {
-                                    "line": Math.random().toString(36).substring(7),
+                                    "line": stat["lib/bar.js"].source[0],
                                     "coverage": 1
                                 },
                                 "2": {
-                                    "line": Math.random().toString(36).substring(7),
+                                    "line": stat["lib/bar.js"].source[1],
                                     "coverage": 1
                                 },
                                 "3": {
-                                    "line": Math.random().toString(36).substring(7),
+                                    "line": stat["lib/bar.js"].source[2],
                                     "coverage": 1
                                 },
                                 "4": {
-                                    "line": Math.random().toString(36).substring(7),
+                                    "line": stat["lib/bar.js"].source[3],
                                     "coverage": 1
                                 },
                                 "5": {
-                                    "line": Math.random().toString(36).substring(7),
-                                    "coverage": 0
+                                    "line": stat["lib/bar.js"].source[4],
+                                    "coverage": 1
                                 }
                             }
                         }
-                    ]
-                })
-                .then()
-                    .object(object.addFromStat(stat)).isIdenticalTo(object)
-                    .object(object.files[file.filename]).isEqualTo({
-                        "filename": file.filename,
-                        "coverage": 100,
-                        "hits": 4,
-                        "misses": 0,
-                        "sloc": file.sloc,
-                        "source": {
-                            "1": {
-                                "line": file.source[1].line,
-                                "coverage": 2
-                            },
-                            "2": {
-                                "line": file.source[2].line,
-                                "coverage": 1
-                            },
-                            "3": {
-                                "line": file.source[3].line,
-                                "coverage": 1
-                            },
-                            "4": {
-                                "line": file.source[4].line,
-                                "coverage": 2
-                            }
-                        }
                     })
-                    .object(object.files[otherFile.filename]).isEqualTo(otherFile)
             ;
         }
     };

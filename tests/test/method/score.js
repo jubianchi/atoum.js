@@ -1,4 +1,7 @@
 var atoum = require('../../..')(module),
+    Usage = require('../../../lib/test/score/usage'),
+    Coverage = require('../../../lib/test/score/coverage'),
+    callback = require('../../../lib/test/callback'),
     testedClass = require('../../../lib/test/method/score'),
     unit = module.exports = {
         testClass: function() {
@@ -13,6 +16,8 @@ var atoum = require('../../..')(module),
                     .undefined(object.failure)
                     .bool(object.passed).isTrue()
                     .number(object.duration).isEqualTo(0)
+                    .object(object.usage).isInstanceOf(Usage)
+                    .object(object.coverage).isInstanceOf(Coverage)
             ;
         },
 
@@ -51,6 +56,20 @@ var atoum = require('../../..')(module),
                     .object(object.addException(exception)).isIdenticalTo(object)
                     .object(object.exception).isIdenticalTo(exception)
                     .bool(object.passed).isFalse()
+            ;
+        },
+
+        testSetCoverage: function() {
+            var object, coverage;
+
+            this
+                .if(object = new testedClass())
+                .and(object.coverage.addFromStat = callback())
+                .and(coverage = { "files": [] })
+                .then()
+                    .object(object.setCoverage(coverage)).isIdenticalTo(object)
+                    .callback(object.coverage.addFromStat)
+                        .wasCalled().withArguments(coverage)
             ;
         }
     };

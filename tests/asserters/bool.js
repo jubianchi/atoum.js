@@ -33,7 +33,7 @@ var atoum = require('../..')(module),
                         .hasMessage('[object Object] is not a boolean')
                 .if(value = true)
                 .then()
-                    .object(object.setWith(value)).isEqualTo(object)
+                    .object(object.setWith(value)).isIdenticalTo(object)
                     .bool(object.value).isEqualTo(value)
             ;
         },

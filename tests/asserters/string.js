@@ -11,7 +11,7 @@ var util = require('util'),
                 .if(generator = {})
                 .then()
                     .object(object = new testedClass(generator)).isInstanceOf(variable)
-                    .object(object.generator).isEqualTo(generator)
+                    .object(object.generator).isIdenticalTo(generator)
             ;
         },
 
@@ -35,7 +35,7 @@ var util = require('util'),
                         .hasMessage('[object Object] is not a string')
                 .if(value = Math.random().toString(36).substring(7))
                 .then()
-                    .object(object.setWith(value)).isEqualTo(object)
+                    .object(object.setWith(value)).isIdenticalTo(object)
                     .string(object.value).isEqualTo(value)
             ;
         },

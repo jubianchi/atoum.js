@@ -34,7 +34,7 @@ var atoum = require('../..')(module),
                         .hasMessage('[object Object] is not an array')
                 .if(value = [])
                 .then()
-                    .object(object.setWith(value)).isEqualTo(object)
+                    .object(object.setWith(value)).isIdenticalTo(object)
                     .array(object.value).isEqualTo(value)
             ;
         },
@@ -70,7 +70,7 @@ var atoum = require('../..')(module),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is not equal to %s', value, wrongValue))
-                    .object(object.isEqualTo([ 'foobar' ])).isEqualTo(object)
+                    .object(object.isEqualTo([ 'foobar' ])).isIdenticalTo(object)
                 .if(object.setWith(value = [ Math.random().toString(36).substring(7), Math.random().toString(36).substring(7) ]))
                 .then()
                     .error(function() {
