@@ -4,16 +4,16 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Covershot: Source: lib/includer/instrument.js</title>
-		<link rel="stylesheet" href="../../../css/normalize.css">
-		<link rel="stylesheet" href="../../../css/covershot.css">
+		<title>Covershot: Source: lib/report/fields/engine/index.js</title>
+		<link rel="stylesheet" href="../../../../../css/normalize.css">
+		<link rel="stylesheet" href="../../../../../css/covershot.css">
 
-		<script type="text/javascript" src="../../../scripts/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../../../../../scripts/jquery-1.7.1.min.js"></script>
 
-		<script type="text/javascript" src="../../../scripts/shCore.js"></script>
-		<script type="text/javascript" src="../../../scripts/shBrushJScript.js"></script>
-		<link href="../../../css/shCore.css" rel="stylesheet" type="text/css" />
-		<link href="../../../css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="../../../../../scripts/shCore.js"></script>
+		<script type="text/javascript" src="../../../../../scripts/shBrushJScript.js"></script>
+		<link href="../../../../../css/shCore.css" rel="stylesheet" type="text/css" />
+		<link href="../../../../../css/shThemeDefault.css" rel="stylesheet" type="text/css" />
 	    <script>
 	      window.onscroll = function () {
 	        document.querySelectorAll('#topContainer')[0].className = (window.scrollY !== 0) ? 'shadowed' : '';
@@ -24,7 +24,7 @@
 	    <div id="topContainer">
 	      <div id="topBar">
 	        <div id="topBarContent">
-	          <p class="left"><a href="../../../index.html">Covershot</a></p> 
+	          <p class="left"><a href="../../../../../index.html">Covershot</a></p> 
 	          <!-- <p class="right"><a href="">Coverage</a> <a href="hotspots.html">Hotspots</a></p> -->
 	        </div>
 	      </div>
@@ -32,7 +32,7 @@
 	        <div class="holder">
 	          <ul class="summary">
 	            <li>
-	              <span class="coverageData">5</span>
+	              <span class="coverageData">2</span>
 	              <p>hits</p>
 	            </li>
 	            <li>
@@ -40,7 +40,7 @@
 	              <p>misses</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">5</span>
+	              <span class="coverageData">2</span>
 	              <p>SLoC</p>
 	            </li>
 	            <li>
@@ -60,15 +60,11 @@
 					<script type="syntaxhighlighter" class="brush: js; class-name: 'rounded'"><![CDATA[
 "use strict";
 
-var Includer = require('../includer'),
-    instrument = module.exports = function instrument() {
-        Includer.call(this);
+require("../../../..")(module);
 
-        Includer.prototype.replace.apply(this, ["/lib/", "/lib-cov/"]);
-    };
-
-instrument.prototype = new Includer();
-instrument.constructor = instrument;
+module.exports = {
+    concurrent: require("./concurrent")
+};
  ]]></script>
 				</section>
 			</section>
@@ -100,17 +96,9 @@ instrument.constructor = instrument;
           
             $('td.covgutter').append('<div class="line number6 index5 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number7 index6 alt2">&nbsp;129&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number7 index6 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number8 index7 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number9 index8 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number10 index9 alt2">&nbsp;129&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number11 index10 alt2">&nbsp;129&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number12 index11 alt2">&nbsp;&nbsp;</div>');
           
 
           var highlightStartLineNumber = getUrlVars()['highlightStartLineNumber'];
@@ -124,7 +112,7 @@ instrument.constructor = instrument;
             }
           }
 
-          var green = $.parseJSON('["3","5","7","10","11"]');
+          var green = $.parseJSON('["3","5"]');
           $.each(green, function (index, value) {
             $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
             var bgColor = 'rgba(121, 252, 121, 0.62)';

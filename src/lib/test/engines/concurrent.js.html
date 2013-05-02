@@ -32,23 +32,23 @@
 	        <div class="holder">
 	          <ul class="summary">
 	            <li>
-	              <span class="coverageData">34</span>
+	              <span class="coverageData">4</span>
 	              <p>hits</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">13</span>
+	              <span class="coverageData">41</span>
 	              <p>misses</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">47</span>
+	              <span class="coverageData">45</span>
 	              <p>SLoC</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">72.3%</span>
+	              <span class="coverageData">8.9%</span>
 	              <p>coverage </p>
 	            </li>
 	            <li>
-	              <svg width="45" height="45">  <defs>   <filter id="dropshadow" width="17.5" height="17.5">    <feGaussianBlur stdDeviation="4"/>   </filter>  </defs>  <path d="M22.5,22.5 L22.5,5 A17.5,17.5 0 1,1 5.244025968923264,25.41227750030889 z"    style="fill:#58E43E;    fill-opacity: 1;"/>  <path d="M22.5,22.5 L5.244025968923264,25.41227750030889 A17.5,17.5  0 0,1 22.5,5 z"    style="fill:#FF2E2E;    fill-opacity: 1;"/></svg>
+	              <svg width="45" height="45">  <defs>   <filter id="dropshadow" width="17.5" height="17.5">    <feGaussianBlur stdDeviation="4"/>   </filter>  </defs>  <path d="M22.5,22.5 L22.5,5 A17.5,17.5 0 0,1 31.774030193953315,7.6594351872429645 z"    style="fill:#58E43E;    fill-opacity: 1;"/>  <path d="M22.5,22.5 L31.774030193953315,7.6594351872429645 A17.5,17.5  0 1,1 22.5,5 z"    style="fill:#FF2E2E;    fill-opacity: 1;"/></svg>
 	            </li>
 	          </ul>
 	        </div>
@@ -69,10 +69,9 @@ var microtime = require("microtime-x"),
     };
 
 concurrent.prototype = {
-    run: function (test) {
+    run: function (test, methods) {
         var self = this,
-            methods = test.getMethods(),
-            remain = methods.length,
+            remain = 0,
             method,
             testCode,
             proc;
@@ -81,52 +80,26 @@ concurrent.prototype = {
             this.dispatcher.emit("testStart", test);
         }
 
+        methods = test.getMethods(methods || []);
+        remain = methods.length;
+
         while(methods.length > 0) {
             method = methods.shift();
-            testCode = "var atoum = require(\"" + require.resolve("../../..") + "\")(module),\n";
 
-            if(test.coverage === true) {
-                testCode = testCode
-                    .concat("    Includer = require(\"" + require.resolve("../../includer/instrument") + "\"),\n")
-                    .concat("    covershot = require(\"" + require.resolve("covershot") + "\"),\n")
-                ;
-            } else {
-                testCode = testCode
-                    .concat("    Includer = require(\"" + require.resolve("../../includer") + "\"),\n")
-                ;
+            testCode = "var atoum = require(\"" + require.resolve("../../..") + "\")(module),\n"
+                .concat("    Script = require(\"" + require.resolve("../../scripts/concurrent") + "\"),\n")
+                .concat("    Instrument = require(\"" + require.resolve("../../includer/instrument") + "\")\n")
+                .concat("    script = new Script(\"" + test.class + "\", [ \"" + method.name + "\" ]);\n")
+                .concat("\n");
+
+            if(test.coverage) {
+                testCode = testCode.concat("atoum.includer = new Instrument();\n");
             }
 
             testCode = testCode
-                .concat("    includer = new Includer().register(module),\n")
-                .concat("    generator = new (require(\"").concat(require.resolve("../../asserter/generator")).concat("\"))(),\n")
-                .concat("    Test = require(\"").concat(require.resolve("../../test")).concat("\"),\n")
-                .concat("    method = require(\"").concat(require.resolve("../../test/method")).concat("\"),\n")
-                .concat("    test = generator.injectInto(new Test(\"").concat(test.class).concat("\")),\n")
-                .concat("    methods = require(test.class),\n")
-                .concat("    testcase = new method(\"").concat(method.name).concat("\", test, methods[\"").concat(method.name).concat("\"]),\n")
-                .concat("    score = testcase.run().score,")
-                .concat("    cache = [];")
+                .concat("script.run(process);\n")
                 .concat("\n")
-                .concat("score.assertions = generator.assertionsCount;\n")
-                .concat("process.stdout.write(JSON.stringify(")
-                .concat("\t{ name: \"").concat(method.name).concat("\", score: score },\n")
-                .concat("\tfunction(key, value) {\n")
-                .concat("\t\tif (typeof value === \"object\" && value !== null) {\n")
-                .concat("\t\t\tif (cache.indexOf(value) !== -1) {")
-                .concat("\t\t\t\treturn;")
-                .concat("\t\t\t}")
-                .concat("\t\t\tcache.push(value);\n")
-                .concat("\t\t}")
-                .concat("\t\treturn value;\n")
-                .concat("\t}\n")
-                .concat("));\n")
-            ;
-
-            if(test.coverage === true) {
-                testCode = testCode.concat("covershot.writeCoverage();\n");
-            }
-
-            testCode = testCode.concat("process.exit();\n");
+                .concat("process.exit();\n");
 
             try {
                 if(this.dispatcher) {
@@ -191,7 +164,7 @@ concurrent.prototype = {
 			</section>
 		</div>
 		<footer> 
-			<p>Report generated by <a>Covershot</a> on Fri Apr 19 2013 00:21:27 GMT+0200 (CEST).</p> 
+			<p>Report generated by <a>Covershot</a> on Fri May 03 2013 00:46:21 GMT+0200 (CEST).</p> 
 		</footer>
 		<script type="text/javascript">
       function getUrlVars() {
@@ -209,27 +182,27 @@ concurrent.prototype = {
           
             $('td.covgutter').append('<div class="line number2 index1 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number3 index2 alt2">&nbsp;1&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number3 index2 alt2">&nbsp;129&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number4 index3 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number5 index4 alt2">&nbsp;1&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number5 index4 alt2">&nbsp;129&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number6 index5 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number7 index6 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number8 index7 alt2">&nbsp;1&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number8 index7 alt2">&nbsp;149&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number9 index8 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number10 index9 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number11 index10 alt2">&nbsp;1&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number11 index10 alt2">&nbsp;129&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number12 index11 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number13 index12 alt2">&nbsp;40&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number13 index12 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number14 index13 alt2">&nbsp;&nbsp;</div>');
           
@@ -241,27 +214,27 @@ concurrent.prototype = {
           
             $('td.covgutter').append('<div class="line number18 index17 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number19 index18 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number19 index18 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number20 index19 alt2">&nbsp;40&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number20 index19 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number21 index20 alt2">&nbsp;40&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number21 index20 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number22 index21 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number23 index22 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number23 index22 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number24 index23 alt2">&nbsp;40&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number24 index23 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number25 index24 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number25 index24 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number26 index25 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number26 index25 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number27 index26 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number27 index26 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number28 index27 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number28 index27 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number29 index28 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number29 index28 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number30 index29 alt2">&nbsp;&nbsp;</div>');
           
@@ -271,17 +244,17 @@ concurrent.prototype = {
           
             $('td.covgutter').append('<div class="line number33 index32 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number34 index33 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number34 index33 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number35 index34 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number35 index34 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number36 index35 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number36 index35 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number37 index36 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number38 index37 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number39 index38 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number39 index38 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number40 index39 alt2">&nbsp;&nbsp;</div>');
           
@@ -291,17 +264,17 @@ concurrent.prototype = {
           
             $('td.covgutter').append('<div class="line number43 index42 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number44 index43 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number44 index43 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number45 index44 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number45 index44 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number46 index45 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number46 index45 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number47 index46 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number48 index47 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number49 index48 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number49 index48 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number50 index49 alt2">&nbsp;&nbsp;</div>');
           
@@ -309,89 +282,89 @@ concurrent.prototype = {
           
             $('td.covgutter').append('<div class="line number52 index51 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number53 index52 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number53 index52 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number54 index53 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number54 index53 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number55 index54 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number55 index54 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number56 index55 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number57 index56 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number57 index56 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number58 index57 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number59 index58 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number59 index58 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number60 index59 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number60 index59 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number61 index60 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number62 index61 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number62 index61 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number63 index62 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number63 index62 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number64 index63 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number65 index64 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number65 index64 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number66 index65 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number66 index65 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number67 index66 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number68 index67 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number68 index67 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number69 index68 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number69 index68 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number70 index69 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number71 index70 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number71 index70 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number72 index71 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number72 index71 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number73 index72 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number73 index72 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number74 index73 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number75 index74 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number75 index74 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number76 index75 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number76 index75 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number77 index76 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number78 index77 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number79 index78 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number79 index78 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number80 index79 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number80 index79 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number81 index80 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number82 index81 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number83 index82 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number83 index82 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number84 index83 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number84 index83 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number85 index84 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number86 index85 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number86 index85 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number87 index86 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number87 index86 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number88 index87 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number88 index87 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number89 index88 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number89 index88 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number90 index89 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number90 index89 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number91 index90 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number91 index90 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number92 index91 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number93 index92 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number93 index92 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number94 index93 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number94 index93 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number95 index94 alt2">&nbsp;0&nbsp;</div>');
           
@@ -399,69 +372,15 @@ concurrent.prototype = {
           
             $('td.covgutter').append('<div class="line number97 index96 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number98 index97 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number98 index97 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number99 index98 alt2">&nbsp;106&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number99 index98 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number100 index99 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number101 index100 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number102 index101 alt2">&nbsp;106&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number103 index102 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number104 index103 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number105 index104 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number106 index105 alt2">&nbsp;106&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number107 index106 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number108 index107 alt2">&nbsp;106&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number109 index108 alt2">&nbsp;40&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number110 index109 alt2">&nbsp;40&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number111 index110 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number112 index111 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number113 index112 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number114 index113 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number115 index114 alt2">&nbsp;106&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number116 index115 alt2">&nbsp;106&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number117 index116 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number118 index117 alt2">&nbsp;0&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number119 index118 alt2">&nbsp;0&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number120 index119 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number121 index120 alt2">&nbsp;0&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number122 index121 alt2">&nbsp;0&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number123 index122 alt2">&nbsp;0&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number124 index123 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number125 index124 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number126 index125 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number127 index126 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number128 index127 alt2">&nbsp;&nbsp;</div>');
-          
-            $('td.covgutter').append('<div class="line number129 index128 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number102 index101 alt2">&nbsp;&nbsp;</div>');
           
 
           var highlightStartLineNumber = getUrlVars()['highlightStartLineNumber'];
@@ -475,7 +394,7 @@ concurrent.prototype = {
             }
           }
 
-          var green = $.parseJSON('["3","5","8","11","13","20","21","24","25","26","28","29","39","65","66","69","71","72","73","76","80","86","87","89","90","98","99","102","106","108","109","110","115","116"]');
+          var green = $.parseJSON('["3","5","8","11"]');
           $.each(green, function (index, value) {
             $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
             var bgColor = 'rgba(121, 252, 121, 0.62)';
@@ -487,7 +406,7 @@ concurrent.prototype = {
             $('td.code div.container div.number' + value).css('cssText', 'background-color: ' + bgColor + ' !important');
           });
 
-          var red = $.parseJSON('["34","81","82","84","92","93","95","96","118","119","121","122","123"]');
+          var red = $.parseJSON('["13","19","20","23","24","26","27","29","35","36","39","44","45","46","49","53","54","55","57","59","60","62","63","65","66","68","69","71","72","75","79","81","82","83","88","89","91","92","94","95","96"]');
           $.each(red, function (index, value) {
             $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
             var bgColor = 'rgba(255, 0, 0, 0.32)';

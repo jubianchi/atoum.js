@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+  <!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Covershot: Source: lib/scripts/cli.js</title>
+		<link rel="stylesheet" href="../../../css/normalize.css">
+		<link rel="stylesheet" href="../../../css/covershot.css">
+
+		<script type="text/javascript" src="../../../scripts/jquery-1.7.1.min.js"></script>
+
+		<script type="text/javascript" src="../../../scripts/shCore.js"></script>
+		<script type="text/javascript" src="../../../scripts/shBrushJScript.js"></script>
+		<link href="../../../css/shCore.css" rel="stylesheet" type="text/css" />
+		<link href="../../../css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+	    <script>
+	      window.onscroll = function () {
+	        document.querySelectorAll('#topContainer')[0].className = (window.scrollY !== 0) ? 'shadowed' : '';
+	      };
+	    </script>
+	</head>
+	<body>
+	    <div id="topContainer">
+	      <div id="topBar">
+	        <div id="topBarContent">
+	          <p class="left"><a href="../../../index.html">Covershot</a></p> 
+	          <!-- <p class="right"><a href="">Coverage</a> <a href="hotspots.html">Hotspots</a></p> -->
+	        </div>
+	      </div>
+	      <div id="bottomBar">
+	        <div class="holder">
+	          <ul class="summary">
+	            <li>
+	              <span class="coverageData">34</span>
+	              <p>hits</p>
+	            </li>
+	            <li>
+	              <span class="coverageData">25</span>
+	              <p>misses</p>
+	            </li>
+	            <li>
+	              <span class="coverageData">59</span>
+	              <p>SLoC</p>
+	            </li>
+	            <li>
+	              <span class="coverageData">57.6%</span>
+	              <p>coverage </p>
+	            </li>
+	            <li>
+	              <svg width="45" height="45">  <defs>   <filter id="dropshadow" width="17.5" height="17.5">    <feGaussianBlur stdDeviation="4"/>   </filter>  </defs>  <path d="M22.5,22.5 L22.5,5 A17.5,17.5 0 1,1 14.431820108355446,38.029149147202574 z"    style="fill:#58E43E;    fill-opacity: 1;"/>  <path d="M22.5,22.5 L14.431820108355446,38.029149147202574 A17.5,17.5  0 0,1 22.5,5 z"    style="fill:#FF2E2E;    fill-opacity: 1;"/></svg>
+	            </li>
+	          </ul>
+	        </div>
+	      </div>
+	    </div>
+		<div id="bodyWrapper">
+			<section id="bod">
+				<section id="mainContent">
+					<script type="syntaxhighlighter" class="brush: js; class-name: 'rounded'"><![CDATA[
+"use strict";
+
+require("../..")(module)
+
+var extend = require('node.extend'),
+    util = require("util"),
+    fs = require("fs"),
+    color = require("cli-color"),
+    Script = require('../script'),
+    cli = module.exports = function cli(console) {
+        Script.call(this);
+
+        this.console = (console || require("optimist"));
+        this.definition = {};
+
+        this
+            .addOption("help", {
+                alias : "h",
+                description: "Display this help message",
+                type: "boolean"
+            })
+            .addOption("directory", {
+                alias: "d",
+                description: "Test directory",
+                default: [],
+                type: "string",
+                check: function(args) {
+                    if(typeof args.directory === 'string') {
+                        args.directory = [ args.directory ];
+                    }
+
+                    args.directory.forEach(function(directory) {
+                        if(fs.existsSync(directory) === false) {
+                            throw new Error(util.format(color.red("Directory '%s' does not exist"), directory));
+                        }
+                    });
+                }
+            })
+            .addOption("file", {
+                alias: "f",
+                description: "Test file",
+                default: [],
+                type: "string",
+                check: function(args) {
+                    if(typeof args.file === 'string') {
+                        args.file = [ args.file ];
+                    }
+
+                    args.file.forEach(function(file) {
+                        if(fs.existsSync(file) === false) {
+                            throw new Error(util.format(color.red("File '%s' does not exist"), file));
+                        }
+                    });
+                }
+            })
+            .addOption("xunit", {
+                description: "Enable xUnit report",
+                type: "boolean",
+                default: false
+            })
+            .addOption("xunit-output", {
+                description: "Path to xUnit report file",
+                default: "xunit.xml",
+                type: "string"
+            })
+            .addOption("coverage", {
+                description: "Enable code coverage report",
+                type: "boolean",
+                default: false
+            })
+            .addOption("coverage-dir", {
+                description: "Path to sources to instrument",
+                default: "lib",
+                type: "string",
+                check: function(args) {
+                    if(args.coverage) {
+                        if(typeof args["coverage-dir"] !== "undefined" && fs.existsSync(args["coverage-dir"]) === false) {
+                            throw new Error(util.format(color.red("Directory '%s' does not exist"), args["coverage-dir"]));
+                        }
+                    }
+                }
+            })
+            .addOption("inline", {
+                description: "Use inline engine instead of concurrent",
+                boolean: true
+            })
+        ;
+    };
+
+cli.prototype = new Script();
+cli.prototype.constructor = cli;
+cli.prototype = extend(
+    cli.prototype,
+    {
+        run: function(process) {
+            var argv = this.argv();
+
+            if(argv.help) {
+                this.showHelp();
+
+                return 0
+            }
+
+            if(argv.inline) {
+                this.useInlineEngine()
+            } else {
+                this.useConcurrentEngine();
+            }
+
+            if(argv.xunit) {
+                this.enableXunit(argv['xunit-output'])
+            }
+
+            if(argv.coverage) {
+                this.enableCoverage(argv['coverage-dir'])
+            }
+
+            if(typeof argv.directory === "string") {
+                argv.directory = [ argv.directory ];
+            }
+            argv.directory.forEach(function(directory) { this.addDirectory(directory); }, this);
+
+            if(typeof argv.file === "string") {
+                argv.file = [ argv.file ];
+            }
+            argv.file.forEach(function(file) { this.addFile(file); }, this);
+
+            return Script.prototype.run.call(this, process);
+        },
+
+        showHelp: function() {
+            this.argv();
+
+            this.console.showHelp();
+
+            return this;
+        },
+
+        argv: function() {
+            var option,
+                checks = [];
+
+            for(option in this.definition) {
+                if(this.definition.hasOwnProperty(option)) {
+                    this.console = this.console.options(option, this.definition[option]);
+
+                    if(this.definition[option].check) {
+                        checks.push(this.definition[option].check);
+                    }
+                }
+            }
+
+            this.console = this.console.check(function(args) {
+                checks.forEach(function(check) {
+                    check(args);
+                });
+            });
+
+            return this.console.argv;
+        },
+
+        addOption: function(name, definition) {
+            this.definition[name] = definition;
+
+            return this;
+        },
+
+        getOption: function(name) {
+            return this.definition[name];
+        },
+
+        setReports: function (runner, process) {
+            var Cli = require("../reports/cli");
+
+            runner.addReport(new Cli(process.stdout));
+
+            return Script.prototype.setReports.apply(this, [ runner, process ]);
+        }
+    }
+);
+ ]]></script>
+				</section>
+			</section>
+		</div>
+		<footer> 
+			<p>Report generated by <a>Covershot</a> on Fri May 03 2013 00:46:21 GMT+0200 (CEST).</p> 
+		</footer>
+		<script type="text/javascript">
+      function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&#]+)=([^&#]*)/gi, function (m, key, value) {
+          vars[key] = value;
+        });
+        return vars;
+      }
+
+      $(document).ready(function () {
+        SyntaxHighlighter.all({'cb': function () {
+          
+            $('td.covgutter').append('<div class="line number1 index0 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number2 index1 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number3 index2 alt2">&nbsp;4&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number4 index3 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number5 index4 alt2">&nbsp;4&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number6 index5 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number7 index6 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number8 index7 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number9 index8 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number10 index9 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number11 index10 alt2">&nbsp;10&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number12 index11 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number13 index12 alt2">&nbsp;10&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number14 index13 alt2">&nbsp;10&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number15 index14 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number16 index15 alt2">&nbsp;10&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number17 index16 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number18 index17 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number19 index18 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number20 index19 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number21 index20 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number22 index21 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number23 index22 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number24 index23 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number25 index24 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number26 index25 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number27 index26 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number28 index27 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number29 index28 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number30 index29 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number31 index30 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number32 index31 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number33 index32 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number34 index33 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number35 index34 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number36 index35 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number37 index36 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number38 index37 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number39 index38 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number40 index39 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number41 index40 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number42 index41 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number43 index42 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number44 index43 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number45 index44 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number46 index45 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number47 index46 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number48 index47 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number49 index48 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number50 index49 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number51 index50 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number52 index51 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number53 index52 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number54 index53 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number55 index54 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number56 index55 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number57 index56 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number58 index57 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number59 index58 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number60 index59 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number61 index60 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number62 index61 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number63 index62 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number64 index63 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number65 index64 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number66 index65 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number67 index66 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number68 index67 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number69 index68 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number70 index69 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number71 index70 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number72 index71 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number73 index72 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number74 index73 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number75 index74 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number76 index75 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number77 index76 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number78 index77 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number79 index78 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number80 index79 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number81 index80 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number82 index81 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number83 index82 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number84 index83 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number85 index84 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number86 index85 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number87 index86 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number88 index87 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number89 index88 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number90 index89 alt2">&nbsp;4&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number91 index90 alt2">&nbsp;4&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number92 index91 alt2">&nbsp;4&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number93 index92 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number94 index93 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number95 index94 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number96 index95 alt2">&nbsp;9&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number97 index96 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number98 index97 alt2">&nbsp;9&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number99 index98 alt2">&nbsp;1&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number100 index99 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number101 index100 alt2">&nbsp;1&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number102 index101 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number103 index102 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number104 index103 alt2">&nbsp;8&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number105 index104 alt2">&nbsp;3&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number106 index105 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number107 index106 alt2">&nbsp;5&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number108 index107 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number109 index108 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number110 index109 alt2">&nbsp;8&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number111 index110 alt2">&nbsp;2&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number112 index111 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number113 index112 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number114 index113 alt2">&nbsp;8&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number115 index114 alt2">&nbsp;2&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number116 index115 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number117 index116 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number118 index117 alt2">&nbsp;8&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number119 index118 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number120 index119 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number121 index120 alt2">&nbsp;10&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number122 index121 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number123 index122 alt2">&nbsp;8&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number124 index123 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number125 index124 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number126 index125 alt2">&nbsp;10&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number127 index126 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number128 index127 alt2">&nbsp;8&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number129 index128 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number130 index129 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number131 index130 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number132 index131 alt2">&nbsp;1&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number133 index132 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number134 index133 alt2">&nbsp;1&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number135 index134 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number136 index135 alt2">&nbsp;1&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number137 index136 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number138 index137 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number139 index138 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number140 index139 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number141 index140 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number142 index141 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number143 index142 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number144 index143 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number145 index144 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number146 index145 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number147 index146 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number148 index147 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number149 index148 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number150 index149 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number151 index150 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number152 index151 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number153 index152 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number154 index153 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number155 index154 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number156 index155 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number157 index156 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number158 index157 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number159 index158 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number160 index159 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number161 index160 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number162 index161 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number163 index162 alt2">&nbsp;81&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number164 index163 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number165 index164 alt2">&nbsp;81&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number166 index165 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number167 index166 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number168 index167 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number169 index168 alt2">&nbsp;1&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number170 index169 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number171 index170 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number172 index171 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number173 index172 alt2">&nbsp;8&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number174 index173 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number175 index174 alt2">&nbsp;8&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number176 index175 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number177 index176 alt2">&nbsp;8&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number178 index177 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number179 index178 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number180 index179 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number181 index180 alt2">&nbsp;&nbsp;</div>');
+          
+
+          var highlightStartLineNumber = getUrlVars()['highlightStartLineNumber'];
+          var highlightEndLineNumber = getUrlVars()['highlightEndLineNumber'];
+          if (highlightStartLineNumber && highlightEndLineNumber) {
+            var bgColor = 'rgba(255, 255, 100, 0.62)';
+            for (var line = highlightStartLineNumber; line <= highlightEndLineNumber; line++) {
+              $('td.gutter div.number' + line).css('cssText', 'background-color: ' + bgColor + ' !important');
+              $('td.covgutter div.number' + line).css('cssText', 'background-color: ' + bgColor + ' !important');
+              $('td.code div.container div.number' + line).css('cssText', 'background-color: ' + bgColor + ' !important');
+            }
+          }
+
+          var green = $.parseJSON('["3","5","11","13","14","16","90","91","92","96","98","99","101","104","105","107","110","111","114","115","118","121","123","126","128","132","134","136","163","165","169","173","175","177"]');
+          $.each(green, function (index, value) {
+            $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
+            var bgColor = 'rgba(121, 252, 121, 0.62)';
+            if (value >= highlightStartLineNumber && value <= highlightEndLineNumber) {
+              bgColor = 'rgba(255, 255, 100, 0.62)';
+            }
+            $('td.gutter div.number' + value).css('cssText', 'background-color: ' + bgColor + ' !important');
+            $('td.covgutter div.number' + value).css('cssText', 'background-color: ' + bgColor + ' !important');
+            $('td.code div.container div.number' + value).css('cssText', 'background-color: ' + bgColor + ' !important');
+          });
+
+          var red = $.parseJSON('["28","29","32","33","34","45","46","49","50","51","76","77","78","119","124","140","143","144","145","147","148","153","154","155","159"]');
+          $.each(red, function (index, value) {
+            $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
+            var bgColor = 'rgba(255, 0, 0, 0.32)';
+            if (value >= highlightStartLineNumber && value <= highlightEndLineNumber) {
+              bgColor = 'rgba(255, 255, 100, 0.62)';
+            }
+            $('td.gutter div.number' + value).css('cssText', 'background-color: ' + bgColor + ' !important');
+            $('td.covgutter div.number' + value).css('cssText', 'background-color: ' + bgColor + ' !important; font-weight: bold !important');
+            $('td.code div.container div.number' + value).css('cssText', 'background-color: ' + bgColor + ' !important');
+          });
+        }});
+      });
+		</script>
+	</body>
+</html>
+
+</html>
