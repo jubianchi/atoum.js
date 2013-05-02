@@ -1,5 +1,6 @@
 var atoum = require('../..')(module),
     score = require('../../lib/test/method/score'),
+    Coverage = require('../../lib/test/score/coverage'),
     testedClass = require('../../lib/test/score'),
     unit = module.exports = {
         testClass: function() {
@@ -14,6 +15,7 @@ var atoum = require('../..')(module),
                 .number(object.duration).isEqualTo(0)
                 .number(object.failedMethods).isEqualTo(0)
                 .bool(object.passed).isTrue()
+                .object(object.coverage).isInstanceOf(Coverage)
             ;
         },
 
