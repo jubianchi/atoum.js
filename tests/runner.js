@@ -68,5 +68,16 @@ var atoum = require('..')(module),
                 .then()
                     .undefined(object.getCurrentTestMethod())
             ;
+        },
+
+        testSetCoverage: function() {
+            var object;
+
+            this
+                .if(object = new testedClass())
+                .then()
+                    .object(object.setCoverage(true)).isIdenticalTo(object)
+                    .bool(object.coverage).isTrue()
+            ;
         }
     };
