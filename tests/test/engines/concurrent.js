@@ -35,15 +35,7 @@ var callback = require('../../../lib/test/callback'),
                     exec: function(cmd, opts, cb) {
                         cb && cb(
                             false,
-                            JSON.stringify(
-                                { score: method.score },
-                                function (key, value) {
-                                    if (typeof value == "undefined") {
-                                        return "";
-                                    }
-                                    return value;
-                                }
-                            ),
+                            JSON.stringify({ score: method.score }),
                             ''
                         );
 
@@ -67,15 +59,7 @@ var callback = require('../../../lib/test/callback'),
                     exec: function(cmd, opts, cb) {
                         cb(
                             false,
-                            JSON.stringify(
-                                { score: method.score.addFailure(new Error()) },
-                                function (key, value) {
-                                    if (typeof value == "undefined") {
-                                        return "";
-                                    }
-                                    return value;
-                                }
-                            ),
+                            JSON.stringify({ score: method.score.addFailure(new Error()) }),
                             ''
                         );
 
@@ -96,16 +80,8 @@ var callback = require('../../../lib/test/callback'),
                 .and(child = {
                     exec: function(cmd, opts, cb) {
                         cb && cb(
-                            new Error(),
-                            JSON.stringify(
-                                { score: method.score },
-                                function (key, value) {
-                                    if (typeof value == "undefined") {
-                                        return "";
-                                    }
-                                    return value;
-                                }
-                            ),
+                            false,
+                            JSON.stringify({ score: method.score.addException(new Error()) }),
                             ''
                         );
 
@@ -127,15 +103,7 @@ var callback = require('../../../lib/test/callback'),
                     exec: function(cmd, opts, cb) {
                         cb && cb(
                             false,
-                            JSON.stringify(
-                                { score: method.score.addSkipped(new Error()) },
-                                function (key, value) {
-                                    if (typeof value == "undefined") {
-                                        return "";
-                                    }
-                                    return value;
-                                }
-                            ),
+                            JSON.stringify({ score: method.score.addSkipped(new Error()) }),
                             ''
                         );
 
@@ -156,6 +124,24 @@ var callback = require('../../../lib/test/callback'),
                 .and(child = {
                     exec: function(cmd, opts, cb) {
                         throw new Error()
+                    }
+                })
+                .and(object = new testedClass(dispatcher, child))
+                .then()
+                    .void(object.run(test, child))
+                    .callback(dispatcher.emit).wasCalled()
+                    .withArguments('testStart', test)
+                    .withArguments('testMethodStart', method)
+                    .withArguments('testError', test)
+                    .withArguments('testStop', test)
+                .if(dispatcher = { emit: callback() })
+                .and(method = new Method('method', test, callback()))
+                .and(test.getMethods = function() { return [ method ]; })
+                .and(child = {
+                    exec: function(cmd, opts, cb) {
+                        cb && cb(new Error(), '', '');
+
+                        return { stdin: { write: function() {}, end: function() {} } };
                     }
                 })
                 .and(object = new testedClass(dispatcher, child))
