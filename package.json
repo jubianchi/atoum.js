@@ -16,7 +16,8 @@
         "cli-color": "0.2.2",
         "diff": "1.0.4",
         "covershot": "0.1.1",
-        "jscoverage": "0.3.6"
+        "jscoverage": "0.3.6",
+        "localize": "0.4.4"
     },
     "engine": "node >= 0.10.0",
     "scripts": {
