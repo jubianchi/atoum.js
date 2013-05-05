@@ -1,0 +1,17 @@
+{
+    "$[1] is not callable": {
+        "fr": "$[1] n'est pas callable"
+    },
+
+    "There was no error": {
+        "fr": "Il n'y a pas eu d'erreur"
+    },
+
+    "Error name '$[1]' is not equal to '$[2]'": {
+        "fr": "Le nom de l'erreur '$[1]' n'est pas égal à '$[2]'"
+    },
+
+    "Error message '$[1]' is not equal to '$[2]'": {
+        "fr": "Le message d'erreur '$[1]' n'est pas égal à '$[2]'"
+    }
+}

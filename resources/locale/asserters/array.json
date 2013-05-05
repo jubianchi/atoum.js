@@ -1,0 +1,17 @@
+{
+    "$[1] is not an array": {
+        "fr": "$[2] n'est pas un tableau"
+    },
+
+    "Array($[1]) has not length $[2]": {
+        "fr": "Array($[1]) n'a pas la taille de $[2]"
+    },
+
+    "$[1] is not equal to $[2]": {
+        "fr": "$[1] n'es tpas égal à $[2]"
+    },
+
+    "$[1] is equal to $[2]": {
+        "fr": "$[1] est égal à $[2]"
+    }
+}

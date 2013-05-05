@@ -1,0 +1,29 @@
+{
+    "$[1] is not an object": {
+        "fr": "$[1] n'est pas un objet"
+    },
+
+    "[object $[1]] is not an instance of $[2]": {
+        "fr": "[object $[1]] n'est pas une instance de $[2]"
+    },
+
+    "[object $[1]] is an instance of $[2]": {
+        "fr": "[object $[1]] est une instance de $[2]"
+    },
+
+    "[object $[1]] does not have member $[1]": {
+        "fr": "[object $[1]] n'a pas de membre $[1]"
+    },
+
+    "[object $[1]] does not have method $[2]": {
+        "fr": "[object $[1]] n'a pas de méthode $[2]"
+    },
+
+    "Object($[1]) has not length $[2]": {
+        "fr": "Object($[1]) n'a pas une taille de $[2]"
+    },
+
+    "$[1] is not equal to $[2]": {
+        "fr": "$[1] n'est pas égal à $[2]"
+    }
+}

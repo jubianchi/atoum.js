@@ -1,0 +1,17 @@
+{
+    "$[1] is not a string": {
+        "fr": "$[1] n'est pas une chaîne de caractère"
+    },
+
+    "$[1] has not length $[2]": {
+        "fr": "$[1] n'a pas une longueur de $[2]"
+    },
+
+    "String $[1] does not contain $[2]": {
+        "fr": "La chaîne $[1] ne contient pas $[2]"
+    },
+
+    "String $[1] is not equal to $[2]": {
+        "fr": "La chaîne $[1] n'est pas égal à $[2]"
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "Callback was not called": {
+        "fr": "Le callback n'a pas été appelé"
+    },
+
+    "Callback was called": {
+        "fr": "Le callback a été appelé"
+    },
+
+    "Callback was not called without argument: $[1]": {
+        "fr": "Le callback n'a pas été appelé sans argument : $[1]"
+    },
+
+    "Callback was not called with arguments $[1]: $[2]": {
+        "fr": "Le callback n'a pas été appelé avec les argumenta $[1] : $[2]"
+    }
+}

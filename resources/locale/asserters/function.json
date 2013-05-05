@@ -1,0 +1,13 @@
+{
+    "$[1] is not a function": {
+        "fr": "$[1] n'est pas une fonction"
+    },
+
+    "$[1] is not identical to $[2]": {
+        "fr": "$[1] n'est pas identique à $[2]"
+    },
+
+    "$[1] is not equal to $[2]": {
+        "fr": "$[1] n'est pas égal à $[2]"
+    }
+}
