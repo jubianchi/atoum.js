@@ -1,0 +1,49 @@
+{
+    "Success ($[1])!": {
+        "fr": "Succès ($[1]) !"
+    },
+
+    "Failure ($[1])!": {
+        "fr": "Echec ($[1]) !"
+    },
+
+    "$[1] test": {
+        "fr": "$[1] test"
+    },
+
+    "$[1] tests": {
+        "fr": "$[1] tests"
+    },
+
+    "$[1]/$[2] test": {
+        "fr": "$[1]/$[2] test"
+    },
+
+    "$[1]/$[2] tests": {
+        "fr": "$[1]/$[2] tests"
+    },
+
+    "$[1] method": {
+        "fr": "$[1] méthode"
+    },
+
+    "$[1] methods": {
+        "fr": "$[1] méthodes"
+    },
+
+    "$[1]/$[2] method": {
+        "fr": "$[1]/$[2] méthode"
+    },
+
+    "$[1]/$[2] methods": {
+        "fr": "$[1]/$[2] méthodes"
+    },
+
+    "$[1] assertion": {
+        "fr": "$[1] assertion"
+    },
+
+    "$[1] assertions": {
+        "fr": "$[1] assertions"
+    }
+}

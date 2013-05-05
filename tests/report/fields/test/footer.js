@@ -21,14 +21,25 @@ var util = require('util'),
                 .if(run = new score())
                 .and(object = new testedClass())
                 .and(classname = Math.random().toString(36).substring(7))
-                .and(run = new score())
                 .and(object.value = [ { 'score': run, 'class': classname } ])
                 .then()
                     .string(object.toString()).isEqualTo(
                         util.format(
-                            ']\n=> Test duration: %d second(s).\n',
+                            ']\n=> Test duration: %d second\n',
                             Math.round(run.duration * 10000) / 10000
                         )
+                            .concat(util.format(
+                                '=> Memore usage: %s\n',
+                                util.inspect(run.usage.format('KB', 4).stat)
+                            ))
+                    )
+                .if(run.duration = 5)
+                .then()
+                    .string(object.toString()).isEqualTo(
+                        util.format(
+                                ']\n=> Test duration: %d seconds\n',
+                                Math.round(run.duration * 10000) / 10000
+                            )
                             .concat(util.format(
                                 '=> Memore usage: %s\n',
                                 util.inspect(run.usage.format('KB', 4).stat)

@@ -24,15 +24,15 @@ var util = require('util'),
                 .then()
                     .string(object.toString()).isEqualTo(
                         util.format(
-                            '\n> ' + color.bold('Total test duration') + ': %d second(s)\n',
+                            '\n> ' + color.bold('Total test duration:') + ' %d second\n',
                             Math.round(run.duration * 10000) / 10000
                         )
                             .concat(util.format(
-                                '> ' + color.bold('Total test memory usage') + ': %s\n',
+                                '> ' + color.bold('Total test memory usage:') + ' %s\n',
                                 util.inspect(run.usage.format('KB', 4).stat)
                             ))
                             .concat(util.format(
-                                '> ' + color.bold('Total running duration') + ': %d second(s)\n',
+                                '> ' + color.bold('Total running duration:') + ' %d second\n',
                                 Math.round(run.runningDuration * 10000) / 10000
                             ))
                     )

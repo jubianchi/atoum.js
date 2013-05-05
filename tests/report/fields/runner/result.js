@@ -26,22 +26,55 @@ var atoum = require('../../../../')(module),
                 .then()
                     .string(object.toString()).isEqualTo(
                         util.format(
-                            color.bgGreen.white('Success (%d test(s), %d method(s), %d assertion(s)) !').concat('\n'),
+                            color.bgGreen.white('Success (%d test, %d method, %d assertion)!').concat('\n'),
                             run.passedTests,
                             run.methods,
-                            asserters.assertionsCount
+                            run.assertions
                         )
                     )
-                .if(run.passed = false)
+                .if(run.passedTests = 2)
+                .and(run.methods = 2)
+                .and(run.assertions = 2)
                 .then()
                     .string(object.toString()).isEqualTo(
                         util.format(
-                            color.bgRed.white('Failure (%d/%d test(s), %d/%d method(s), %d assertion(s)) !').concat('\n'),
+                            color.bgGreen.white('Success (%d tests, %d methods, %d assertions)!').concat('\n'),
+                            run.passedTests,
+                            run.methods,
+                            run.assertions
+                        )
+                    )
+                .if(run.passed = false)
+                .and(run.passedTests = 1)
+                .and(run.failedTests = 1)
+                .and(run.methods = 2)
+                .and(run.passedMethods = 1)
+                .and(run.assertions = 1)
+                .then()
+                    .string(object.toString()).isEqualTo(
+                        util.format(
+                            color.bgRed.white('Failure (%d/%d test, %d/%d method, %d assertion)!').concat('\n'),
                             run.passedTests,
                             run.passedTests + run.failedTests,
-                            (run.methods - run.failedMethods),
+                            run.passedMethods,
                             run.methods,
-                            asserters.assertionsCount
+                            run.assertions
+                        )
+                    )
+                .if(run.passedTests = 2)
+                .and(run.failedTests = 1)
+                .and(run.methods = 3)
+                .and(run.passedMethods = 2)
+                .and(run.assertions = 2)
+                .then()
+                    .string(object.toString()).isEqualTo(
+                        util.format(
+                            color.bgRed.white('Failure (%d/%d tests, %d/%d methods, %d assertions)!').concat('\n'),
+                            run.passedTests,
+                            run.passedTests + run.failedTests,
+                            run.passedMethods,
+                            run.methods,
+                            run.assertions
                         )
                     )
             ;
