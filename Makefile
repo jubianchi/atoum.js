@@ -36,3 +36,7 @@ doc: clean covershot analysis
 doc-commit: doc
 	@cd doc && git checkout gh-pages && git add . && git commit -m"Update documentation"
 	@git add doc && git commit -m"Update documentation" -n
+
+doc-push: doc-commit
+	@cd doc && git push origin gh-pages:gh-pages
+	@git push origin master:master
