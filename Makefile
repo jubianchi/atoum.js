@@ -17,13 +17,16 @@ lint:
 test: clean logo
 	@./bin/atoum -d tests --xunit
 
-covershot: logo
+covershot: clean logo
 	@./bin/atoum -d tests --coverage
-	@rm -rf covershot/data
 
 doc: clean covershot
 	@git submodule update
 	@rm -rf doc/*
 	@mv -f covershot/* doc
-	@rm -rf covershot
+	@rm -rf covershot doc/data
+	@cd doc && git checkout gh-pages && git add . && git commit -m"Update documentation"
+	@cd ..
+	@git add doc
+	@git commit -m"Update documentation" -n
 	@open doc/index.html 2>/dev/null || google-chrome doc/index.html 2>/dev/null
