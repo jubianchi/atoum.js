@@ -1,9 +1,9 @@
 logo:
-	@echo "                      http://atoum.org"
+	@echo "					  http://atoum.org"
 	@node_modules/.bin/picture-tube resources/images/logo.png --cols 60
 
 egg:
-	@echo "                               Happy Easter !!!"
+	@echo "							   Happy Easter !!!"
 	@node_modules/.bin/picture-tube resources/images/egg.png --cols 60
 
 clean:
@@ -22,7 +22,7 @@ covershot: clean logo
 	@./bin/atoum -d tests --coverage
 
 analysis: clean
-	@plato -r -d plato -l jshintrc.json lib
+	@plato -r -d plato -l jshintrc.json -t 'atoum.js source analysis' lib
 
 doc: clean covershot analysis
 	@git submodule update
@@ -30,9 +30,9 @@ doc: clean covershot analysis
 	@mv -f covershot/* doc
 	@rm -rf covershot doc/data
 	@mv plato doc
-	@cd doc && git checkout gh-pages && git add . && git commit -m"Update documentation"
-	@cd ..
-	@git add doc
-	@git commit -m"Update documentation" -n
 	@open doc/index.html 2>/dev/null || google-chrome doc/index.html 2>/dev/null
 	@open doc/plato/index.html 2>/dev/null || google-chrome doc/plato/index.html 2>/dev/null
+
+doc-commit: doc
+	@cd doc && git checkout gh-pages && git add . && git commit -m"Update documentation"
+	@git add doc && git commit -m"Update documentation" -n
