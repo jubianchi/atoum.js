@@ -25,7 +25,6 @@ analysis: clean
 	@plato -r -d plato -l jshintrc.json -t 'atoum.js source analysis' lib
 
 doc: clean covershot analysis
-	@git submodule update
 	@rm -rf doc/*
 	@mv -f covershot/* doc
 	@rm -rf covershot doc/data
