@@ -1,16 +1,15 @@
 logo:
-	@echo "					  http://atoum.org"
+	@echo "                     http://atoum.org"
 	@node_modules/.bin/picture-tube resources/images/logo.png --cols 60
 
 egg:
-	@echo "							   Happy Easter !!!"
+	@echo "                            Happy Easter !!!"
 	@node_modules/.bin/picture-tube resources/images/egg.png --cols 60
 
 clean:
 	@rm -rf ./lib-cov
 	@rm -rf ./covershot
 	@rm -f ./xunit.xml
-	@rm -rf ./plato
 
 lint:
 	@jshint --config jshintrc.json ./lib
@@ -22,13 +21,12 @@ covershot: clean logo
 	@./bin/atoum -d tests --coverage
 
 analysis: clean
-	@plato -r -d plato -l jshintrc.json -t 'atoum.js source analysis' lib
+	@test -d doc/plato || mkdir -p doc/plato
+	@plato -r -d doc/plato -l jshintrc.json -t 'atoum.js source analysis' lib
 
 doc: clean covershot analysis
-	@rm -rf doc/*
-	@mv -f covershot/* doc
+	@cp -rf covershot/* doc
 	@rm -rf covershot doc/data
-	@mv plato doc
 	@open doc/index.html 2>/dev/null || google-chrome doc/index.html 2>/dev/null
 	@open doc/plato/index.html 2>/dev/null || google-chrome doc/plato/index.html 2>/dev/null
 
