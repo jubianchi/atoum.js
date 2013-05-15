@@ -1,6 +1,6 @@
 var atoum = require('../..')(module),
     util = require('util'),
-    variable = require('../../lib/asserters/variable'),
+    obj = require('../../lib/asserters/object'),
     testedClass = require('../../lib/asserters/array'),
     unit = module.exports = {
         testClass: function() {
@@ -9,7 +9,7 @@ var atoum = require('../..')(module),
             this
                 .if(generator = {})
                 .then()
-                    .object(object = new testedClass(generator)).isInstanceOf(variable)
+                    .object(object = new testedClass(generator)).isInstanceOf(obj)
                     .object(object.generator).isEqualTo(generator)
             ;
         },
