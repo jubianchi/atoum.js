@@ -23,7 +23,7 @@ var atoum = require('../..')(module),
         },
 
         testRun: function() {
-            var object, name, test, method, failure, skip, exception, glob;
+            var object, name, test, method, failure, skip, exception, glob, output;
 
             this
                 .if(name = Math.random().toString(36).substring(7))
@@ -101,5 +101,12 @@ var atoum = require('../..')(module),
                             }
                         }
                     })
+                .if(output = Math.random().toString(36).substring(7))
+                .and(method = callback(function() { console.log(output); }))
+                .and(object = new testedClass(name, test, method))
+                .then()
+                    .object(object.run()).isIdenticalTo(object)
+                    .string(object.score.output).isEqualTo(output.concat("\n"))
+                    .callback(method).wasCalled().withoutArgument()
         }
     };

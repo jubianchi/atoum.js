@@ -14,6 +14,7 @@ var atoum = require('../../..')(module),
                     .undefined(object.error)
                     .undefined(object.exception)
                     .undefined(object.failure)
+                    .undefined(object.output)
                     .bool(object.passed).isTrue()
                     .number(object.duration).isEqualTo(0)
                     .object(object.usage).isInstanceOf(Usage)
@@ -70,6 +71,22 @@ var atoum = require('../../..')(module),
                     .object(object.setCoverage(coverage)).isIdenticalTo(object)
                     .callback(object.coverage.addFromStat)
                         .wasCalled().withArguments(coverage)
+            ;
+        },
+
+        testAddOutput: function() {
+            var object, output, otherOutput;
+
+            this
+                .if(object = new testedClass())
+                .and(output = Math.random().toString(36).substring(7))
+                .then()
+                    .object(object.addOutput(output)).isIdenticalTo(object)
+                    .string(object.output).isEqualTo(output)
+                .if(otherOutput = Math.random().toString(36).substring(7))
+                .then()
+                    .object(object.addOutput(otherOutput)).isIdenticalTo(object)
+                    .string(object.output).isEqualTo(output + otherOutput)
             ;
         }
     };
