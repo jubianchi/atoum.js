@@ -134,6 +134,41 @@ var atoum = require('../../..')(module),
                         .concat(color.bgXterm(238).white(" 1    ")).concat(" ").concat(color.bgRed.white(reference)).concat("\n")
                         .concat(color.bgXterm(238).white("    1 ")).concat(" ").concat(color.bgGreen.white(data)).concat("\n")
                 )
+                .if(reference = Math.random().toString(36).substring(7))
+                .and(data = Math.random().toString(36).substring(7))
+                .and(object = new testedClass(message, asserter, reference.concat("\n"), data))
+                .then()
+                    .string(object.toString()).isEqualTo(
+                        "Strings are not equal\n"
+                            .concat(color.bgRed.white(" - Reference (" + reference.concat("\n").length + ")")).concat(" ").concat(color.bgGreen.white(" + Data (" + data.length + ")"))
+                            .concat("\n\n")
+                            .concat(color.bgRed.white(" R ")).concat(color.bgGreen.white(" D ")).concat("\n")
+                            .concat(color.bgXterm(238).white(" 1    ")).concat(" ").concat(color.bgRed.white(reference)).concat("\n")
+                            .concat(color.bgXterm(238).white("    1 ")).concat(" ").concat(color.bgGreen.white(data)).concat("\n")
+                            .concat(color.bgXterm(238).white(" 2    ")).concat(" ").concat(color.bgRed.white("")).concat("\n")
+                    )
+                .if(object = new testedClass(message, asserter, reference, data.concat("\n")))
+                .then()
+                    .string(object.toString()).isEqualTo(
+                        "Strings are not equal\n"
+                            .concat(color.bgRed.white(" - Reference (" + reference.length + ")")).concat(" ").concat(color.bgGreen.white(" + Data (" + data.concat("\n").length + ")"))
+                            .concat("\n\n")
+                            .concat(color.bgRed.white(" R ")).concat(color.bgGreen.white(" D ")).concat("\n")
+                            .concat(color.bgXterm(238).white(" 1    ")).concat(" ").concat(color.bgRed.white(reference)).concat("\n")
+                            .concat(color.bgXterm(238).white("    1 ")).concat(" ").concat(color.bgGreen.white(data)).concat("\n")
+                            .concat(color.bgXterm(238).white("    2 ")).concat(" ").concat(color.bgGreen.white("")).concat("\n")
+                    )
+                .if(object = new testedClass(message, asserter, reference.concat("\n"), data.concat("\n")))
+                .then()
+                    .string(object.toString()).isEqualTo(
+                        "Strings are not equal\n"
+                            .concat(color.bgRed.white(" - Reference (" + reference.concat("\n").length + ")")).concat(" ").concat(color.bgGreen.white(" + Data (" + data.concat("\n").length + ")"))
+                            .concat("\n\n")
+                            .concat(color.bgRed.white(" R ")).concat(color.bgGreen.white(" D ")).concat("\n")
+                            .concat(color.bgXterm(238).white(" 1    ")).concat(" ").concat(color.bgRed.white(reference)).concat("\n")
+                            .concat(color.bgXterm(238).white("    1 ")).concat(" ").concat(color.bgGreen.white(data)).concat("\n")
+                            .concat(color.bgXterm(238).white(" 2  2 ")).concat(" ").concat("\n")
+                    )
             ;
 
             var object, message, asserter, reference, data;
