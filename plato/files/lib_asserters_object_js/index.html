@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">71.10</p>
+      <p class="stat">72.69</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">109</p>
+      <p class="stat">107</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">41.33</p>
+      <p class="stat">40.95</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.94</p>
+      <p class="stat">0.97</p>
     </div>
   </div>
 </div>
@@ -96,14 +96,14 @@ require("../..")(module);
 
 var extend = require("node.extend"),
     underscore = require('underscore'),
-    Arr = require("./array"),
+    Variable = require("./variable"),
     object = module.exports = function object(generator) {
-        Arr.call(this, generator);
+        Variable.call(this, generator);
 
         this.locale.translations.loadTranslations(require("../../resources/locale/asserters/object.json"));
     };
 
-object.prototype = new Arr();
+object.prototype = new Variable();
 object.prototype.constructor = object;
 object.prototype = extend(
     object.prototype,
@@ -115,65 +115,63 @@ object.prototype = extend(
                 this.fail(this.locale._("$[1] is not an object", this.value));
             }
 
-            return this;
+            return this.pass();
         },
 
         isInstanceOf: function (expected) {
-            this.generator.assertionsCount += 1;
-
             if(false === (this.value instanceof expected)) {
                 this.fail(this.locale._("[object $[1]] is not an instance of $[2]", this.value.constructor.name, expected.name));
             }
 
-            return this;
+            return this.pass();
         },
 
         isNotInstanceOf: function (expected) {
-            this.generator.assertionsCount += 1;
-
             if(this.value instanceof expected) {
                 this.fail(this.locale._("[object $[1]] is an instance of $[2]", this.value.constructor.name, expected.name));
             }
 
-            return this;
+            return this.pass();
         },
 
         hasMember: function (expected) {
-            this.generator.assertionsCount += 1;
-
             if(false === this.value.hasOwnProperty(expected)) {
                 this.fail(this.locale._("[object $[1]] does not have member $[1]"), this.value.constructor.name, expected);
             }
 
-            return this;
+            return this.pass();
         },
 
         hasMethod: function (expected) {
-            this.generator.assertionsCount += 1;
-
             if(typeof this.value[expected] === "undefined" || typeof this.value[expected] !== "function") {
                 this.fail(this.locale._("[object $[1]] does not have method $[2]", this.value.constructor.name, expected));
             }
 
-            return this;
+            return this.pass();
         },
 
         hasLength: function (expected) {
-            this.generator.assertionsCount += 1;
-
-            if(underscore.size(this.value) !== expected) {
+            if(Object.keys(this.value).length !== expected) {
                 this.fail(this.locale._("Object($[1]) has not length $[2]", this.value.length, expected));
             }
 
-            return this;
+            return this.pass();
         },
 
         isEqualTo: function(expected) {
-            this.generator.assertionsCount += 1;
-
             this.compare(expected, this.value);
 
-            return this;
+            return this.pass();
+        },
+
+        isNotEqualTo: function(expected) {
+            try {
+                this.isEqualTo(expected);
+
+                this.fail(this.locale._("$[1] is equal to $[2]", this.value, expected));
+            } catch(exception) { }
+
+            return this.pass();
         },
 
         compare: function(expected, value) {

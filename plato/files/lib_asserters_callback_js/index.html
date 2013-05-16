@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">68.93</p>
+      <p class="stat">70.26</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">103</p>
+      <p class="stat">95</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">33.34</p>
+      <p class="stat">31.11</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.67</p>
+      <p class="stat">0.64</p>
     </div>
   </div>
 </div>
@@ -109,30 +109,24 @@ callback.prototype = extend(
     callback.prototype,
     {
         wasCalled: function () {
-            this.generator.assertionsCount += 1;
-
             if(this.value.controller.args.length === 0) {
                 this.fail(this.locale._("Callback was not called"));
             }
 
-            return this;
+            return this.pass();
         },
 
         wasNotCalled: function () {
-            this.generator.assertionsCount += 1;
-
             if(this.value.controller.args.length > 0) {
                 this.fail(this.locale._("Callback was called"));
             }
 
-            return this;
+            return this.pass();
         },
 
         withoutArgument: function () {
             var actual = this.value.controller.args,
                 found = false;
-
-            this.generator.assertionsCount += 1;
 
             underscore.each(
                 actual,
@@ -149,7 +143,7 @@ callback.prototype = extend(
                 this.fail(this.locale._("Callback was not called without argument: $[1]", actual));
             }
 
-            return this;
+            return this.pass();
         },
 
         withArguments: function (expected) {
@@ -163,8 +157,6 @@ callback.prototype = extend(
             } else if(arguments.length > 1) {
                 expected = underscore.values(arguments);
             }
-
-            this.generator.assertionsCount += 1;
 
             underscore.each(
                 actual,
@@ -189,7 +181,7 @@ callback.prototype = extend(
                 this.fail(this.locale._("Callback was not called with arguments $[1]: $[2]", expected, actual));
             }
 
-            return this;
+            return this.pass();
         }
     }
 );</textarea>

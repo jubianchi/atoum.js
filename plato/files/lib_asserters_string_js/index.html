@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">76.30</p>
+      <p class="stat">77.32</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">81</p>
+      <p class="stat">77</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,7 +63,7 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">24.62</p>
+      <p class="stat">23.63</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
@@ -115,32 +115,26 @@ string.prototype = extend(
                 Variable.prototype.fail.call(this, this.locale._("$[1] is not a string", this.value));
             }
 
-            return this;
+            return this.pass();
         },
 
         hasLength: function (expected) {
-            this.generator.assertionsCount += 1;
-
             if(this.value.length !== expected) {
                 Variable.prototype.fail.call(this, this.locale._("$[1] has not length $[2]", this.value, expected));
             }
 
-            return this;
+            return this.pass();
         },
 
         contains: function(expected) {
-            this.generator.assertionsCount += 1;
-
             if(this.value.indexOf(expected) < 0) {
                 Variable.prototype.fail.call(this, this.locale._("String $[1] does not contain $[2]", this.value, expected));
             }
 
-            return this;
+            return this.pass();
         },
 
         isEqualTo: function (expected) {
-            this.generator.assertionsCount += 1;
-
             if(this.value != expected) {
                 this.fail(
                     this.locale._("String $[1] is not equal to $[2]", this.value, expected),
@@ -149,11 +143,13 @@ string.prototype = extend(
                 );
             }
 
-            return this;
+            return this.pass();
         },
 
         fail: function (message, reference, data) {
             var args = Array.prototype.slice.call(arguments, 3);
+
+            this.generator.assertionsCount += 1;
 
             underscore.map(
                 args,
