@@ -33,9 +33,9 @@ var atoum = require('../../..')(module),
                 .then()
                 .string(object.toString()).isEqualTo(
                     "Strings are not equal\n"
-                        .concat(color.bgRed.white(" - Reference ")).concat(" ").concat(color.bgGreen.white(" + Data "))
+                        .concat(color.bgRed.white(" - Reference (" + reference.length + ")")).concat(" ").concat(color.bgGreen.white(" + Data (" + data.length + ")"))
                         .concat("\n\n")
-                        .concat(color.bgXterm(238).white(" R  D ")).concat("\n")
+                        .concat(color.bgRed.white(" R ")).concat(color.bgGreen.white(" D ")).concat("\n")
                         .concat(color.bgXterm(238).white("    1 ")).concat(" ").concat(color.bgGreen.white("foo")).concat("\n")
                         .concat(color.bgXterm(238).white(" 1  2 ")).concat(" bar").concat("\n")
                         .concat(color.bgXterm(238).white(" 2    ")).concat(" ").concat(color.bgRed.white("foo")).concat("\n")
@@ -47,9 +47,9 @@ var atoum = require('../../..')(module),
                 .then()
                 .string(object.toString()).isEqualTo(
                     "Strings are not equal\n"
-                        .concat(color.bgRed.white(" - Reference ")).concat(" ").concat(color.bgGreen.white(" + Data "))
+                        .concat(color.bgRed.white(" - Reference (" + reference.length + ")")).concat(" ").concat(color.bgGreen.white(" + Data (" + data.length + ")"))
                         .concat("\n\n")
-                        .concat(color.bgXterm(238).white(" R  D ")).concat("\n")
+                        .concat(color.bgRed.white(" R ")).concat(color.bgGreen.white(" D ")).concat("\n")
                         .concat(color.bgXterm(238).white(" 1    ")).concat(" ").concat(color.bgRed.white(reference)).concat("\n")
                         .concat(color.bgXterm(238).white("    1 ")).concat(" ").concat(color.bgGreen.white(data)).concat("\n")
                 )
