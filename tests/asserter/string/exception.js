@@ -23,6 +23,87 @@ var atoum = require('../../..')(module),
             ;
         },
 
+        testHeader: function() {
+            var object, message, asserter, reference, data;
+
+            this
+                .if(message = Math.random().toString(36).substring(7))
+                .and(reference = Math.random().toString(36).substring(7))
+                .and(data = Math.random().toString(36).substring(7))
+                .and(asserter = {})
+                .and(object = new testedClass(message, asserter, reference, data))
+                .then()
+                    .string(object.header()).isEqualTo(
+                        color.bgRed.white(" - Reference (" + reference.length + ")")
+                            .concat(" ")
+                            .concat(color.bgGreen.white(" + Data (" + data.length + ")"))
+                            .concat("\n\n")
+                            .concat(color.bgRed.white(" R "))
+                            .concat(color.bgGreen.white(" D "))
+                            .concat("\n")
+                    )
+                    .string(object.header(5)).isEqualTo(
+                        color.bgRed.white(" - Reference (" + reference.length + ")")
+                            .concat(" ")
+                            .concat(color.bgGreen.white(" + Data (" + data.length + ")"))
+                            .concat("\n\n")
+                            .concat(color.bgRed.white(" R     "))
+                            .concat(color.bgGreen.white(" D     "))
+                            .concat("\n")
+                    )
+            ;
+        },
+
+        testLine: function() {
+            var object, message, asserter, reference, data, value;
+
+            this
+                .if(message = Math.random().toString(36).substring(7))
+                .and(reference = Math.random().toString(36).substring(7))
+                .and(data = Math.random().toString(36).substring(7))
+                .and(value = Math.random().toString(36).substring(7))
+                .and(asserter = {})
+                .and(object = new testedClass(message, asserter, reference, data))
+                .then()
+                    .string(object.line(1, value, "ref")).isEqualTo(
+                        color.bgXterm(238).white(" 1    ")
+                            .concat(" ")
+                            .concat(color.bgRed.white(value))
+                            .concat("\n")
+                    )
+                    .string(object.line(2, value, "data")).isEqualTo(
+                        color.bgXterm(238).white("    2 ")
+                            .concat(" ")
+                            .concat(color.bgGreen.white(value))
+                            .concat("\n")
+                    )
+                    .string(object.line(3, value, 3)).isEqualTo(
+                        color.bgXterm(238).white(" 3  3 ")
+                            .concat(" ")
+                            .concat(value)
+                            .concat("\n")
+                    )
+                    .string(object.line(4, value, 5)).isEqualTo(
+                        color.bgXterm(238).white(" 4  5 ")
+                            .concat(" ")
+                            .concat(value)
+                            .concat("\n")
+                    )
+                    .string(object.line(7, value, 6)).isEqualTo(
+                        color.bgXterm(238).white(" 7  6 ")
+                            .concat(" ")
+                            .concat(value)
+                            .concat("\n")
+                    )
+                    .string(object.line(10, value, 100, 3)).isEqualTo(
+                        color.bgXterm(238).white(" 10   100 ")
+                            .concat(" ")
+                            .concat(value)
+                            .concat("\n")
+                    )
+            ;
+        },
+
         testTostring: function() {
             this
                 .if(message = Math.random().toString(36).substring(7))
