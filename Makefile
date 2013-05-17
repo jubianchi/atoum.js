@@ -1,9 +1,9 @@
 logo:
-	@echo "                      http://atoum.org"
+	@echo "					  http://atoum.org"
 	@node_modules/.bin/picture-tube resources/images/logo.png --cols 60
 
 egg:
-	@echo "                               Happy Easter !!!"
+	@echo "							   Happy Easter !!!"
 	@node_modules/.bin/picture-tube resources/images/egg.png --cols 60
 
 clean:
@@ -11,11 +11,19 @@ clean:
 	@rm -rf ./covershot
 	@rm -f ./xunit.xml
 
-lint:
+lint: clean
 	@jshint --config jshintrc.json ./lib
 
 test: clean logo
 	@./bin/atoum -d tests --xunit
+
+loop: clean
+	@while true; \
+	do \
+		make test; \
+		read foo; \
+		test ! -z $$foo && exit 0; \
+	done
 
 covershot: clean logo
 	@./bin/atoum -d tests --coverage
