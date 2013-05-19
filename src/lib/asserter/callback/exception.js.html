@@ -4,16 +4,16 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Covershot: Source: lib/report/fields/runner/tests/errors.js</title>
-		<link rel="stylesheet" href="../../../../../../css/normalize.css">
-		<link rel="stylesheet" href="../../../../../../css/covershot.css">
+		<title>Covershot: Source: lib/asserter/callback/exception.js</title>
+		<link rel="stylesheet" href="../../../../css/normalize.css">
+		<link rel="stylesheet" href="../../../../css/covershot.css">
 
-		<script type="text/javascript" src="../../../../../../scripts/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../../../../scripts/jquery-1.7.1.min.js"></script>
 
-		<script type="text/javascript" src="../../../../../../scripts/shCore.js"></script>
-		<script type="text/javascript" src="../../../../../../scripts/shBrushJScript.js"></script>
-		<link href="../../../../../../css/shCore.css" rel="stylesheet" type="text/css" />
-		<link href="../../../../../../css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="../../../../scripts/shCore.js"></script>
+		<script type="text/javascript" src="../../../../scripts/shBrushJScript.js"></script>
+		<link href="../../../../css/shCore.css" rel="stylesheet" type="text/css" />
+		<link href="../../../../css/shThemeDefault.css" rel="stylesheet" type="text/css" />
 	    <script>
 	      window.onscroll = function () {
 	        document.querySelectorAll('#topContainer')[0].className = (window.scrollY !== 0) ? 'shadowed' : '';
@@ -24,7 +24,7 @@
 	    <div id="topContainer">
 	      <div id="topBar">
 	        <div id="topBarContent">
-	          <p class="left"><a href="../../../../../../index.html">Covershot</a></p> 
+	          <p class="left"><a href="../../../../index.html">Covershot</a></p> 
 	          <!-- <p class="right"><a href="">Coverage</a> <a href="hotspots.html">Hotspots</a></p> -->
 	        </div>
 	      </div>
@@ -32,23 +32,23 @@
 	        <div class="holder">
 	          <ul class="summary">
 	            <li>
-	              <span class="coverageData">10</span>
+	              <span class="coverageData">8</span>
 	              <p>hits</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">6</span>
+	              <span class="coverageData">14</span>
 	              <p>misses</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">16</span>
+	              <span class="coverageData">22</span>
 	              <p>SLoC</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">62.5%</span>
+	              <span class="coverageData">36.4%</span>
 	              <p>coverage </p>
 	            </li>
 	            <li>
-	              <svg width="45" height="45">  <defs>   <filter id="dropshadow" width="17.5" height="17.5">    <feGaussianBlur stdDeviation="4"/>   </filter>  </defs>  <path d="M22.5,22.5 L22.5,5 A17.5,17.5 0 1,1 10.126491256371018,34.875228538145755 z"    style="fill:#58E43E;    fill-opacity: 1;"/>  <path d="M22.5,22.5 L10.126491256371018,34.875228538145755 A17.5,17.5  0 0,1 22.5,5 z"    style="fill:#FF2E2E;    fill-opacity: 1;"/></svg>
+	              <svg width="45" height="45">  <defs>   <filter id="dropshadow" width="17.5" height="17.5">    <feGaussianBlur stdDeviation="4"/>   </filter>  </defs>  <path d="M22.5,22.5 L22.5,5 A17.5,17.5 0 0,1 35.72585887007671,33.959784341287275 z"    style="fill:#58E43E;    fill-opacity: 1;"/>  <path d="M22.5,22.5 L35.72585887007671,33.959784341287275 A17.5,17.5  0 1,1 22.5,5 z"    style="fill:#FF2E2E;    fill-opacity: 1;"/></svg>
 	            </li>
 	          </ul>
 	        </div>
@@ -60,55 +60,65 @@
 					<script type="syntaxhighlighter" class="brush: js; class-name: 'rounded'"><![CDATA[
 "use strict";
 
-require("../../../../..")(module);
+require("../../..")(module);
 
-var underscore = require("underscore"),
-    extend = require("node.extend"),
+var extend = require("node.extend"),
+    underscore = require("underscore"),
     util = require("util"),
-    color = require("../../../color"),
-    Field = require("../../../field"),
-    errors = module.exports = function errors() {
-        Field.call(this, [ "runnerStop" ]);
+    color = require("cli-color"),
+    Failure = require("../exception"),
+    exception = module.exports = function exception(message, asserter, reference, data) {
+        Failure.apply(this, [ message, asserter ]);
 
-        this.locale.translations.loadTranslations(require("../../../../../resources/locale/report/fields/runner/tests/errors.json"));
+        this.reference = reference;
+        this.data = data;
     };
 
-errors.prototype = new Field();
-errors.prototype.constructor = errors;
-errors.prototype = extend(
-    errors.prototype,
+exception.prototype = new Failure();
+exception.prototype.constructor = exception;
+exception.prototype = extend(
+    exception.prototype,
     {
-        toString: function () {
-            var runner = this.value[0],
-                test,
-                str = "",
-                render = function (exception) {
-                    return util.format(
-                        ">>> " + color.error("%s: %s") + "\n%s\n",
-                        exception.name,
-                        exception.message,
-                        exception.stack
-                    );
-                };
+        toString: function() {
+            var str = "";
 
-            if(runner.score.errors > 0) {
-                str = "> "
-                    .concat(color.error(this.locale.__("There was $[1] error:", "There were $[1] errors:", runner.score.errors)))
-                    .concat("\n");
+            for(var index = 0; index < this.data.length; index += 1) {
+                if(this.data[index]) {
+                    var args = "",
+                        sep = "";
 
-                for(test in runner.score.tests) {
-                    if(runner.score.tests.hasOwnProperty(test)) {
-                        if(underscore.size(runner.score.tests[test].errors) > 0) {
-                            str = str
-                                .concat(">> " + test + "\n")
-                                .concat(underscore.map(runner.score.tests[test].errors, render, this).join("\n"))
-                            ;
+                    underscore.map(
+                        this.data[index],
+                        function (arg) {
+                            switch(true) {
+                                case typeof arg === "function":
+                                    args = args.concat(sep).concat("[Function <" + (arg.name || "anonymous") + ">]");
+                                    break;
+
+                                case typeof arg === "object" && arg !== null:
+                                    args = args.concat(sep).concat("[Object <" + (arg.constructor.name || "anonymous") + ">]");
+                                    break;
+
+                                default:
+                                    args = args.concat(sep).concat(util.inspect(arg));
+                            }
+
+                            sep = ", ";
                         }
-                    }
+                    );
+
+                    str = str.concat("#")
+                        .concat(index.toString())
+                        .concat(": ")
+                        .concat(this.asserter.value.name || "<anonymous>")
+                        .concat("(")
+                        .concat(args)
+                        .concat(")")
+                        .concat("\n");
                 }
             }
 
-            return str;
+            return this.message.concat("\n").concat(str);
         }
     }
 );
@@ -151,57 +161,57 @@ errors.prototype = extend(
           
             $('td.covgutter').append('<div class="line number10 index9 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number11 index10 alt2">&nbsp;9&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number11 index10 alt2">&nbsp;6&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number12 index11 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number13 index12 alt2">&nbsp;9&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number13 index12 alt2">&nbsp;6&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number14 index13 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number14 index13 alt2">&nbsp;6&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number15 index14 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number16 index15 alt2">&nbsp;141&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number16 index15 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number17 index16 alt2">&nbsp;141&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number18 index17 alt2">&nbsp;141&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number19 index18 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number19 index18 alt2">&nbsp;141&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number20 index19 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number21 index20 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number22 index21 alt2">&nbsp;8&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number22 index21 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number23 index22 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number23 index22 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number24 index23 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number25 index24 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number25 index24 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number26 index25 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number27 index26 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number27 index26 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number28 index27 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number29 index28 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number30 index29 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number30 index29 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number31 index30 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number32 index31 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number33 index32 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number33 index32 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number34 index33 alt2">&nbsp;8&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number34 index33 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number35 index34 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number36 index35 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number36 index35 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number37 index36 alt2">&nbsp;&nbsp;</div>');
           
@@ -211,17 +221,17 @@ errors.prototype = extend(
           
             $('td.covgutter').append('<div class="line number40 index39 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number41 index40 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number41 index40 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number42 index41 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number42 index41 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number43 index42 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number43 index42 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number44 index43 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number45 index44 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number46 index45 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number46 index45 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number47 index46 alt2">&nbsp;&nbsp;</div>');
           
@@ -229,9 +239,9 @@ errors.prototype = extend(
           
             $('td.covgutter').append('<div class="line number49 index48 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number50 index49 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number50 index49 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number51 index50 alt2">&nbsp;8&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number51 index50 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number52 index51 alt2">&nbsp;&nbsp;</div>');
           
@@ -240,6 +250,26 @@ errors.prototype = extend(
             $('td.covgutter').append('<div class="line number54 index53 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number55 index54 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number56 index55 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number57 index56 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number58 index57 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number59 index58 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number60 index59 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number61 index60 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number62 index61 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number63 index62 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number64 index63 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number65 index64 alt2">&nbsp;&nbsp;</div>');
           
 
           var highlightStartLineNumber = getUrlVars()['highlightStartLineNumber'];
@@ -253,7 +283,7 @@ errors.prototype = extend(
             }
           }
 
-          var green = $.parseJSON('["3","5","11","13","16","17","18","22","34","51"]');
+          var green = $.parseJSON('["3","5","11","13","14","17","18","19"]');
           $.each(green, function (index, value) {
             $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
             var bgColor = 'rgba(121, 252, 121, 0.62)';
@@ -265,7 +295,7 @@ errors.prototype = extend(
             $('td.code div.container div.number' + value).css('cssText', 'background-color: ' + bgColor + ' !important');
           });
 
-          var red = $.parseJSON('["26","35","39","40","41","42"]');
+          var red = $.parseJSON('["23","25","26","27","30","33","35","36","39","40","43","46","50","61"]');
           $.each(red, function (index, value) {
             $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
             var bgColor = 'rgba(255, 0, 0, 0.32)';

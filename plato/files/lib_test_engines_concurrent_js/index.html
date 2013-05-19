@@ -49,7 +49,7 @@
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">137</p>
+      <p class="stat">138</p>
     </div>
   </div>
   <div class="row historical">
@@ -148,12 +148,13 @@ concurrent.prototype = {
                         } else {
                             try {
                                 var result = JSON.parse(stdout);
-                                test.score.merge(result.score);
 
                                 if(test.score.errors.length > 0) {
                                     method.score.passed = false;
                                     test.score.addMethod(method);
                                 }
+
+                                test.score.merge(result.score);
 
                                 if(self.dispatcher) {
                                     switch(true) {
