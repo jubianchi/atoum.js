@@ -93,7 +93,7 @@ var util = require('util'),
                         object.withArguments(args[1], args[0]);
                     })
                         .hasName('Failure')
-                        .hasMessage('Callback was not called with arguments ' + [args[1], args[0]].join(',') + ': ' + args.join(','))
+                        .hasMessage('Callback was not called with arguments ' + [args[1], args[0]].join(','))
                 .if(value = callback())
                 .and(object.setWith(value))
                 .and(value.apply(value, args = ['foo', 'bar']))
@@ -105,7 +105,7 @@ var util = require('util'),
         },
 
         testWithoutArgument: function() {
-            var object, value, args, otherArgs;
+            var object, value, args;
 
             this
                 .if(value = callback())
@@ -117,10 +117,7 @@ var util = require('util'),
                         object.withoutArgument();
                     })
                         .hasName('Failure')
-                        .hasMessage(util.format(
-                            'Callback was not called without argument: %s',
-                            [ args ]
-                        ))
+                        .hasMessage('Callback was not called without argument')
                 .if(value.call(value))
                 .then()
                     .object(object.withoutArgument()).isIdenticalTo(object)
