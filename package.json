@@ -12,7 +12,6 @@
         "node.extend": "1.0.0",
         "underscore": "1.4.4",
         "optimist": "0.3.7",
-        "picture-tube": "0.0.4",
         "cli-color": "0.2.2",
         "diff": "1.0.4",
         "covershot": "0.1.1",

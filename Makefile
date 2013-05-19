@@ -4,12 +4,12 @@ endif
 SEDEXPR="s/\"version\": \".*\",/\"version\": \"${TARGET}\",/"
 
 logo:
-	@echo "					  http://atoum.org"
-	@node_modules/.bin/picture-tube resources/images/logo.png --cols 60
+	@echo "                       http://atoum.org"
+	@picture-tube resources/images/logo.png --cols 60
 
 egg:
-	@echo "							   Happy Easter !!!"
-	@node_modules/.bin/picture-tube resources/images/egg.png --cols 60
+	@echo "                               Happy Easter !!!"
+	@picture-tube resources/images/egg.png --cols 60
 
 clean:
 	@rm -rf ./lib-cov

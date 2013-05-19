@@ -1,6 +1,6 @@
 "use strict";
 
-require("..")()
+require("..")();
 
 var util = require("util"),
     color = require("cli-color"),
