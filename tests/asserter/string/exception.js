@@ -1,7 +1,6 @@
 var atoum = require('../../..')(module),
     underscore = require('underscore'),
     color = require('cli-color'),
-    diff = require('diff'),
     testedClass = require('../../../lib/asserter/string/exception'),
     unit = module.exports = {
         testClass: function() {

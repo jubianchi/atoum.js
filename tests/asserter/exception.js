@@ -24,7 +24,7 @@ var atoum = require('../..')(module),
                 .and(asserter = {})
                 .and(object = new testedClass(message, asserter))
                 .then()
-                    .string(object.toString()).isEqualTo(object.message + '\n' + object.stack)
+                    .string(object.toString()).isEqualTo(object.message)
             ;
         }
     };
