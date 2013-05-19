@@ -35,7 +35,7 @@ var callback = require('../../../lib/test/callback'),
                     exec: function(cmd, opts, cb) {
                         cb && cb(
                             false,
-                            JSON.stringify({ score: method.score }),
+                            JSON.stringify({ test: test.class, method: method.name, score: test.score.addMethod(method) }),
                             ''
                         );
 
@@ -57,9 +57,11 @@ var callback = require('../../../lib/test/callback'),
                 .and(test.getMethods = function() { return [ method ]; })
                 .and(child = {
                     exec: function(cmd, opts, cb) {
+                        method.score.addFailure(new Error());
+
                         cb(
                             false,
-                            JSON.stringify({ score: method.score.addFailure(new Error()) }),
+                            JSON.stringify({ test: test.class, method: method.name, score: test.score.addMethod(method) }),
                             ''
                         );
 
@@ -79,9 +81,11 @@ var callback = require('../../../lib/test/callback'),
                 .and(test.getMethods = function() { return [ method ]; })
                 .and(child = {
                     exec: function(cmd, opts, cb) {
+                        method.score.addException(new Error());
+
                         cb && cb(
                             false,
-                            JSON.stringify({ score: method.score.addException(new Error()) }),
+                            JSON.stringify({ test: test.class, method: method.name, score: test.score.addMethod(method) }),
                             ''
                         );
 
@@ -101,9 +105,11 @@ var callback = require('../../../lib/test/callback'),
                 .and(test.getMethods = function() { return [ method ]; })
                 .and(child = {
                     exec: function(cmd, opts, cb) {
+                        method.score.addSkipped(new Error())
+
                         cb && cb(
                             false,
-                            JSON.stringify({ score: method.score.addSkipped(new Error()) }),
+                            JSON.stringify({ test: test.class, method: method.name, score: test.score.addMethod(method) }),
                             ''
                         );
 
