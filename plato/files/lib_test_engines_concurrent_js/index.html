@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">54.54</p>
+      <p class="stat">52.86</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">126</p>
+      <p class="stat">137</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">39.41</p>
+      <p class="stat">43.71</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">1.10</p>
+      <p class="stat">1.28</p>
     </div>
   </div>
 </div>
@@ -94,7 +94,8 @@
 
 require("../../..")(module);
 
-var concurrent = module.exports = function concurrent(dispatcher, child) {
+var Score = require("../method/score"),
+    concurrent = module.exports = function concurrent(dispatcher, child) {
         this.dispatcher = dispatcher;
         this.child = child || require("child_process");
     };
@@ -132,7 +133,9 @@ concurrent.prototype = {
 
                 proc = this.child.exec(
                     process.execPath,
-                    {},
+                    {
+                        maxBuffer: 2000 * 1024
+                    },
                     function(error, stdout, stderr) {
                         if(error) {
                             error.stack = error.stack.split("\n").slice(1).join("\n");
@@ -144,18 +147,26 @@ concurrent.prototype = {
                             }
                         } else {
                             try {
-                                var result = JSON.parse(stdout.toString());
-                                test.score.addMethod(result);
+                                var result = JSON.parse(stdout);
+                                test.score.merge(result.score);
+
+                                if(test.score.errors.length > 0) {
+                                    method.score.passed = false;
+                                    test.score.addMethod(method);
+                                }
 
                                 if(self.dispatcher) {
                                     switch(true) {
-                                        case (typeof result.score.exception !== "undefined"):
+                                        case (test.score.errors.length > 0):
+                                            self.dispatcher.emit("testError", test);
+                                            break;
+                                        case (typeof test.score.methods[result.method].exception !== "undefined"):
                                             self.dispatcher.emit("testMethodException", method);
                                             break;
-                                        case (typeof result.score.skipped !== "undefined"):
+                                        case (typeof test.score.methods[result.method].skipped !== "undefined"):
                                             self.dispatcher.emit("testMethodSkipped", method);
                                             break;
-                                        case (result.score.passed === false):
+                                        case (test.score.methods[result.method].passed === false):
                                             self.dispatcher.emit("testMethodFailure", method);
                                             break;
                                         default:

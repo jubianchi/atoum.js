@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">70.26</p>
+      <p class="stat">71.25</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">95</p>
+      <p class="stat">128</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">31.11</p>
+      <p class="stat">34.48</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.64</p>
+      <p class="stat">0.91</p>
     </div>
   </div>
 </div>
@@ -95,8 +95,10 @@
 require("../..")(module);
 
 var extend = require("node.extend"),
+    util = require("util"),
     underscore = require("underscore"),
     Func = require("./function"),
+    Exception = require("../asserter/callback/exception"),
     callback = module.exports = function callback(generator) {
         Func.call(this, generator);
 
@@ -110,15 +112,26 @@ callback.prototype = extend(
     {
         wasCalled: function () {
             if(this.value.controller.args.length === 0) {
-                this.fail(this.locale._("Callback was not called"));
+                this.fail(this.locale._("Callback was not called"), [], []);
             }
 
             return this.pass();
         },
 
         wasNotCalled: function () {
+            var actual = this.value.controller.args;
+
             if(this.value.controller.args.length > 0) {
-                this.fail(this.locale._("Callback was called"));
+                underscore.each(
+                    actual,
+                    function(value) {
+                        if(value.length > 0) {
+                            return;
+                        }
+                    }
+                );
+
+                this.fail(this.locale._("Callback was called"), [], actual);
             }
 
             return this.pass();
@@ -140,7 +153,7 @@ callback.prototype = extend(
             );
 
             if(found === false) {
-                this.fail(this.locale._("Callback was not called without argument: $[1]", actual));
+                this.fail(this.locale._("Callback was not called without argument"), [], actual);
             }
 
             return this.pass();
@@ -155,7 +168,7 @@ callback.prototype = extend(
                     expected = [ expected ];
                 }
             } else if(arguments.length > 1) {
-                expected = underscore.values(arguments);
+                expected = Array.prototype.slice.call(arguments);
             }
 
             underscore.each(
@@ -178,10 +191,30 @@ callback.prototype = extend(
             );
 
             if(found === false) {
-                this.fail(this.locale._("Callback was not called with arguments $[1]: $[2]", expected, actual));
+                this.fail(this.locale._("Callback was not called with arguments $[1]", expected, actual), expected, actual);
             }
 
             return this.pass();
+        },
+
+        fail: function (message, reference, data) {
+            var args = Array.prototype.slice.call(arguments, 3);
+
+            this.generator.assertionsCount += 1;
+
+            underscore.map(
+                args,
+                function (arg) {
+                    return util.inspect(arg);
+                }
+            );
+
+            throw new Exception(
+                util.format.apply(util, [ message ].concat(args)),
+                this,
+                reference,
+                data
+            );
         }
     }
 );</textarea>
