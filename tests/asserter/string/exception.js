@@ -112,7 +112,7 @@ var atoum = require('../../..')(module),
                 .and(object = new testedClass(message, asserter, reference, data))
                 .then()
                 .string(object.toString()).isEqualTo(
-                    "Strings are not equal\n"
+                    message.concat("\n")
                         .concat(color.bgRed.white(" - Reference (" + reference.length + ")")).concat(" ").concat(color.bgGreen.white(" + Data (" + data.length + ")"))
                         .concat("\n\n")
                         .concat(color.bgRed.white(" R ")).concat(color.bgGreen.white(" D ")).concat("\n")
@@ -126,7 +126,7 @@ var atoum = require('../../..')(module),
                 .and(object = new testedClass(message, asserter, reference, data))
                 .then()
                 .string(object.toString()).isEqualTo(
-                    "Strings are not equal\n"
+                    message.concat("\n")
                         .concat(color.bgRed.white(" - Reference (" + reference.length + ")")).concat(" ").concat(color.bgGreen.white(" + Data (" + data.length + ")"))
                         .concat("\n\n")
                         .concat(color.bgRed.white(" R ")).concat(color.bgGreen.white(" D ")).concat("\n")
@@ -138,7 +138,7 @@ var atoum = require('../../..')(module),
                 .and(object = new testedClass(message, asserter, reference.concat("\n"), data))
                 .then()
                     .string(object.toString()).isEqualTo(
-                        "Strings are not equal\n"
+                        message.concat("\n")
                             .concat(color.bgRed.white(" - Reference (" + reference.concat("\n").length + ")")).concat(" ").concat(color.bgGreen.white(" + Data (" + data.length + ")"))
                             .concat("\n\n")
                             .concat(color.bgRed.white(" R ")).concat(color.bgGreen.white(" D ")).concat("\n")
@@ -149,7 +149,7 @@ var atoum = require('../../..')(module),
                 .if(object = new testedClass(message, asserter, reference, data.concat("\n")))
                 .then()
                     .string(object.toString()).isEqualTo(
-                        "Strings are not equal\n"
+                        message.concat("\n")
                             .concat(color.bgRed.white(" - Reference (" + reference.length + ")")).concat(" ").concat(color.bgGreen.white(" + Data (" + data.concat("\n").length + ")"))
                             .concat("\n\n")
                             .concat(color.bgRed.white(" R ")).concat(color.bgGreen.white(" D ")).concat("\n")
@@ -160,7 +160,7 @@ var atoum = require('../../..')(module),
                 .if(object = new testedClass(message, asserter, reference.concat("\n"), data.concat("\n")))
                 .then()
                     .string(object.toString()).isEqualTo(
-                        "Strings are not equal\n"
+                        message.concat("\n")
                             .concat(color.bgRed.white(" - Reference (" + reference.concat("\n").length + ")")).concat(" ").concat(color.bgGreen.white(" + Data (" + data.concat("\n").length + ")"))
                             .concat("\n\n")
                             .concat(color.bgRed.white(" R ")).concat(color.bgGreen.white(" D ")).concat("\n")
