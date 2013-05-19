@@ -1,3 +1,8 @@
+ifndef $(TARGET)
+	TARGET=$(shell echo $(TAG) | awk -F. -v OFS=. 'NF==1{print ++$$NF}; NF>1{if(length($$NF+1)>length($$NF))$$(NF-1)++; $$NF=sprintf("%0*d", length($$NF), ($$NF+1)%(10^length($$NF))); print}')
+endif
+SEDEXPR="s/\"version\": \".*\",/\"version\": \"${TARGET}\",/"
+
 logo:
 	@echo "					  http://atoum.org"
 	@node_modules/.bin/picture-tube resources/images/logo.png --cols 60
@@ -44,4 +49,15 @@ doc-commit: doc
 
 doc-push: doc-commit
 	@cd doc && git push origin gh-pages:gh-pages
+	@git push origin master:master
+
+tag: doc-commit
+	@test ! -z $(TAG) || (echo "Usage: make tag TAG=X.X.X" && exit 1)
+	@git tag v$(TAG)
+	@cd doc && git push origin gh-pages:gh-pages
+	@git push origin master:master --tags
+	@npm publish
+	@sed -i "" ${SEDEXPR} ./package.json
+	@git add ./package.json
+	@git commit -m"Bump version to ${TARGET}"
 	@git push origin master:master
