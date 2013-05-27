@@ -8,8 +8,8 @@ logo:
 	@picture-tube resources/images/logo.png --cols 60
 
 egg:
-	@echo "                               Happy Easter !!!"
-	@picture-tube resources/images/egg.png --cols 60
+	@which picture-tube && echo "                               Happy Easter !!!"
+	@which picture-tube && picture-tube resources/images/egg.png --cols 60
 
 clean:
 	@rm -rf ./lib-cov
@@ -26,8 +26,9 @@ loop: clean
 	@while true; \
 	do \
 		make test; \
-		read foo; \
-		test ! -z $$foo && exit 0; \
+		echo "Press <Enter> to reexecute, press any other key and <Enter> to stop..."; \
+		read userinput; \
+		test ! -z $$userinput && exit 0; \
 	done
 
 covershot: clean logo
