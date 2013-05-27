@@ -78,6 +78,10 @@ var atoum = require('../..')(module),
                     })
                         .hasName('Failure')
                         .hasMessage(util.format('%s is not equal to %s', value, wrongValue))
+                .if(object.setWith(value = [ undefined ]))
+                .then()
+                    .object(object.isEqualTo(value)).isIdenticalTo(object)
+                    .object(object.isEqualTo([ undefined ])).isIdenticalTo(object)
             ;
-        },
+        }
     };
