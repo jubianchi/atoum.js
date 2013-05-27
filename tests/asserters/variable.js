@@ -159,5 +159,29 @@ var util = require('util'),
                         .hasMessage(util.format('%s is identical to %s', value, value))
                     .object(object.isNotIdenticalTo(value.toString())).isIdenticalTo(object)
             ;
+        },
+
+        testIsEmpty: function() {
+            var object, value;
+
+            this
+                .if(object = new testedClass({}))
+                .and(object.setWith(value = Math.random().toString(36).substring(7)))
+                .then()
+                    .error(function() {
+                        object.isEmpty(value);
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('%s is not empty', value))
+                .if(object.setWith(''))
+                .then()
+                    .object(object.isEmpty()).isIdenticalTo(object)
+                .if(object.setWith([]))
+                .then()
+                    .object(object.isEmpty()).isIdenticalTo(object)
+                .if(object.setWith({}))
+                .then()
+                    .object(object.isEmpty()).isIdenticalTo(object)
+            ;
         }
     };
