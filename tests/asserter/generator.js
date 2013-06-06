@@ -9,6 +9,7 @@ var atoum = require('../..')(module),
                 .then()
                     .object(object.asserters).isNotEmpty()
                     .object(object.aliases)
+                        .hasMember('given')
                         .hasMember('if')
                         .hasMember('and')
                         .hasMember('then')
