@@ -1,6 +1,7 @@
 var util = require('util'),
     atoum = require('../..')(module),
     Controller = require('../../lib/test/mock/controller'),
+    Generator = require('../../lib/test/mock/generator'),
     testedClass = require('../../lib/asserters/mock'),
     unit = module.exports = {
         testClass: function() {
@@ -30,6 +31,31 @@ var util = require('util'),
                 .and(mockInstance = new mockClass())
                 .then()
                     .object(object.setWith(mockInstance)).isIdenticalTo(object)
+            ;
+        },
+
+        testCall: function() {
+            var object, mockClass, mockInstance, method, generator;
+
+            this
+                .if(mockClass = function() {})
+                .and(mockClass.prototype = {
+                    foo: function() {}
+                })
+                .and(generator = new Generator())
+                .and(mockInstance = new (generator.generate(mockClass)))
+                .and(object = new testedClass({}))
+                .and(method = Math.random().toString(36).substring(7))
+                .and(object.setWith(mockInstance))
+                .then()
+                    .error(function() {
+                        object.call(method);
+                    })
+                        .hasName('Failure')
+                        .hasMessage('Method ' + method + ' was not called')
+                .if(mockInstance.foo())
+                .then()
+                    .object(object.call('foo')).isIdenticalTo(object)
             ;
         }
     };
