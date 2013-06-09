@@ -4,7 +4,7 @@
 * Define call history in mock controller
 
 ```js
-var mockInstance = { "method": function () { /*...*/ } };
+var mockInstance = this.generateMock({ "method": function () { /*...*/ } });
 
 mockInstance.controller.override("method", function () { return "foo"; });
 mockInstance.controller.override("method", function () { return "bar"; }, 2);
@@ -19,7 +19,7 @@ mockInstance.method(); // => mockInstance
 * Shortcut to return static values in mock controller
 
 ```js
-var mockInstance = { "method": function () { /*...*/ } };
+var mockInstance = this.generateMock({ "method": function () { /*...*/ } });
 
 mockInstance.controller.override("method", "foo");
 mockInstance.controller.override("method", true, 2);
@@ -30,15 +30,21 @@ mockInstance.method(); // => foo
 ```
 
 ## v0.0.8:
-* Add stub to mock global objects methods
+* Add stubs to mock global objects methods
 
 ```js
-$ = require('jquery');
-
-stub($, "load");
+var $ = require('jquery'),
+    stubbed = this.generateStub($, "ajax"),
+    object = {
+        method: function() {
+            $.ajax("http://foo.bar");
+        }
+    };
 
 this
-    .stub($.load).wasCalled().withArguments("article header")
+    .if(object.method())
+    .then()
+        .stub(stubbed).wasCalled().withArguments("http://foo.bar")
 ;
 
 $.load.restore();
