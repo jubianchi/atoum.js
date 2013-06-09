@@ -25,25 +25,27 @@ var util = require('util'),
                 .then()
                     .string(object.toString()).isEqualTo(
                         util.format(
-                            ']\n=> Test duration: %d second\n',
+                            ']\n' + color.xterm(87)('=> ') + 'Test duration: %d second\n',
                             Math.round(run.duration * 10000) / 10000
                         )
                             .concat(util.format(
-                                '=> Memore usage: %s\n',
+                                color.xterm(87)('=> ') + 'Memore usage: %s\n',
                                 util.inspect(run.usage.format('KB', 4).stat)
                             ))
+                            .concat('\n')
                     )
                 .if(run.duration = 5)
                 .then()
                     .string(object.toString()).isEqualTo(
                         util.format(
-                                ']\n=> Test duration: %d seconds\n',
-                                Math.round(run.duration * 10000) / 10000
-                            )
+                            ']\n' + color.xterm(87)('=> ') + 'Test duration: %d seconds\n',
+                            Math.round(run.duration * 10000) / 10000
+                        )
                             .concat(util.format(
-                                '=> Memore usage: %s\n',
+                                color.xterm(87)('=> ') + 'Memore usage: %s\n',
                                 util.inspect(run.usage.format('KB', 4).stat)
                             ))
+                            .concat('\n')
                     )
             ;
         }

@@ -22,7 +22,7 @@ var util = require('util'),
                 .and(object = new testedClass())
                 .and(object.value = [ { 'class': classname = Math.random().toString(36).substring(7) } ])
                 .then()
-                    .string(object.toString()).isEqualTo('\n> ' + color.bold(classname) + '\n[')
+                    .string(object.toString()).isEqualTo(color.xterm(87)('> ') + color.xterm(87)(classname) + '\n[')
             ;
         }
     };

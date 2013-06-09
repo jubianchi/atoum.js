@@ -20,9 +20,9 @@ var util = require('util'),
                 .if(object = new testedClass())
                 .then()
                     .string(object.toString()).isEqualTo(
-                        util.format('> ' + color.bold('node path') + ': %s\n', process.execPath)
+                        util.format('> ' + color.xterm(87)('node path:\x1b[0m %s') + '\n', process.execPath)
                             .concat(util.format(
-                                '> ' + color.bold('node versions') + ': %s\n',
+                                '> ' + color.xterm(87)('node versions:\x1b[0m %s') + '\n',
                                 util.inspect(process.versions)
                             ))
                     )
