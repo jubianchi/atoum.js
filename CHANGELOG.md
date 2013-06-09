@@ -28,3 +28,18 @@ mockInstance.method(); // => foo
 mockInstance.method(); // => true
 mockInstance.method(); // => foo
 ```
+
+## v0.0.8:
+* Add stub to mock global objects methods
+
+```js
+$ = require('jquery');
+
+stub($, "load");
+
+this
+    .stub($.load).wasCalled().withArguments("article header")
+;
+
+$.load.restore();
+```

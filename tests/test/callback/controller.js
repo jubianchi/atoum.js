@@ -18,7 +18,7 @@ var atoum = require('../../..')(module),
         },
 
         testRun: function() {
-            var object, code, args, returned;
+            var object, code, args, returned, scope;
 
             this
                 .if(object = new testedClass())
@@ -48,6 +48,14 @@ var atoum = require('../../..')(module),
                 .then()
                     .variable(object.run()).isIdenticalTo(returned)
                     .callback(code).wasCalled().withoutArgument()
+                .if(code = callback(function() { return this; }))
+                .and(object = new testedClass(code))
+                .then()
+                    .object(object.run()).isIdenticalTo(object)
+                .if(scope = {})
+                .and(object.scope = scope)
+                .then()
+                    .object(object.run()).isIdenticalTo(scope)
             ;
         }
     };

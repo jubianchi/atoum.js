@@ -7,9 +7,8 @@ var atoum = require('../../..')(module),
 
             this
                 .if(generator = new testedClass())
-                .and(cls = undefined)
                 .then()
-                    .function(mockClass = generator.generate(cls)).hasName('mock')
+                    .function(mockClass = generator.generate()).hasName('mock')
                     .object(mockClass.prototype).isInstanceOf(Object)
                     .object(new mockClass()).isInstanceOf(mockClass)
                 .if(cls = function cls() { this.prop = null; })
@@ -27,7 +26,29 @@ var atoum = require('../../..')(module),
                 .then()
                     .function(mockClass = generator.generate(cls)).hasName('mock')
                     .object(mockClass.prototype).isInstanceOf(cls)
-                    .object(mockInstance = new mockClass()).isInstanceOf(cls).hasMethod('method').hasMethod('otherMethod')
+                    .object(mockInstance = new mockClass())
+                        .isInstanceOf(cls)
+                        .hasMethod('method')
+                        .hasMethod('otherMethod')
+                    .variable(mockInstance.method(args[0], args[1])).isIdenticalTo(returned)
+                    .callback(method).wasCalled().withArguments(args)
+                    .object(mockInstance.otherMethod()).isIdenticalTo(mockInstance)
+                    .callback(otherMethod).wasCalled().withoutArgument()
+                .if(cls = {
+                    "method": (method = callback(function() {
+                        return returned;
+                    })),
+
+                    "otherMethod": (otherMethod = callback(function() {
+                        return this;
+                    }))
+                })
+                .then()
+                    .function(mockClass = generator.generate(cls)).hasName('mock')
+                    .object(mockClass.prototype).isIdenticalTo(cls)
+                    .object(mockInstance = new mockClass())
+                        .hasMethod('method')
+                        .hasMethod('otherMethod')
                     .variable(mockInstance.method(args[0], args[1])).isIdenticalTo(returned)
                     .callback(method).wasCalled().withArguments(args)
                     .object(mockInstance.otherMethod()).isIdenticalTo(mockInstance)
