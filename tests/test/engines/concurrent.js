@@ -166,9 +166,9 @@ var callback = require('../../../lib/test/callback'),
 
             this
                 .if(method = {
-                    name: 'foobar',
+                    name: Math.random().toString(36).substring(7),
                     test: {
-                        class: 'foobar'
+                        class: Math.random().toString(36).substring(7)
                     }
                 })
                 .and(object = new testedClass({}))
@@ -188,10 +188,11 @@ var callback = require('../../../lib/test/callback'),
                             .concat("process.exit();\n")
                     )
                 .if(method = {
-                    name: 'foobar',
+                    name: Math.random().toString(36).substring(7),
                     test: {
-                        class: 'foobar',
-                        coverage: true
+                        class: Math.random().toString(36).substring(7),
+                        coverage: true,
+                        coveredDirectory: Math.random().toString(36).substring(7)
                     }
                 })
                 .then()
@@ -201,7 +202,7 @@ var callback = require('../../../lib/test/callback'),
                             .concat("    Instrument = require(\"../../includer/instrument\")\n")
                             .concat("    script = new Script(\"" + method.test.class + "\", [ \"" + method.name + "\" ]);\n")
                             .concat("\n")
-                            .concat("atoum.includer = new Instrument();\n")
+                            .concat("atoum.includer = new Instrument(\"" + method.test.coveredDirectory + "\");\n")
                             .concat("script.run(process);\n")
                             .concat("\n")
                             .concat("process.exit();\n")
