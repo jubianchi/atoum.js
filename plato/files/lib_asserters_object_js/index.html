@@ -95,8 +95,8 @@
 require("../..")(module);
 
 var extend = require("node.extend"),
-    underscore = require('underscore'),
-    util = require('util'),
+    underscore = require("underscore"),
+    util = require("util"),
     Variable = require("./variable"),
     Exception = require("../asserter/object/exception"),
     object = module.exports = function object(generator) {
@@ -190,7 +190,7 @@ object.prototype = extend(
             try {
                 this.isIdenticalTo(expected);
             } catch(exception) {
-                return this.pass()
+                return this.pass();
             }
 
             this.fail(this.locale._("$[1] is identical to $[2]", this.value, expected));

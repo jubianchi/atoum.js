@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">69.61</p>
+      <p class="stat">67.77</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">54</p>
+      <p class="stat">64</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">15.88</p>
+      <p class="stat">17.90</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.47</p>
+      <p class="stat">0.56</p>
     </div>
   </div>
 </div>
@@ -99,10 +99,14 @@ var underscore = require("underscore"),
     util = require("util"),
     color = require("../../../color"),
     Field = require("../../../field"),
+    Prompt = require("../../../../cli/prompt"),
     errors = module.exports = function errors() {
         Field.call(this, [ "runnerStop" ]);
 
         this.locale.translations.loadTranslations(require("../../../../../resources/locale/report/fields/runner/tests/errors.json"));
+        this.firstPrompt = new Prompt(">", color.error);
+        this.secondPrompt = new Prompt(">>");
+        this.thirdPrompt = new Prompt(">>>", color.error);
     };
 
 errors.prototype = new Field();
@@ -110,37 +114,43 @@ errors.prototype.constructor = errors;
 errors.prototype = extend(
     errors.prototype,
     {
+        renderError: function (exception) {
+            return this.thirdPrompt.write(
+                util.format(
+                    "%s: %s" + "\n%s",
+                    exception.name,
+                    exception.message,
+                    exception.stack
+                )
+            ).toString();
+        },
+
         toString: function () {
             var runner = this.value[0],
                 test,
-                str = "",
-                render = function (exception) {
-                    return util.format(
-                        ">>> " + color.error("%s: %s") + "\n%s\n",
-                        exception.name,
-                        exception.message,
-                        exception.stack
-                    );
-                };
+                str = "";
 
-            if(runner.score.errors > 0) {
-                str = "> "
-                    .concat(color.error(this.locale.__("There was $[1] error:", "There were $[1] errors:", runner.score.errors)))
-                    .concat("\n");
+            if(runner.score.errors === 0) {
+                return str;
 
-                for(test in runner.score.tests) {
-                    if(runner.score.tests.hasOwnProperty(test)) {
-                        if(underscore.size(runner.score.tests[test].errors) > 0) {
-                            str = str
-                                .concat(">> " + test + "\n")
-                                .concat(underscore.map(runner.score.tests[test].errors, render, this).join("\n"))
-                            ;
-                        }
+            }
+            for(test in runner.score.tests) {
+                if(runner.score.tests.hasOwnProperty(test)) {
+                    if(underscore.size(runner.score.tests[test].errors) === 0) {
+                        continue;
                     }
+
+                    str = str
+                        .concat(this.secondPrompt.write(test))
+                        .concat(underscore.map(runner.score.tests[test].errors, this.renderError, this).join("\n"))
+                    ;
                 }
             }
 
-            return str;
+            return this.firstPrompt
+                .write(this.locale.__("There was $[1] error:", "There were $[1] errors:", runner.score.errors))
+                .toString()
+                .concat(str);
         }
     }
 );</textarea>

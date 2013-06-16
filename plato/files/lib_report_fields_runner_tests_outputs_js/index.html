@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">62.68</p>
+      <p class="stat">60.34</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">49</p>
+      <p class="stat">59</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">20.94</p>
+      <p class="stat">22.08</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.45</p>
+      <p class="stat">0.52</p>
     </div>
   </div>
 </div>
@@ -95,13 +95,16 @@
 require("../../../../..")(module);
 
 var extend = require("node.extend"),
-    util = require("util"),
     color = require("../../../color"),
     Field = require("../../../field"),
+    Prompt = require("../../../../cli/prompt"),
     outputs = module.exports = function outputs() {
         Field.call(this, [ "runnerStop" ]);
 
         this.locale.translations.loadTranslations(require("../../../../../resources/locale/report/fields/runner/tests/outputs.json"));
+        this.firstPrompt = new Prompt(">", color.title);
+        this.secondPrompt = new Prompt(">>");
+        this.thirdPrompt = new Prompt(">>>");
     };
 
 outputs.prototype = new Field();
@@ -115,27 +118,34 @@ outputs.prototype = extend(
                 method,
                 str = "";
 
-            if(runner.score.outputs > 0) {
-                str = "> "
-                    .concat(color.title(this.locale.__("There was $[1] output:", "There were $[1] outputs:", runner.score.outputs)))
-                    .concat("\n");
+            if(runner.score.outputs === 0) {
+                return str;
+            }
 
-                for(test in runner.score.tests) {
-                    if(runner.score.tests.hasOwnProperty(test)) {
-                        if(runner.score.tests[test].outputs > 0) {
-                            str = str.concat(">> " + test + "\n");
+            for(test in runner.score.tests) {
+                if(runner.score.tests.hasOwnProperty(test)) {
+                    if(runner.score.tests[test].outputs === 0) {
+                        continue;
+                    }
 
-                            for(method in runner.score.tests[test].methods) {
-                                if(typeof runner.score.tests[test].methods[method].output !== "undefined") {
-                                    str = str.concat(">>> " + method + "\n").concat(runner.score.tests[test].methods[method].output);
-                                }
-                            }
+                    str = str.concat(this.secondPrompt.write(test));
+
+                    for(method in runner.score.tests[test].methods) {
+                        if(typeof runner.score.tests[test].methods[method].output !== "undefined") {
+                            str = str.concat(
+                                this.thirdPrompt
+                                    .write(method)
+                                    .write(runner.score.tests[test].methods[method].output)
+                            );
                         }
                     }
                 }
             }
 
-            return str;
+            return this.firstPrompt
+                .write(this.locale.__("There was $[1] output:", "There were $[1] outputs:", runner.score.outputs))
+                .toString()
+                .concat(str);
         }
     }
 );</textarea>

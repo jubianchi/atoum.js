@@ -36,19 +36,19 @@
 	              <p>hits</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">21</span>
+	              <span class="coverageData">23</span>
 	              <p>misses</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">26</span>
+	              <span class="coverageData">28</span>
 	              <p>SLoC</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">19.2%</span>
+	              <span class="coverageData">17.9%</span>
 	              <p>coverage </p>
 	            </li>
 	            <li>
-	              <svg width="45" height="45">  <defs>   <filter id="dropshadow" width="17.5" height="17.5">    <feGaussianBlur stdDeviation="4"/>   </filter>  </defs>  <path d="M22.5,22.5 L22.5,5 A17.5,17.5 0 0,1 38.86285058872609,16.294589408344812 z"    style="fill:#58E43E;    fill-opacity: 1;"/>  <path d="M22.5,22.5 L38.86285058872609,16.294589408344812 A17.5,17.5  0 1,1 22.5,5 z"    style="fill:#FF2E2E;    fill-opacity: 1;"/></svg>
+	              <svg width="45" height="45">  <defs>   <filter id="dropshadow" width="17.5" height="17.5">    <feGaussianBlur stdDeviation="4"/>   </filter>  </defs>  <path d="M22.5,22.5 L22.5,5 A17.5,17.5 0 0,1 38.267055689126124,14.90724326110762 z"    style="fill:#58E43E;    fill-opacity: 1;"/>  <path d="M22.5,22.5 L38.267055689126124,14.90724326110762 A17.5,17.5  0 1,1 22.5,5 z"    style="fill:#FF2E2E;    fill-opacity: 1;"/></svg>
 	            </li>
 	          </ul>
 	        </div>
@@ -66,6 +66,7 @@ var path = require("path"),
     underscore = require("underscore"),
     extend = require("node.extend"),
     Field = require("../../field"),
+    xml = require("xmlbuilder"),
     xunit = module.exports = function xunit() {
         Field.call(this, [ "runnerStop" ]);
     };
@@ -75,74 +76,94 @@ xunit.prototype.constructor = xunit;
 xunit.prototype = extend(
     xunit.prototype,
     {
+        end: function (elem) {
+            return elem.end({
+                pretty: true,
+                indent: "\t"
+            });
+        },
+
+        addSuite: function (root, test, score, index) {
+            var testsuite = root.ele("testsuite", {
+                id: index,
+                name: path.basename(test, ".js"),
+                package: path.dirname(test),
+                time: score.duration,
+                tests: underscore.size(score.methods),
+                failures: score.failures,
+                errors: (score.errors + score.exceptions),
+                skipped: score.skipped,
+                timestamp: new Date().toISOString().split(".")[0],
+                hostname: "localhost"
+            });
+
+            for(var method in score.methods) {
+                if(score.methods.hasOwnProperty(method)) {
+                    this.addCase(testsuite, test, score.methods[method], method);
+                }
+            }
+
+            return this.end(testsuite);
+        },
+
+        addCase: function(suite, test, score, method) {
+            var testcase = suite.ele("testcase", {
+                name: method,
+                classname: path.basename(test, ".js"),
+                time: score.duration
+            });
+
+            if(typeof score.failure !== "undefined") {
+                this.addFailure(testcase, score.failure.asserter.constructor.name, score.failure.message);
+            }
+
+            if(typeof score.exception !== "undefined") {
+                this.addFailure(testcase, score.exception.name, score.exception.message, "error");
+            }
+
+            if(typeof score.skipped !== "undefined") {
+                this.addSkip(testcase, score.skipped.name, score.skipped.message);
+            }
+
+            return this.end(testcase);
+        },
+
+        addFailure: function(testcase, name, message, type) {
+            return this.end(
+                testcase.ele(type || "failure", {
+                    type: name,
+                    message: message
+                })
+            );
+        },
+
+        addSkip: function(testcase, name, message) {
+            return this.end(
+                testcase.ele(
+                    "skipped",
+                    {
+                        type: name
+                    },
+                    message
+                )
+            );
+        },
+
         toString: function () {
             var runner = this.value[0],
-                xml = "<testsuites>\n",
+                testsuites = xml.create("testsuites"),
                 test,
-                method,
-                score,
-                methodScore,
                 suites = 0;
 
             for(test in runner.score.tests) {
                 if(runner.score.tests.hasOwnProperty(test)) {
-                    score = runner.score.tests[test];
                     suites += 1;
 
-                    xml = xml.concat("\t<testsuite ")
-                        .concat("id=\"" + suites + "\" ")
-                        .concat("name=\"" + path.basename(test, ".js") + "\" ")
-                        .concat("package=\"" + path.dirname(test) + "\" ")
-                        .concat("time=\"" + score.duration + "\" ")
-                        .concat("tests=\"" + underscore.size(score.methods) + "\" ")
-                        .concat("failures=\"" + score.failures + "\" ")
-                        .concat("errors=\"" + (score.errors + score.exceptions) + "\" ")
-                        .concat("skipped=\"" + score.skipped + "\" ")
-                        .concat("timestamp=\"" + new Date().toISOString().split(".")[0] + "\" ")
-                        .concat("hostname=\"localhost\" ")
-                        .concat(">\n");
-
-                    for(method in score.methods) {
-                        if(score.methods.hasOwnProperty(method)) {
-                            methodScore = score.methods[method];
-
-                            xml = xml.concat("\t\t<testcase ")
-                                .concat("name=\"" + method + "\" ")
-                                .concat("classname=\"" + path.basename(test, ".js") + "\" ")
-                                .concat("time=\"" + methodScore.duration + "\" ")
-                                .concat(">\n");
-
-                            if(typeof methodScore.failure !== "undefined") {
-                                xml = xml.concat("\t\t\t<failure ")
-                                    .concat("type=\"" + methodScore.failure.asserter.constructor.name + "\" ")
-                                    .concat("message=\"" + methodScore.failure.message + "\" ")
-                                    .concat("></failure>\n");
-                            }
-
-                            if(typeof methodScore.exception !== "undefined") {
-                                xml = xml.concat("\t\t\t<error ")
-                                    .concat("type=\"" + methodScore.exception.name + "\" ")
-                                    .concat("message=\"" + methodScore.exception.message + "\" ")
-                                    .concat("></error>\n");
-                            }
-
-                            if(typeof methodScore.skipped !== "undefined") {
-                                xml = xml.concat("\t\t\t<skipped ")
-                                    .concat("type=\"" + methodScore.skipped.name + "\" ")
-                                    .concat(">" + methodScore.skipped.message + "</skipped>\n");
-                            }
-
-                            xml = xml.concat("\t\t</testcase>\n");
-                        }
-                    }
-
-                    xml = xml.concat("\t</testsuite>\n");
+                    this.addSuite(testsuites, test, runner.score.tests[test], suites);
                 }
             }
 
-            xml = xml.concat("</testsuites>\n");
-
-            return xml;
+            return this.end(testsuites).toString();
         }
     }
 );
@@ -151,7 +172,7 @@ xunit.prototype = extend(
 			</section>
 		</div>
 		<footer> 
-			<p>Report generated by <a>Covershot</a> on Mon May 27 2013 12:46:24 GMT+0200 (CEST).</p> 
+			<p>Report generated by <a>Covershot</a> on Sun Jun 16 2013 22:07:21 GMT+0200 (CEST).</p> 
 		</footer>
 		<script type="text/javascript">
       function getUrlVars() {
@@ -169,11 +190,11 @@ xunit.prototype = extend(
           
             $('td.covgutter').append('<div class="line number2 index1 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number3 index2 alt2">&nbsp;142&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number3 index2 alt2">&nbsp;149&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number4 index3 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number5 index4 alt2">&nbsp;142&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number5 index4 alt2">&nbsp;149&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number6 index5 alt2">&nbsp;&nbsp;</div>');
           
@@ -183,27 +204,27 @@ xunit.prototype = extend(
           
             $('td.covgutter').append('<div class="line number9 index8 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number10 index9 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number10 index9 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number11 index10 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number11 index10 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number12 index11 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number13 index12 alt2">&nbsp;142&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number13 index12 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number14 index13 alt2">&nbsp;142&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number14 index13 alt2">&nbsp;149&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number15 index14 alt2">&nbsp;142&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number15 index14 alt2">&nbsp;149&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number16 index15 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number16 index15 alt2">&nbsp;149&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number17 index16 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number18 index17 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number19 index18 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number19 index18 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number20 index19 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number20 index19 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number21 index20 alt2">&nbsp;&nbsp;</div>');
           
@@ -219,15 +240,15 @@ xunit.prototype = extend(
           
             $('td.covgutter').append('<div class="line number27 index26 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number28 index27 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number28 index27 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number29 index28 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number29 index28 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number30 index29 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number30 index29 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number31 index30 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number32 index31 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number32 index31 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number33 index32 alt2">&nbsp;&nbsp;</div>');
           
@@ -243,27 +264,27 @@ xunit.prototype = extend(
           
             $('td.covgutter').append('<div class="line number39 index38 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number40 index39 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number40 index39 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number41 index40 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number41 index40 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number42 index41 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number42 index41 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number43 index42 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number44 index43 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number45 index44 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number45 index44 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number46 index45 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number47 index46 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number47 index46 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number48 index47 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number49 index48 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number49 index48 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number50 index49 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number50 index49 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number51 index50 alt2">&nbsp;&nbsp;</div>');
           
@@ -273,47 +294,47 @@ xunit.prototype = extend(
           
             $('td.covgutter').append('<div class="line number54 index53 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number55 index54 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number55 index54 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number56 index55 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number57 index56 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number57 index56 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number58 index57 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number59 index58 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number60 index59 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number60 index59 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number61 index60 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number61 index60 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number62 index61 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number62 index61 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number63 index62 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number63 index62 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number64 index63 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number64 index63 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number65 index64 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number65 index64 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number66 index65 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number67 index66 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number68 index67 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number68 index67 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number69 index68 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number69 index68 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number70 index69 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number70 index69 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number71 index70 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number72 index71 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number72 index71 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number73 index72 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number74 index73 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number75 index74 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number75 index74 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number76 index75 alt2">&nbsp;&nbsp;</div>');
           
@@ -321,19 +342,19 @@ xunit.prototype = extend(
           
             $('td.covgutter').append('<div class="line number78 index77 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number79 index78 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number79 index78 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number80 index79 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number81 index80 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number81 index80 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number82 index81 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number83 index82 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number83 index82 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number84 index83 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number85 index84 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number85 index84 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number86 index85 alt2">&nbsp;&nbsp;</div>');
           
@@ -342,6 +363,48 @@ xunit.prototype = extend(
             $('td.covgutter').append('<div class="line number88 index87 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number89 index88 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number90 index89 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number91 index90 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number92 index91 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number93 index92 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number94 index93 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number95 index94 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number96 index95 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number97 index96 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number98 index97 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number99 index98 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number100 index99 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number101 index100 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number102 index101 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number103 index102 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number104 index103 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number105 index104 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number106 index105 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number107 index106 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number108 index107 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number109 index108 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number110 index109 alt2">&nbsp;&nbsp;</div>');
           
 
           var highlightStartLineNumber = getUrlVars()['highlightStartLineNumber'];
@@ -355,7 +418,7 @@ xunit.prototype = extend(
             }
           }
 
-          var green = $.parseJSON('["3","5","13","14","15"]');
+          var green = $.parseJSON('["3","5","14","15","16"]');
           $.each(green, function (index, value) {
             $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
             var bgColor = 'rgba(121, 252, 121, 0.62)';
@@ -367,7 +430,7 @@ xunit.prototype = extend(
             $('td.code div.container div.number' + value).css('cssText', 'background-color: ' + bgColor + ' !important');
           });
 
-          var red = $.parseJSON('["10","19","27","28","29","30","32","45","46","47","49","55","56","62","63","69","70","75","79","83","85"]');
+          var red = $.parseJSON('["11","20","27","40","41","42","46","50","56","57","60","61","64","65","68","72","81","93","98","99","100","102","106"]');
           $.each(red, function (index, value) {
             $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
             var bgColor = 'rgba(255, 0, 0, 0.32)';

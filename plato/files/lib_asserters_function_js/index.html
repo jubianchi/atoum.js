@@ -96,17 +96,17 @@ require("../..")(module);
 
 var extend = require("node.extend"),
     Locale = require("../locale"),
-    Asserter = require("../asserter"),
-    callback = module.exports = function callback(generator) {
+    Asserter = require("../asserters/object"),
+    func = module.exports = function func(generator) {
         Asserter.call(this, generator);
 
         this.locale = new Locale(require("../../resources/locale/asserters/function.json"));
     };
 
-callback.prototype = new Asserter();
-callback.prototype.constructor = callback;
-callback.prototype = extend(
-    callback.prototype,
+func.prototype = new Asserter();
+func.prototype.constructor = func;
+func.prototype = extend(
+    func.prototype,
     {
         check: function () {
             if(typeof this.value !== "function") {

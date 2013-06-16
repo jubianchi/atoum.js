@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">82.15</p>
+      <p class="stat">82.45</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">102</p>
+      <p class="stat">106</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">20.39</p>
+      <p class="stat">19.50</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.76</p>
+      <p class="stat">0.89</p>
     </div>
   </div>
 </div>
@@ -100,10 +100,11 @@ var fs = require("fs"),
     MockGenerator = require("../test/mock/generator"),
     Skipped = require("../test/method/exception"),
     callback = require("../test/callback"),
+    StubGenerator = require("../test/stub/generator"),
     asserters = path.resolve(path.dirname(module.filename), "..", "asserters"),
-    generator = module.exports = function generator(generator) {
-        this.mockGenerator = generator || new MockGenerator();
-
+    generator = module.exports = function generator(mockGenerator, stubGenerator) {
+        this.mockGenerator = mockGenerator || new MockGenerator();
+        this.stubGenerator = stubGenerator || new StubGenerator();
         this.reset();
     };
 
@@ -111,10 +112,12 @@ generator.prototype = {
     reset: function () {
         var self = this;
 
+        this.stubGenerator.reset();
         this.assertionsCount = 0;
         this.asserters = {};
         this.aliases = {};
         this
+            .addAlias("given", function () { return this; })
             .addAlias("if", function () { return this; })
             .addAlias("and", function () { return this; })
             .addAlias("then", function () { return this; })
@@ -133,10 +136,13 @@ generator.prototype = {
                 return callback(code);
             })
             .addAlias("void", function (value) { return this.undefined(value); })
+            .addAlias("stub", function (value) { return this.callback(value); })
+            .addAlias("generateStub", function(object, method, code) {
+                return self.stubGenerator.generate(object, method, code);
+            })
         ;
 
-        underscore.each(
-            fs.readdirSync(asserters),
+        fs.readdirSync(asserters).forEach(
             function (value) {
                 var filepath = fs.realpathSync(path.resolve(asserters, value));
 
@@ -185,8 +191,6 @@ generator.prototype = {
 
         return function (value) {
             var asserter = new generator.asserters[name](generator);
-
-            generator.assertionsCount += 1;
 
             return generator.injectInto(asserter).setWith(value);
         };

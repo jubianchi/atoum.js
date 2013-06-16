@@ -32,23 +32,23 @@
 	        <div class="holder">
 	          <ul class="summary">
 	            <li>
-	              <span class="coverageData">10</span>
+	              <span class="coverageData">13</span>
 	              <p>hits</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">9</span>
+	              <span class="coverageData">10</span>
 	              <p>misses</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">19</span>
+	              <span class="coverageData">23</span>
 	              <p>SLoC</p>
 	            </li>
 	            <li>
-	              <span class="coverageData">52.6%</span>
+	              <span class="coverageData">56.5%</span>
 	              <p>coverage </p>
 	            </li>
 	            <li>
-	              <svg width="45" height="45">  <defs>   <filter id="dropshadow" width="17.5" height="17.5">    <feGaussianBlur stdDeviation="4"/>   </filter>  </defs>  <path d="M22.5,22.5 L22.5,5 A17.5,17.5 0 1,1 19.620478510546363,39.76147027317704 z"    style="fill:#58E43E;    fill-opacity: 1;"/>  <path d="M22.5,22.5 L19.620478510546363,39.76147027317704 A17.5,17.5  0 0,1 22.5,5 z"    style="fill:#FF2E2E;    fill-opacity: 1;"/></svg>
+	              <svg width="45" height="45">  <defs>   <filter id="dropshadow" width="17.5" height="17.5">    <feGaussianBlur stdDeviation="4"/>   </filter>  </defs>  <path d="M22.5,22.5 L22.5,5 A17.5,17.5 0 1,1 15.52891852288308,38.55160499885906 z"    style="fill:#58E43E;    fill-opacity: 1;"/>  <path d="M22.5,22.5 L15.52891852288308,38.55160499885906 A17.5,17.5  0 0,1 22.5,5 z"    style="fill:#FF2E2E;    fill-opacity: 1;"/></svg>
 	            </li>
 	          </ul>
 	        </div>
@@ -66,10 +66,14 @@ var extend = require("node.extend"),
     util = require("util"),
     color = require("../../../color"),
     Field = require("../../../field"),
+    Prompt = require("../../../../cli/prompt"),
     exceptions = module.exports = function exceptions() {
         Field.call(this, [ "runnerStop" ]);
 
         this.locale.translations.loadTranslations(require("../../../../../resources/locale/report/fields/runner/tests/exceptions.json"));
+        this.firstPrompt = new Prompt(">", color.error);
+        this.secondPrompt = new Prompt(">>");
+        this.thirdPrompt = new Prompt(">>>", color.error);
     };
 
 exceptions.prototype = new Field();
@@ -77,45 +81,53 @@ exceptions.prototype.constructor = exceptions;
 exceptions.prototype = extend(
     exceptions.prototype,
     {
+        renderException: function (exception, method) {
+            return this.thirdPrompt.write(
+                util.format(
+                    "%s: %s: %s" + "\n%s",
+                    method,
+                    exception.name,
+                    exception.message,
+                    exception.stack
+                )
+            ).toString();
+        },
+
         toString: function () {
             var runner = this.value[0],
                 test,
                 method,
-                str = "",
-                render = function (exception, method) {
-                    return util.format(
-                        ">>> " + color.error("%s: %s: %s") + "\n%s\n",
-                        method,
-                        exception.name,
-                        exception.message,
-                        exception.stack
-                    );
-                };
+                str = "";
 
-            if(runner.score.exceptions > 0) {
-                str = "> "
-                    .concat(color.error(this.locale.__("There was $[1] exception:", "There were $[1] exceptions:", runner.score.exceptions)))
-                    .concat("\n");
+            if(runner.score.exceptions === 0) {
+                return str;
+            }
 
-                for(test in runner.score.tests) {
-                    if(runner.score.tests.hasOwnProperty(test)) {
-                        if(runner.score.tests[test].exceptions > 0) {
-                            str = str.concat(">> " + test + "\n");
+            for(test in runner.score.tests) {
+                if(runner.score.tests.hasOwnProperty(test)) {
+                    if(runner.score.tests[test].exceptions === 0) {
+                        continue;
+                    }
 
-                            for(method in runner.score.tests[test].methods) {
-                                if(typeof runner.score.tests[test].methods[method].exception !== "undefined") {
-                                    str = str.concat(render(
-                                        runner.score.tests[test].methods[method].exception,
-                                        method
-                                    ));
-                                }
-                            }
+                    str = str.concat(this.secondPrompt.write(test));
+
+                    for(method in runner.score.tests[test].methods) {
+                        if(typeof runner.score.tests[test].methods[method].exception !== "undefined") {
+                            str = str
+                                .concat(this.renderException(
+                                    runner.score.tests[test].methods[method].exception,
+                                    method
+                                )
+                            );
                         }
                     }
                 }
             }
 
-            return str;
+            return this.firstPrompt
+                .write(this.locale.__("There was $[1] exception:", "There were $[1] exceptions:", runner.score.exceptions))
+                .toString()
+                .concat(str);
         }
     }
 );
@@ -124,7 +136,7 @@ exceptions.prototype = extend(
 			</section>
 		</div>
 		<footer> 
-			<p>Report generated by <a>Covershot</a> on Mon May 27 2013 12:46:24 GMT+0200 (CEST).</p> 
+			<p>Report generated by <a>Covershot</a> on Sun Jun 16 2013 22:07:22 GMT+0200 (CEST).</p> 
 		</footer>
 		<script type="text/javascript">
       function getUrlVars() {
@@ -142,11 +154,11 @@ exceptions.prototype = extend(
           
             $('td.covgutter').append('<div class="line number2 index1 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number3 index2 alt2">&nbsp;142&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number3 index2 alt2">&nbsp;149&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number4 index3 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number5 index4 alt2">&nbsp;142&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number5 index4 alt2">&nbsp;149&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number6 index5 alt2">&nbsp;&nbsp;</div>');
           
@@ -156,29 +168,29 @@ exceptions.prototype = extend(
           
             $('td.covgutter').append('<div class="line number9 index8 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number10 index9 alt2">&nbsp;9&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number10 index9 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number11 index10 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number11 index10 alt2">&nbsp;9&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number12 index11 alt2">&nbsp;9&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number12 index11 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number13 index12 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number13 index12 alt2">&nbsp;9&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number14 index13 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number14 index13 alt2">&nbsp;9&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number15 index14 alt2">&nbsp;142&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number15 index14 alt2">&nbsp;9&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number16 index15 alt2">&nbsp;142&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number16 index15 alt2">&nbsp;9&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number17 index16 alt2">&nbsp;142&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number17 index16 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number18 index17 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number19 index18 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number19 index18 alt2">&nbsp;149&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number20 index19 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number20 index19 alt2">&nbsp;149&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number21 index20 alt2">&nbsp;8&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number21 index20 alt2">&nbsp;149&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number22 index21 alt2">&nbsp;&nbsp;</div>');
           
@@ -186,9 +198,9 @@ exceptions.prototype = extend(
           
             $('td.covgutter').append('<div class="line number24 index23 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number25 index24 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number25 index24 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number26 index25 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number26 index25 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number27 index26 alt2">&nbsp;&nbsp;</div>');
           
@@ -206,53 +218,53 @@ exceptions.prototype = extend(
           
             $('td.covgutter').append('<div class="line number34 index33 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number35 index34 alt2">&nbsp;8&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number35 index34 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number36 index35 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number36 index35 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number37 index36 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number37 index36 alt2">&nbsp;8&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number38 index37 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number39 index38 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number40 index39 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number40 index39 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number41 index40 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number41 index40 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number42 index41 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number42 index41 alt2">&nbsp;8&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number43 index42 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number43 index42 alt2">&nbsp;8&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number44 index43 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number45 index44 alt2">&nbsp;0&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number45 index44 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number46 index45 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number47 index46 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number48 index47 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number48 index47 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number49 index48 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number49 index48 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number50 index49 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number51 index50 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number52 index51 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number52 index51 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number53 index52 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number54 index53 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number54 index53 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number55 index54 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number55 index54 alt2">&nbsp;0&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number56 index55 alt2">&nbsp;&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number56 index55 alt2">&nbsp;0&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number57 index56 alt2">&nbsp;&nbsp;</div>');
           
-            $('td.covgutter').append('<div class="line number58 index57 alt2">&nbsp;8&nbsp;</div>');
+            $('td.covgutter').append('<div class="line number58 index57 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number59 index58 alt2">&nbsp;&nbsp;</div>');
           
@@ -261,6 +273,30 @@ exceptions.prototype = extend(
             $('td.covgutter').append('<div class="line number61 index60 alt2">&nbsp;&nbsp;</div>');
           
             $('td.covgutter').append('<div class="line number62 index61 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number63 index62 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number64 index63 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number65 index64 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number66 index65 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number67 index66 alt2">&nbsp;0&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number68 index67 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number69 index68 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number70 index69 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number71 index70 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number72 index71 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number73 index72 alt2">&nbsp;&nbsp;</div>');
+          
+            $('td.covgutter').append('<div class="line number74 index73 alt2">&nbsp;&nbsp;</div>');
           
 
           var highlightStartLineNumber = getUrlVars()['highlightStartLineNumber'];
@@ -274,7 +310,7 @@ exceptions.prototype = extend(
             }
           }
 
-          var green = $.parseJSON('["3","5","10","12","15","16","17","21","35","58"]');
+          var green = $.parseJSON('["3","5","11","13","14","15","16","19","20","21","37","42","43"]');
           $.each(green, function (index, value) {
             $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
             var bgColor = 'rgba(121, 252, 121, 0.62)';
@@ -286,7 +322,7 @@ exceptions.prototype = extend(
             $('td.code div.container div.number' + value).css('cssText', 'background-color: ' + bgColor + ' !important');
           });
 
-          var red = $.parseJSON('["26","36","40","41","42","43","45","46","47"]');
+          var red = $.parseJSON('["25","46","47","48","49","52","54","55","56","67"]');
           $.each(red, function (index, value) {
             $('td.gutter div.number' + value).html("<a id='line" + value + "' name='line" + value + "'></a>" + value);
             var bgColor = 'rgba(255, 0, 0, 0.32)';
