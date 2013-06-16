@@ -1,5 +1,28 @@
 # atoum.js - CHANGELOG
 
+## v0.0.8:
+* Add stubs to mock global objects methods
+
+```js
+var $ = require('jquery'),
+    stubbed = this.generateStub($, "ajax"),
+    object = {
+        method: function() {
+            $.ajax("http://foo.bar");
+        }
+    };
+
+this
+    .if(object.method())
+    .then()
+        .stub(stubbed).wasCalled().withArguments("http://foo.bar")
+;
+
+$.load.restore();
+```
+
+* Stubbed methods are restored after each test
+
 ## v0.0.7:
 * Define call history in mock controller
 
@@ -27,25 +50,4 @@ mockInstance.controller.override("method", true, 2);
 mockInstance.method(); // => foo
 mockInstance.method(); // => true
 mockInstance.method(); // => foo
-```
-
-## v0.0.8:
-* Add stubs to mock global objects methods
-
-```js
-var $ = require('jquery'),
-    stubbed = this.generateStub($, "ajax"),
-    object = {
-        method: function() {
-            $.ajax("http://foo.bar");
-        }
-    };
-
-this
-    .if(object.method())
-    .then()
-        .stub(stubbed).wasCalled().withArguments("http://foo.bar")
-;
-
-$.load.restore();
 ```
