@@ -17,7 +17,7 @@ var callback = require('../../lib/test/callback'),
                 .if(global[method] = original = callback())
                 .and(stub = callback(function() { return this; }))
                 .then()
-                    .callback(testedClass(global, method, stub))
+                    .callback(testedClass(global, method, stub)).isIdenticalTo(global[method])
                     .object(global[method]()).isIdenticalTo(global)
                     .callback(stub).wasCalled()
                     .callback(original).wasNotCalled()
