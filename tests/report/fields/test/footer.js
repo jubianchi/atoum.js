@@ -32,7 +32,6 @@ var util = require('util'),
                                 color.xterm(87)('=> ') + 'Memore usage: %s\n',
                                 util.inspect(run.usage.format('KB', 4).stat)
                             ))
-                            .concat('\n')
                     )
                 .if(run.duration = 5)
                 .then()
@@ -45,7 +44,6 @@ var util = require('util'),
                                 color.xterm(87)('=> ') + 'Memore usage: %s\n',
                                 util.inspect(run.usage.format('KB', 4).stat)
                             ))
-                            .concat('\n')
                     )
             ;
         }

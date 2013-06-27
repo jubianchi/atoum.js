@@ -1,4 +1,4 @@
-require('..')(module)
+require('..')(module);
 
 var util = require('util'),
     testedClass = require('../lib/asserter'),

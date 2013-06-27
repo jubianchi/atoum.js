@@ -23,7 +23,7 @@ var util = require('util'),
                 .and(object.value = [ { 'score': run } ])
                 .then()
                     .string(object.toString()).isEqualTo(
-                        util.format(
+                        '\n' + util.format(
                             '> ' + color.xterm(87)('Total test duration:' + '\x1b[0m %d second') + '\n',
                             Math.round(run.duration * 10000) / 10000
                         )
