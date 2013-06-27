@@ -1,5 +1,7 @@
 # atoum.js - CHANGELOG
 
+## v0.0.9:
+
 ## v0.0.8:
 * Add stubs to mock global objects methods
 
@@ -22,6 +24,8 @@ $.load.restore();
 ```
 
 * Stubbed methods are restored after each test
+* Add Grunt Task
+* Fix exit status code
 
 ## v0.0.7:
 * Define call history in mock controller
