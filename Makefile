@@ -52,11 +52,10 @@ doc-push: doc-commit
 	@cd doc && git push origin gh-pages:gh-pages
 	@git push origin master:master
 
-tag: doc-commit
+tag: doc-push
 	@test ! -z $(TAG) || (echo "Usage: make tag TAG=X.X.X" && exit 1)
 	@git tag v$(TAG)
-	@cd doc && git push origin gh-pages:gh-pages
-	@git push origin master:master --tags
+	@git push origin --tags
 	@npm publish
 	@sed -i "" ${SEDEXPR} ./package.json
 	@git add ./package.json
