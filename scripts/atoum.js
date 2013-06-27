@@ -8,7 +8,11 @@ var util = require("util"),
 
 try {
     var script = new Script();
-    script.run(process);
+    script.run(process, function(runner) {
+        if (runner.score.failedTests > 0) {
+            process.exit(1);
+        }
+    });
 } catch(exception) {
     process.stderr.write(util.format(
         color.red("[%s] %s\n%s\n"),
