@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">81.85</p>
+      <p class="stat">77.05</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">18</p>
+      <p class="stat">31</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">5.57</p>
+      <p class="stat">8.47</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.12</p>
+      <p class="stat">0.35</p>
     </div>
   </div>
 </div>
@@ -94,19 +94,32 @@
 
 require("../..")(module);
 
-var Light = require("./light"),
+var Report = require("../report"),
     fields = require("../report/fields"),
     cli = module.exports = function cli(output) {
-        Light.call(this, output);
+        Report.call(this, output);
 
         this
+            .addField(new fields.runner.atoum())
             .addField(new fields.runner.node())
+            .addField(new fields.runner.stat())
+            .addField(new fields.runner.result())
             .addField(new fields.test.header())
+            .addField(new fields.test.success())
+            .addField(new fields.test.skipped())
+            .addField(new fields.test.failure())
+            .addField(new fields.test.exception())
+            .addField(new fields.test.error())
             .addField(new fields.test.footer())
+            .addField(new fields.runner.tests.skipped())
+            .addField(new fields.runner.tests.failures())
+            .addField(new fields.runner.tests.exceptions())
+            .addField(new fields.runner.tests.errors())
+            .addField(new fields.runner.tests.outputs())
         ;
     };
 
-cli.prototype = new Light();
+cli.prototype = new Report();
 cli.prototype.constructor = cli;</textarea>
   </div>
 </div>
