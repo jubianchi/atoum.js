@@ -2,7 +2,7 @@
     "name": "atoum.js",
     "description": "The modern, simple and intuitive PHP 5.3+ unit testing framework, now for JS",
     "author": "Julien Bianchi <contact@jubianchi.fr>",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "repository" : {
         "type": "git",
         "url": "https://github.com/jubianchi/atoum.js.git"
