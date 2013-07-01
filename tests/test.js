@@ -37,11 +37,11 @@ var atoum = require('..')(module),
             this
                 .if(dispatcher = { emit: callback() })
                 .and(testClass = Math.random().toString(36).substring(7))
-                .and(testedClass.getMethods = function() { return []; })
                 .and(object = new testedClass(testClass, dispatcher))
+                .and(this.generateStub(object, 'getMethods', []))
                 .and(mockEngine = this.generateMock(Engine))
                 .and(engine = new mockEngine())
-                .and(engine.controller.override('run', function() {}))
+                .and(engine.controller.override('run'))
                 .then()
                     .object(object.run(engine)).isIdenticalTo(object)
                     .callback(dispatcher.emit).wasCalled()

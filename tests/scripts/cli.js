@@ -36,7 +36,7 @@ var Script = require("../../lib/script"),
                 .and(console.check = function() { return console; })
                 .and(console.showHelp = this.generateCallback())
                 .and(object = new testedClass(console))
-                .and(object.argv = function() {})
+                .and(this.generateStub(object, 'argv'))
                 .then()
                     .object(object.showHelp()).isIdenticalTo(object)
                     .callback(console.showHelp).wasCalled().withoutArgument()

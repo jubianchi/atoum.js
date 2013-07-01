@@ -16,7 +16,7 @@ var callback = require('../../../lib/test/callback'),
         },
 
         testGenerate: function() {
-            var global, method, otherMethod;
+            var object, global, method, otherMethod;
 
             this
                 .if(global = {})
@@ -31,6 +31,13 @@ var callback = require('../../../lib/test/callback'),
                 .then()
                     .callback(generator.generate(global, otherMethod)).isIdenticalTo(global[otherMethod])
                     .array(generator.stubs).isEqualTo([global[method], global[otherMethod]])
+                .if(global = function global() {})
+                .and(global.prototype[method] = callback())
+                .and(global.prototype[otherMethod] = callback())
+                .and(object = new global())
+                .then()
+                    .callback(generator.generate(object, method)).isIdenticalTo(object[method])
+                    .callback(generator.generate(object, otherMethod)).isIdenticalTo(object[otherMethod])
             ;
         },
 
