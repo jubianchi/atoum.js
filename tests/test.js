@@ -1,5 +1,8 @@
 var atoum = require('..')(module),
     testedClass = require('../lib/test'),
+    Engine = require('../lib/test/engines/inline'),
+    Dispatcher = require("events").EventEmitter,
+    callback = require('../lib/test/callback'),
     unit = module.exports = {
         testClass: function() {
             var object, testClass;
@@ -18,13 +21,32 @@ var atoum = require('..')(module),
 
             this
                 .if(testClass = Math.random().toString(36).substring(7))
-                .if(object = new testedClass(testClass))
+                .and(object = new testedClass(testClass))
                 .then()
                     .bool(object.coverage).isFalse()
                     .object(object.setCoverage(true)).isIdenticalTo(object)
                     .bool(object.coverage).isTrue()
                     .object(object.setCoverage(false)).isIdenticalTo(object)
                     .bool(object.coverage).isFalse()
+            ;
+        },
+
+        testRun: function() {
+            var object, testClass, mockEngine, engine, dispatcher;
+
+            this
+                .if(dispatcher = { emit: callback() })
+                .and(testClass = Math.random().toString(36).substring(7))
+                .and(testedClass.getMethods = function() { return []; })
+                .and(object = new testedClass(testClass, dispatcher))
+                .and(mockEngine = this.generateMock(Engine))
+                .and(engine = new mockEngine())
+                .and(engine.controller.override('run', function() {}))
+                .then()
+                    .object(object.run(engine)).isIdenticalTo(object)
+                    .callback(dispatcher.emit).wasCalled()
+                        .withArguments('testStart', object)
+                        .withArguments('testStop', object)
             ;
         }
     };
