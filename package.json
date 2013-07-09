@@ -8,10 +8,10 @@
         "url": "https://github.com/jubianchi/atoum.js.git"
     },
     "dependencies": {
-        "microtime-x": "0.1.0",
-        "node.extend": "1.0.0",
+        "microtime-x": "0.1.1",
+        "node.extend": "1.0.7",
         "underscore": "1.4.4",
-        "optimist": "0.3.7",
+        "optimist": "0.6.0",
         "cli-color": "0.2.2",
         "diff": "1.0.4",
         "covershot": "0.1.1",

@@ -1,4 +1,6 @@
-# atoum.js [![Build Status](https://travis-ci.org/jubianchi/atoum.js.png?branch=master)](https://travis-ci.org/jubianchi/atoum.js)
+# atoum.js
+[![Build Status](https://travis-ci.org/jubianchi/atoum.js.png?branch=master)](https://travis-ci.org/jubianchi/atoum.js)
+[![Dependency Status](https://www.versioneye.com/user/projects/51beb211143e1a000200496c/badge.png)](https://www.versioneye.com/user/projects/51beb211143e1a000200496c)
 
 The modern, simple and intuitive PHP 5.3+ unit testing framework, now for JS
 
