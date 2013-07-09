@@ -88,5 +88,65 @@ var atoum = require('../../..')(module),
                     .object(object.addOutput(otherOutput)).isIdenticalTo(object)
                     .string(object.output).isEqualTo(output + otherOutput)
             ;
+        },
+
+        testToString: function() {
+            var object, exception;
+
+            this
+                .if(object = new testedClass())
+                .then()
+                    .string(object.toString()).isEqualTo("{" +
+                        "\"duration\":0," +
+                        "\"usage\":{" +
+                            "\"unit\":{" +
+                                "\"B\":1," +
+                                "\"KB\":1024," +
+                                "\"MB\":1048576," +
+                                "\"GB\":1073741824" +
+                            "}," +
+                            "\"stat\":{" +
+                                "\"rss\":0," +
+                                "\"heapTotal\":0," +
+                                "\"heapUsed\":0" +
+                            "}" +
+                        "}," +
+                        "\"coverage\":{" +
+                            "\"files\":{}" +
+                        "}," +
+                        "\"passed\":true," +
+                        "\"assertions\":0" +
+                    "}")
+                .if(exception = new Error(Math.random().toString(36).substring(7)))
+                .and(exception.stack = Math.random().toString(36).substring(7))
+                .and(object.addException(exception))
+                .then()
+                    .string(object.toString()).isEqualTo("{" +
+                        "\"duration\":0," +
+                        "\"usage\":{" +
+                            "\"unit\":{" +
+                                "\"B\":1," +
+                                "\"KB\":1024," +
+                                "\"MB\":1048576," +
+                                "\"GB\":1073741824" +
+                            "}," +
+                            "\"stat\":{" +
+                                "\"rss\":0," +
+                                "\"heapTotal\":0," +
+                                "\"heapUsed\":0" +
+                            "}" +
+                        "}," +
+                        "\"coverage\":{" +
+                            "\"files\":{}" +
+                        "}," +
+                        "\"passed\":false," +
+                        "\"assertions\":0," +
+                        "\"exception\":{" +
+                            "\"name\":\"" + exception.name + "\"," +
+                            "\"message\":\"" + exception.message + "\"," +
+                            "\"stack\":\"" + exception.stack + "\"" +
+                        "}" +
+                    "}")
+            ;
         }
     };

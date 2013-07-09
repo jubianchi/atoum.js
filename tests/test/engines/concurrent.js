@@ -165,7 +165,8 @@ var callback = require('../../../lib/test/callback'),
                     .string(object.getTestMethodCode(method, req)).isEqualTo(
                         "var atoum = require(\"../../..\")(module),\n"
                             .concat("    Generator = require(\"../../asserter/generator\"),\n")
-                            .concat("    Test = require(\"../../test\");\n")
+                            .concat("    Test = require(\"../../test\"),\n")
+                            .concat("    serializer = require(\"../../serializer\");\n")
                             .concat("var generator = new Generator(),\n")
                             .concat("    test = new Test(\"" + method.test.class + "\"),\n")
                             .concat("    method = test.getMethods(\"" +  method.name + "\").pop();\n")
@@ -173,7 +174,7 @@ var callback = require('../../../lib/test/callback'),
                             .concat("generator.injectInto(test);\n")
                             .concat("method.run(global);\n")
                             .concat("method.score.assertions = this.generator.assertionsCount;\n")
-                            .concat("process.stdout.write(JSON.stringify({\n")
+                            .concat("process.stdout.write(new serializer().json({\n")
                             .concat("    test: \"" + method.test.class + "\",\n")
                             .concat("    method: \"" +  method.name + "\",\n")
                             .concat("    score: test.score.addMethod(method)\n")
@@ -193,7 +194,8 @@ var callback = require('../../../lib/test/callback'),
                     .string(object.getTestMethodCode(method, req)).isEqualTo(
                         "var atoum = require(\"../../..\")(module),\n"
                             .concat("    Generator = require(\"../../asserter/generator\"),\n")
-                            .concat("    Test = require(\"../../test\");\n")
+                            .concat("    Test = require(\"../../test\"),\n")
+                            .concat("    serializer = require(\"../../serializer\");\n")
                             .concat("\n")
                             .concat("var Instrument = require(\"../../includer/instrument\");\n")
                             .concat("atoum.includer = new Instrument(\"" + method.test.coveredDirectory + "\");\n")
@@ -211,7 +213,7 @@ var callback = require('../../../lib/test/callback'),
                             .concat("generator.injectInto(test);\n")
                             .concat("method.run(global);\n")
                             .concat("method.score.assertions = this.generator.assertionsCount;\n")
-                            .concat("process.stdout.write(JSON.stringify({\n")
+                            .concat("process.stdout.write(new serializer().json({\n")
                             .concat("    test: \"" + method.test.class + "\",\n")
                             .concat("    method: \"" +  method.name + "\",\n")
                             .concat("    score: test.score.addMethod(method)\n")
