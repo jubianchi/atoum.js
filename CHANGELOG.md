@@ -22,6 +22,32 @@ var unit = module.exports = {
 };
 ```
 
+* Grunt task now correctly handles targets
+* Grunt task can merge targets an run them
+
+```js
+grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+
+    atoum: {
+        inline: {
+            inline: true
+        },
+        asserters: {
+            directory: "tests/asserters"
+        }
+    }
+});
+```
+
+```sh
+$ grunt atoum                  # Will run the atoum task with default settings
+$ grunt atoum:asserters        # Will only run the tests/asserters subset with the concurrent engine (which is the default one)
+$ grunt atoum:inline:asserters # Will only run the tests/asserters subset with the inline engine
+```
+
+* Override default targets settings by defining a ```default``` target
+
 ## v0.0.8:
 * Add stubs to mock global objects methods
 
