@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">68.94</p>
+      <p class="stat">66.20</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">50</p>
+      <p class="stat">94</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">20.82</p>
+      <p class="stat">33.51</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.38</p>
+      <p class="stat">0.78</p>
     </div>
   </div>
 </div>
@@ -96,38 +96,82 @@ require("..")(module);
 
 var Score = require("./test/score"),
     Method = require("./test/method"),
+    Dispatcher = require("events").EventEmitter,
     test = module.exports = function test(testClass, dispatcher) {
         this.class = testClass;
-        this.dispatcher = dispatcher;
+        this.dispatcher = dispatcher || new Dispatcher();
         this.coverage = false;
+        this.score = new Score();
+        this.engines = {};
+        this.defaultEngine = "concurrent";
 
         this.reset();
     };
 
 test.prototype = {
     reset: function() {
-        this.score = new Score();
+        this.score.reset();
 
         return this;
     },
 
-    getMethods: function (filter) {
-        var methods = [];
+    setDefaultEngine: function(engine) {
+        this.defaultEngine = engine;
+
+        return this;
+    },
+
+    run: function(filter) {
+        this.dispatcher.emit("testStart", this);
 
         try {
-            var unit = require(this.class),
-                name;
+            var methods = this.getMethods(filter || []),
+                remain = methods.length,
+                self = this;
 
-            for(name in unit) {
-                if(unit.hasOwnProperty(name) && /^test[A-Z_\-]/.exec(name) && typeof unit[name] === "function" && (filter.length === 0 || filter.indexOf(name) > -1)) {
-                    methods.push(new Method(name, this, unit[name]));
-                }
+            this.reset();
+
+            if(remain === 0) {
+                this.dispatcher.emit("testStop", this);
+            }
+
+            while(methods.length > 0) {
+                var method = methods.shift(),
+                    engine = new (require("./test/engines/" + (method.engine || this.defaultEngine)))(this.dispatcher);
+
+                engine.run(this, method, function() {
+                    remain -= 1;
+
+                    if(remain === 0) {
+                        self.dispatcher.emit("testStop", self);
+                    }
+                });
             }
         } catch(exception) {
             exception.stack = exception.stack.split("\n").slice(1).join("\n");
             this.score.addError(exception);
 
-            this.dispatcher.emit("testError", test);
+            this.dispatcher.emit("testError", this);
+            this.dispatcher.emit("testStop", this);
+        }
+
+        return this;
+    },
+
+    getMethods: function (filter) {
+        var methods = [],
+            engines = [];
+
+        var unit = require(this.class);
+
+        if(unit.hasOwnProperty("getEngines")) {
+            engines = unit.getEngines() || {};
+        }
+
+        for(var name in unit) {
+            if(unit.hasOwnProperty(name) && /^test[A-Z_\-]/.exec(name) && typeof unit[name] === "function" && (filter.length === 0 || filter.indexOf(name) > -1)) {
+                methods.push(new Method(name, this, unit[name], engines[name] || this.defaultEngine));
+            }
         }
 
         return methods;
