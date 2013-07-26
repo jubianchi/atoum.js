@@ -13,6 +13,7 @@ var callback = require('../../../lib/test/callback'),
 
             }
         },
+
         testClass: function() {
             var object;
 
@@ -23,7 +24,7 @@ var callback = require('../../../lib/test/callback'),
         },
 
         testGenerate: function() {
-            var object, global, method, otherMethod;
+            var object, global, method, otherMethod, generator;
 
             this
                 .if(global = {})
@@ -49,7 +50,7 @@ var callback = require('../../../lib/test/callback'),
         },
 
         testReset: function() {
-            var global, method, otherMethod, stub, otherStub;
+            var global, method, otherMethod, stub, otherStub, generator;
 
             this
                 .if(global = {})
@@ -79,6 +80,8 @@ var callback = require('../../../lib/test/callback'),
         },
 
         testStubGlobalReset: function() {
-            this.string(globalObject.method()).isEqualTo('method');
+            this
+                .string(globalObject.method()).isEqualTo('method')
+            ;
         }
     };
