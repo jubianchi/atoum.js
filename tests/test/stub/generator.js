@@ -6,6 +6,13 @@ var callback = require('../../../lib/test/callback'),
         method: function() { return "method"; }
     },
     unit = module.exports = {
+        getEngines: function() {
+            return {
+                testStubGlobal: "inline",
+                testStubGlobalReset: "inline"
+
+            }
+        },
         testClass: function() {
             var object;
 
@@ -74,5 +81,4 @@ var callback = require('../../../lib/test/callback'),
         testStubGlobalReset: function() {
             this.string(globalObject.method()).isEqualTo('method');
         }
-
     };

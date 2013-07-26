@@ -1,6 +1,26 @@
 # atoum.js - CHANGELOG
 
 ## v0.0.9:
+* Test engine selection at a test method level
+
+```js
+var unit = module.exports = {
+    getEngines: function() {
+        return {
+            testAMethod: "inline",
+            testAnotherMethod: "inline"
+        }
+    },
+
+    testAMethod: function() {
+        //...
+    },
+
+    testAnotherMethod: function() {
+        //...
+    }
+};
+```
 
 ## v0.0.8:
 * Add stubs to mock global objects methods
