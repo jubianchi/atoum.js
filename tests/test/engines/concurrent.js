@@ -21,7 +21,7 @@ var callback = require('../../../lib/test/callback'),
 
             this
                 .if(dispatcher = { emit: callback() })
-                .and(test = new Test('test'))
+                .and(test = new Test('test', dispatcher, function() {}))
                 .and(test.getMethods = function() { return []; })
                 .and(method = new Method('method', test, callback()))
                 .and(child = {

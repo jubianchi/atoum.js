@@ -10,7 +10,7 @@ var atoum = require('..')(module),
             this
                 .if(testClass = Math.random().toString(36).substring(7))
                 .then()
-                    .object(object = new testedClass(testClass))
+                    .object(object = new testedClass(testClass, null, function() {}))
                     .string(object.class).isEqualTo(testClass)
                     .bool(object.coverage).isFalse()
             ;
@@ -21,7 +21,7 @@ var atoum = require('..')(module),
 
             this
                 .if(testClass = Math.random().toString(36).substring(7))
-                .and(object = new testedClass(testClass))
+                .and(object = new testedClass(testClass, null, function() {}))
                 .then()
                     .bool(object.coverage).isFalse()
                     .object(object.setCoverage(true)).isIdenticalTo(object)
@@ -32,12 +32,12 @@ var atoum = require('..')(module),
         },
 
         testRun: function() {
-            var object, testClass, mockEngine, engine, dispatcher;
+            var object, testClass, mockEngine, engine, dispatcher, testClassCode;
 
             this
                 .if(dispatcher = { emit: callback() })
                 .and(testClass = Math.random().toString(36).substring(7))
-                .and(object = new testedClass(testClass, dispatcher))
+                .and(object = new testedClass(testClass, dispatcher, function() { return {}; }))
                 .and(this.generateStub(object, 'getMethods', []))
                 .and(mockEngine = this.generateMock(Engine))
                 .and(engine = new mockEngine())
@@ -47,6 +47,15 @@ var atoum = require('..')(module),
                     .callback(dispatcher.emit).wasCalled()
                         .withArguments('testStart', object)
                         .withArguments('testStop', object)
+                .if(testClassCode = {
+                    setUp: callback(),
+                    tearDown: callback()
+                })
+                .and(object = new testedClass(testClass, null, function() { return testClassCode; }))
+                .then()
+                    .object(object.run(engine)).isIdenticalTo(object)
+                    .callback(testClassCode.setUp).wasCalled()
+                    .callback(testClassCode.tearDown).wasCalled()
             ;
         }
     };

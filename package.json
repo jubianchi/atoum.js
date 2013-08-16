@@ -19,7 +19,8 @@
         "localize": "0.4.4",
         "objectdiff": "~1.0.0",
         "xmlbuilder": "~0.4.2",
-        "grunt": "~0.4.1"
+        "grunt": "~0.4.1",
+        "jsdom": "~0.6.5"
     },
     "engine": "node >= 0.10.0",
     "scripts": {
