@@ -1,5 +1,32 @@
 # atoum.js - CHANGELOG
 
+## v0.0.10:
+* jsdom integration as a new engine
+
+```js
+var Dom = require("atoum.js/lib/test/engines/dom"),
+    unit = module.exports = {
+        setUp: function() {
+            this.setDefaultEngine(
+                new Dom()
+                    .load("/path/to/html/fixture.html")
+                    .addScript("/path/to/jquery.js")
+            );
+        },
+
+        testAMethod: function(global, window) {
+            var $elem;
+
+            this
+                .if(global.$ = window.$)
+                .and($elem = window.$("#elem"))
+                .then()
+                    //...
+                    .bool($elem.hasClass(".a-class"))).isTrue()
+        }
+    };
+```
+
 ## v0.0.9:
 * Test engine selection at a test method level
 
