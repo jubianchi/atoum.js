@@ -27,6 +27,8 @@ var Dom = require("atoum.js/lib/test/engines/dom"),
     };
 ```
 
+* add an `include` method to test non-node-compliant modules (thanks @marmotz)
+
 ## v0.0.9:
 * Test engine selection at a test method level
 
