@@ -13,7 +13,7 @@
   <![endif]-->
 
   <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/bootstrap-3.0.0-wip.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
   <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
   <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
   <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
@@ -26,8 +26,8 @@
 
 <div class="navbar navbar-fixed-top">
   <div class="container">
-    <a class="brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
-    <ul class="nav">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
       <li>
         <a href="../../index.html">Report Home</a>
       </li>
@@ -43,29 +43,29 @@
 
 <div class="container aggregate-stats">
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
       <p class="stat">55.28</p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
       <p class="stat">142</p>
     </div>
   </div>
   <div class="row historical">
-    <div class="span6">
+    <div class="col-md-6">
       <p id="chart_historical_maint" class="chart"></p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <p id="chart_historical_sloc" class="chart"></p>
     </div>
   </div>
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
       <p class="stat">53.62</p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
       <p class="stat">1.44</p>
     </div>
@@ -77,11 +77,11 @@
     <h2 class="header">Function weight</h2>
   </div>
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
       <div id="fn-by-complexity" class="stat"></div>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
       <div id="fn-by-sloc" class="stat"></div>
     </div>
@@ -90,13 +90,13 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="span12">"use strict";
+    <textarea id="file-source" class="col-md-12">&quot;use strict&quot;;
 
-require("../../..")(module);
+require(&quot;../../..&quot;)(module);
 
-var extend = require("node.extend"),
-    color = require("cli-color"),
-    Failure = require("../exception"),
+var extend = require(&quot;node.extend&quot;),
+    color = require(&quot;cli-color&quot;),
+    Failure = require(&quot;../exception&quot;),
     exception = module.exports = function exception(message, asserter, reference, data) {
         Failure.apply(this, [ message, asserter ]);
 
@@ -110,26 +110,26 @@ exception.prototype = extend(
     exception.prototype,
     {
         header: function(gutter) {
-            var ref = "R",
-                data = "D";
+            var ref = &quot;R&quot;,
+                data = &quot;D&quot;;
 
             if(gutter) {
-                while(ref.toString().length < gutter) {
-                    ref = ref.concat(" ");
+                while(ref.toString().length &lt; gutter) {
+                    ref = ref.concat(&quot; &quot;);
                 }
 
-                while(data.toString().length < gutter) {
-                    data = data.concat(" ");
+                while(data.toString().length &lt; gutter) {
+                    data = data.concat(&quot; &quot;);
                 }
             }
 
-            return color.bgRed.white(" - Reference (" + this.reference.length + ")")
-                .concat(" ")
-                .concat(color.bgGreen.white(" + Data (" + this.data.length + ")"))
-                .concat("\n\n")
-                .concat(color.bgRed.white(" " + ref + " "))
-                .concat(color.bgGreen.white(" " + data + " "))
-                .concat("\n")
+            return color.bgRed.white(&quot; - Reference (&quot; + this.reference.length + &quot;)&quot;)
+                .concat(&quot; &quot;)
+                .concat(color.bgGreen.white(&quot; + Data (&quot; + this.data.length + &quot;)&quot;))
+                .concat(&quot;\n\n&quot;)
+                .concat(color.bgRed.white(&quot; &quot; + ref + &quot; &quot;))
+                .concat(color.bgGreen.white(&quot; &quot; + data + &quot; &quot;))
+                .concat(&quot;\n&quot;)
             ;
         },
 
@@ -139,20 +139,20 @@ exception.prototype = extend(
             num = num.toString();
             gutter = gutter || num.toString().length;
 
-            while(num.length < gutter) {
-                num = num.concat(" ");
+            while(num.length &lt; gutter) {
+                num = num.concat(&quot; &quot;);
             }
 
-            indent = new Array(gutter + 3).join(" ");
+            indent = new Array(gutter + 3).join(&quot; &quot;);
 
             switch(type) {
-                case "ref":
-                    str = " ".concat(num).concat(" ").concat(indent);
+                case &quot;ref&quot;:
+                    str = &quot; &quot;.concat(num).concat(&quot; &quot;).concat(indent);
                     colorize = color.bgRed.white;
                     break;
 
-                case "data":
-                    str = (indent || "") + " " + num + " ";
+                case &quot;data&quot;:
+                    str = (indent || &quot;&quot;) + &quot; &quot; + num + &quot; &quot;;
                     colorize = color.bgGreen.white;
                     break;
 
@@ -160,28 +160,28 @@ exception.prototype = extend(
                     type = type || num;
                     type = type.toString();
 
-                    while(type.length < gutter) {
-                        type = type.concat(" ");
+                    while(type.length &lt; gutter) {
+                        type = type.concat(&quot; &quot;);
                     }
 
-                    str = " " + num + "  " + type + " ";
+                    str = &quot; &quot; + num + &quot;  &quot; + type + &quot; &quot;;
                     colorize = function(v) { return v; };
             }
 
             return color.bgXterm(238).white(str)
-                .concat(" ")
+                .concat(&quot; &quot;)
                 .concat(colorize(value))
-                .concat("\n");
+                .concat(&quot;\n&quot;);
         },
 
         toString: function() {
-            var diff = require("diff").diffLines(this.data, this.reference),
-                str = "",
+            var diff = require(&quot;diff&quot;).diffLines(this.data, this.reference),
+                str = &quot;&quot;,
                 expectedLineNum = 0,
                 actualLineNum = 0,
                 gutter = Math.max(
-                    this.data.split("\n").length,
-                    this.reference.split("\n").length
+                    this.data.split(&quot;\n&quot;).length,
+                    this.reference.split(&quot;\n&quot;).length
                 ).toString().length;
 
             str = str.concat(this.header(gutter));
@@ -189,24 +189,24 @@ exception.prototype = extend(
             var dcrlf = false,
                 rcrlf = false;
 
-            while(diff.length > 0) {
+            while(diff.length &gt; 0) {
                 var value = diff.shift(),
                     crlf = !!value.value.match(/\n$/);
 
-                value.value = value.value.replace("\t", "    ").replace(/^\n|\n$/, "").split("\n");
+                value.value = value.value.replace(&quot;\t&quot;, &quot;    &quot;).replace(/^\n|\n$/, &quot;&quot;).split(&quot;\n&quot;);
 
-                while(value.value.length > 0) {
+                while(value.value.length &gt; 0) {
                     var line = value.value.shift();
 
                     switch(true) {
                         case value.added:
                             rcrlf = crlf;
-                            str = str.concat(this.line(expectedLineNum += 1, line, "ref", gutter));
+                            str = str.concat(this.line(expectedLineNum += 1, line, &quot;ref&quot;, gutter));
                             break;
 
                         case value.removed:
                             dcrlf = crlf;
-                            str = str.concat(this.line(actualLineNum += 1, line, "data", gutter));
+                            str = str.concat(this.line(actualLineNum += 1, line, &quot;data&quot;, gutter));
                             break;
 
                         default:
@@ -216,19 +216,19 @@ exception.prototype = extend(
                 }
             }
 
-            if(rcrlf && dcrlf) {
-                str = str.concat(this.line(expectedLineNum + 1, "", actualLineNum + 1, gutter));
+            if(rcrlf &amp;&amp; dcrlf) {
+                str = str.concat(this.line(expectedLineNum + 1, &quot;&quot;, actualLineNum + 1, gutter));
             } else {
                 if(rcrlf) {
-                    str = str.concat(this.line(expectedLineNum + 1, "", "ref", gutter));
+                    str = str.concat(this.line(expectedLineNum + 1, &quot;&quot;, &quot;ref&quot;, gutter));
                 }
 
                 if(dcrlf) {
-                    str = str.concat(this.line(actualLineNum + 1, "", "data", gutter));
+                    str = str.concat(this.line(actualLineNum + 1, &quot;&quot;, &quot;data&quot;, gutter));
                 }
             }
 
-            return this.message.concat("\n").concat(str);
+            return this.message.concat(&quot;\n&quot;).concat(str);
         }
     }
 );</textarea>

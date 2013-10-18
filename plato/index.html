@@ -16,7 +16,7 @@
     var __options = {"title":"atoum.js source analysis","flags":{"complexity":{"logicalor":true,"switchcase":true,"forin":false,"trycatch":false,"newmi":true},"jshint":{"globals":{},"options":{"curly":true,"eqeqeq":true,"forin":true,"immed":true,"indent":4,"latedef":true,"newcap":false,"noarg":true,"nonew":true,"plusplus":true,"quotmark":"double","undef":true,"unused":true,"strict":true,"node":true}}}}
   </script>
 
-  <link href="assets/css/vendor/bootstrap-3.0.0-wip.css" rel="stylesheet">
+  <link href="assets/css/vendor/bootstrap.css" rel="stylesheet">
   <link href="assets/css/vendor/font-awesome.css" rel="stylesheet">
   <link href="assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
   <link href="assets/css/vendor/morris.css" rel="stylesheet">
@@ -28,8 +28,8 @@
 
 <div class="navbar navbar-fixed-top">
   <div class="container">
-    <a class="brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
-    <ul class="nav">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
       <li class="active">
         <a href="index.html">Report Home</a>
       </li>
@@ -45,25 +45,25 @@
 
 <div class="container aggregate-stats">
   <div class="row">
-    <h1 class="span12">Summary</h1>
+    <h1 class="col-md-12">Summary</h1>
   </div>
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Total/Average Lines <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code" data-original-title="SLOC"></i></h2>
-      <p class="stat">3952 / 54</p>
+      <p class="stat">4105 / 55</p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Average Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">74.85</p>
+      <p class="stat">74.76</p>
     </div>
   </div>
 </div>
 <div class="container historical">
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <div id="chart_historical_sloc" class="chart js-chart"></div>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <div id="chart_historical_maint" class="chart js-chart"></div>
     </div>
   </div>
@@ -72,822 +72,1008 @@
 
 <div class="container overview">
   <div class="row">
-    <h2 class="span12">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-    <div class="span12"><div id='chart_maintainability' class='chart js-chart'></div></div>
+    <h2 class="col-md-12">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+    <div class="col-md-12"><div id='chart_maintainability' class='chart js-chart'></div></div>
   </div>
   <div class="row">
-    <h2 class="span12">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code" data-original-title="SLOC"></i></h2>
-    <div class="span12"><div id='chart_sloc' class='chart js-chart'></div></div>
+    <h2 class="col-md-12">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code" data-original-title="SLOC"></i></h2>
+    <div class="col-md-12"><div id='chart_sloc' class='chart js-chart'></div></div>
   </div>
   <div class="row">
-    <h2 class="span12">Estimated errors in implementation <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-    <div class="span12"><div id='chart_bugs' class='chart js-chart'></div></div>
+    <h2 class="col-md-12">Estimated errors in implementation <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+    <div class="col-md-12"><div id='chart_bugs' class='chart js-chart'></div></div>
   </div>
   
   <div class="row">
-    <h2 class="span12">Lint errors</h2>
-    <div class="span12"><div id='chart_lint' class='chart js-chart'></div></div>
+    <h2 class="col-md-12">Lint errors</h2>
+    <div class="col-md-12"><div id='chart_lint' class='chart js-chart'></div></div>
   </div>
   
 </div>
 
 <div class="container">
   <div class="row">
-    <h1 class="span12">Files</h1>
+    <h1 class="col-md-12">Files</h1>
   </div>
+
+  <div class="row">
+    <div class="span12 group-header">
+      <div class="btn-group">
+        <button type="button" id="button-complexity" class="btn btn-default complexity">complexity</button>
+        <button type="button" id="button-sloc" class="btn btn-default sloc">sloc</button>
+        <button type="button" id="button-bugs" class="btn btn-default bugs">est errors</button>
+        <button type="button" id="button-lint" class="btn btn-default lint">lint errors</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    &nbsp;
+  </div>
+
   <div class="row">
     <ul class="file-list list-unstyled">
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserter_callback_exception_js/index.html">lib/asserter/callback/exception.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserter_callback_exception_js/index.html">lib/asserter/callback/exception.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="9"
               data-sloc="63"
               data-bugs="0.55"
               data-complexity="8"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserter_exception_js/index.html">lib/asserter/exception.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserter_exception_js/index.html">lib/asserter/exception.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="21"
               data-bugs="0.16"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserter_generator_js/index.html">lib/asserter/generator.js</a></span>
-        <span class="span8 file-chart js-file-chart"
-              data-lint="1"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserter_generator_js/index.html">lib/asserter/generator.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="0"
               data-sloc="110"
               data-bugs="0.92"
               data-complexity="5"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserter_object_exception_js/index.html">lib/asserter/object/exception.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserter_object_exception_js/index.html">lib/asserter/object/exception.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="15"
               data-sloc="77"
               data-bugs="1.04"
               data-complexity="11"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserter_string_exception_js/index.html">lib/asserter/string/exception.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserter_string_exception_js/index.html">lib/asserter/string/exception.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="27"
               data-sloc="142"
               data-bugs="1.44"
               data-complexity="18"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserter_js/index.html">lib/asserter.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserter_js/index.html">lib/asserter.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="43"
               data-bugs="0.25"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_array_js/index.html">lib/asserters/array.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_array_js/index.html">lib/asserters/array.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="34"
               data-bugs="0.25"
               data-complexity="3"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_bool_js/index.html">lib/asserters/bool.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_bool_js/index.html">lib/asserters/bool.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="34"
               data-bugs="0.21"
               data-complexity="2"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_callback_js/index.html">lib/asserters/callback.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_callback_js/index.html">lib/asserters/callback.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="1"
               data-sloc="128"
               data-bugs="0.91"
               data-complexity="13"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_error_js/index.html">lib/asserters/error.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_error_js/index.html">lib/asserters/error.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="54"
               data-bugs="0.37"
               data-complexity="5"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_function_js/index.html">lib/asserters/function.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_function_js/index.html">lib/asserters/function.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="43"
               data-bugs="0.30"
               data-complexity="4"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_mock_js/index.html">lib/asserters/mock.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_mock_js/index.html">lib/asserters/mock.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="35"
               data-bugs="0.26"
               data-complexity="3"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_number_js/index.html">lib/asserters/number.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_number_js/index.html">lib/asserters/number.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="26"
               data-bugs="0.17"
               data-complexity="2"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_object_js/index.html">lib/asserters/object.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_object_js/index.html">lib/asserters/object.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="16"
               data-sloc="175"
               data-bugs="1.52"
               data-complexity="22"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_string_js/index.html">lib/asserters/string.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_string_js/index.html">lib/asserters/string.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="1"
               data-sloc="85"
               data-bugs="0.71"
               data-complexity="6"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_undefined_js/index.html">lib/asserters/undefined.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_undefined_js/index.html">lib/asserters/undefined.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="3"
               data-sloc="27"
               data-bugs="0.18"
               data-complexity="2"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_asserters_variable_js/index.html">lib/asserters/variable.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_asserters_variable_js/index.html">lib/asserters/variable.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="4"
               data-sloc="91"
               data-bugs="0.68"
               data-complexity="10"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_cli_prompt_js/index.html">lib/cli/prompt.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_cli_prompt_js/index.html">lib/cli/prompt.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="40"
               data-bugs="0.23"
               data-complexity="4"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_includer_instrument_js/index.html">lib/includer/instrument.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_includer_instrument_js/index.html">lib/includer/instrument.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="11"
               data-bugs="0.09"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_includer_js/index.html">lib/includer.js</a></span>
-        <span class="span8 file-chart js-file-chart"
-              data-lint="0"
-              data-sloc="55"
-              data-bugs="0.34"
-              data-complexity="5"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_includer_js/index.html">lib/includer.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="4"
+              data-sloc="70"
+              data-bugs="0.46"
+              data-complexity="6"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_locale_js/index.html">lib/locale.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_locale_js/index.html">lib/locale.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="1"
               data-sloc="43"
               data-bugs="0.35"
               data-complexity="7"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_color_js/index.html">lib/report/color.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_mock_dom_js/index.html">lib/mock/dom.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="3"
+              data-sloc="38"
+              data-bugs="0.24"
+              data-complexity="4"
+          ></span>
+        </div>
+      </li>
+      
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_color_js/index.html">lib/report/color.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="20"
               data-bugs="0.13"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_field_js/index.html">lib/report/field.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_field_js/index.html">lib/report/field.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="47"
               data-bugs="0.28"
               data-complexity="4"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_index_js/index.html">lib/report/fields/index.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_index_js/index.html">lib/report/fields/index.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="8"
               data-bugs="0.03"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_atoum_js/index.html">lib/report/fields/runner/atoum.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_atoum_js/index.html">lib/report/fields/runner/atoum.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="22"
               data-bugs="0.15"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_coverage_js/index.html">lib/report/fields/runner/coverage.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_coverage_js/index.html">lib/report/fields/runner/coverage.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="53"
               data-bugs="0.40"
               data-complexity="2"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_index_js/index.html">lib/report/fields/runner/index.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_index_js/index.html">lib/report/fields/runner/index.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="13"
               data-bugs="0.07"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_node_js/index.html">lib/report/fields/runner/node.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_node_js/index.html">lib/report/fields/runner/node.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="37"
               data-bugs="0.25"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_result_js/index.html">lib/report/fields/runner/result.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_result_js/index.html">lib/report/fields/runner/result.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="43"
               data-bugs="0.51"
               data-complexity="2"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_stat_js/index.html">lib/report/fields/runner/stat.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_stat_js/index.html">lib/report/fields/runner/stat.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="51"
               data-bugs="0.48"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_errors_js/index.html">lib/report/fields/runner/tests/errors.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_errors_js/index.html">lib/report/fields/runner/tests/errors.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="64"
               data-bugs="0.56"
               data-complexity="4"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_exceptions_js/index.html">lib/report/fields/runner/tests/exceptions.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_exceptions_js/index.html">lib/report/fields/runner/tests/exceptions.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="73"
               data-bugs="0.61"
               data-complexity="5"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_failures_js/index.html">lib/report/fields/runner/tests/failures.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_failures_js/index.html">lib/report/fields/runner/tests/failures.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="73"
               data-bugs="0.60"
               data-complexity="5"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_index_js/index.html">lib/report/fields/runner/tests/index.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_index_js/index.html">lib/report/fields/runner/tests/index.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="11"
               data-bugs="0.05"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_outputs_js/index.html">lib/report/fields/runner/tests/outputs.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_outputs_js/index.html">lib/report/fields/runner/tests/outputs.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="59"
               data-bugs="0.52"
               data-complexity="5"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_skipped_js/index.html">lib/report/fields/runner/tests/skipped.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_tests_skipped_js/index.html">lib/report/fields/runner/tests/skipped.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="69"
               data-bugs="0.58"
               data-complexity="5"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_runner_xunit_js/index.html">lib/report/fields/runner/xunit.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_runner_xunit_js/index.html">lib/report/fields/runner/xunit.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="2"
               data-sloc="109"
               data-bugs="0.97"
               data-complexity="7"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_test_error_js/index.html">lib/report/fields/test/error.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_test_error_js/index.html">lib/report/fields/test/error.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="21"
               data-bugs="0.12"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_test_exception_js/index.html">lib/report/fields/test/exception.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_test_exception_js/index.html">lib/report/fields/test/exception.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="21"
               data-bugs="0.12"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_test_failure_js/index.html">lib/report/fields/test/failure.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_test_failure_js/index.html">lib/report/fields/test/failure.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="21"
               data-bugs="0.12"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_test_footer_js/index.html">lib/report/fields/test/footer.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_test_footer_js/index.html">lib/report/fields/test/footer.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="43"
               data-bugs="0.37"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_test_header_js/index.html">lib/report/fields/test/header.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_test_header_js/index.html">lib/report/fields/test/header.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="24"
               data-bugs="0.19"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_test_index_js/index.html">lib/report/fields/test/index.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_test_index_js/index.html">lib/report/fields/test/index.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="14"
               data-bugs="0.08"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_test_separator_js/index.html">lib/report/fields/test/separator.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_test_separator_js/index.html">lib/report/fields/test/separator.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="2"
               data-sloc="27"
               data-bugs="0.15"
               data-complexity="2"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_test_skipped_js/index.html">lib/report/fields/test/skipped.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_test_skipped_js/index.html">lib/report/fields/test/skipped.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="21"
               data-bugs="0.12"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_fields_test_success_js/index.html">lib/report/fields/test/success.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_fields_test_success_js/index.html">lib/report/fields/test/success.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="21"
               data-bugs="0.12"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_report_js/index.html">lib/report.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_report_js/index.html">lib/report.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="29"
               data-bugs="0.12"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_reports_cli_js/index.html">lib/reports/cli.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_reports_cli_js/index.html">lib/reports/cli.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="31"
               data-bugs="0.35"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_reports_coverage_js/index.html">lib/reports/coverage.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_reports_coverage_js/index.html">lib/reports/coverage.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="16"
               data-bugs="0.09"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_reports_light_js/index.html">lib/reports/light.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_reports_light_js/index.html">lib/reports/light.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="29"
               data-bugs="0.32"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_reports_xunit_js/index.html">lib/reports/xunit.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_reports_xunit_js/index.html">lib/reports/xunit.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="16"
               data-bugs="0.08"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_runner_js/index.html">lib/runner.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_runner_js/index.html">lib/runner.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="156"
               data-bugs="1.18"
               data-complexity="8"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_score_js/index.html">lib/score.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_score_js/index.html">lib/score.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="61"
               data-bugs="0.57"
               data-complexity="3"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_script_js/index.html">lib/script.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_script_js/index.html">lib/script.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="137"
               data-bugs="0.85"
               data-complexity="9"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_scripts_cli_js/index.html">lib/scripts/cli.js</a></span>
-        <span class="span8 file-chart js-file-chart"
-              data-lint="14"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_scripts_cli_js/index.html">lib/scripts/cli.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="2"
               data-sloc="180"
               data-bugs="1.49"
               data-complexity="16"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_scripts_grunt_js/index.html">lib/scripts/grunt.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_scripts_grunt_js/index.html">lib/scripts/grunt.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="3"
               data-sloc="59"
               data-bugs="0.48"
               data-complexity="7"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_serializer_js/index.html">lib/serializer.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_serializer_js/index.html">lib/serializer.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="2"
               data-sloc="37"
               data-bugs="0.17"
               data-complexity="4"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_callback_controller_js/index.html">lib/test/callback/controller.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_callback_controller_js/index.html">lib/test/callback/controller.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="22"
               data-bugs="0.15"
               data-complexity="3"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_callback_js/index.html">lib/test/callback.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_callback_js/index.html">lib/test/callback.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="20"
               data-bugs="0.10"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_engines_concurrent_js/index.html">lib/test/engines/concurrent.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_engines_concurrent_js/index.html">lib/test/engines/concurrent.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="12"
               data-sloc="117"
               data-bugs="1.31"
               data-complexity="12"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_engines_inline_js/index.html">lib/test/engines/inline.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_engines_dom_js/index.html">lib/test/engines/dom.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="1"
+              data-sloc="75"
+              data-bugs="0.80"
+              data-complexity="5"
+          ></span>
+        </div>
+      </li>
+      
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_engines_inline_js/index.html">lib/test/engines/inline.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="13"
               data-sloc="55"
               data-bugs="0.47"
               data-complexity="9"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_method_exception_js/index.html">lib/test/method/exception.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_method_exception_js/index.html">lib/test/method/exception.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="16"
               data-bugs="0.09"
               data-complexity="1"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_method_score_js/index.html">lib/test/method/score.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_method_score_js/index.html">lib/test/method/score.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="71"
               data-bugs="0.44"
               data-complexity="3"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_method_js/index.html">lib/test/method.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_method_js/index.html">lib/test/method.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="11"
               data-sloc="81"
-              data-bugs="0.64"
+              data-bugs="0.66"
               data-complexity="11"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_mock_controller_js/index.html">lib/test/mock/controller.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_mock_controller_js/index.html">lib/test/mock/controller.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="45"
               data-bugs="0.35"
               data-complexity="10"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_mock_generator_js/index.html">lib/test/mock/generator.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_mock_generator_js/index.html">lib/test/mock/generator.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="38"
               data-bugs="0.23"
               data-complexity="6"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_score_coverage_js/index.html">lib/test/score/coverage.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_score_coverage_js/index.html">lib/test/score/coverage.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="1"
               data-sloc="133"
               data-bugs="1.24"
               data-complexity="13"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_score_usage_js/index.html">lib/test/score/usage.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_score_usage_js/index.html">lib/test/score/usage.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="1"
               data-sloc="79"
               data-bugs="0.62"
               data-complexity="11"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_score_js/index.html">lib/test/score.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_score_js/index.html">lib/test/score.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="83"
               data-bugs="0.87"
               data-complexity="11"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_stub_generator_js/index.html">lib/test/stub/generator.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_stub_generator_js/index.html">lib/test/stub/generator.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="26"
               data-bugs="0.14"
               data-complexity="2"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_stub_js/index.html">lib/test/stub.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_stub_js/index.html">lib/test/stub.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="0"
               data-sloc="19"
               data-bugs="0.13"
               data-complexity="2"
           ></span>
+        </div>
       </li>
       
-      <li class="span12">
-        <span class="fade-left fadeout visible-desktop"></span>
-        <span class="span4 file"><a class="file-link" href="./files/lib_test_js/index.html">lib/test.js</a></span>
-        <span class="span8 file-chart js-file-chart"
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/lib_test_js/index.html">lib/test.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
               data-lint="1"
-              data-sloc="94"
-              data-bugs="0.78"
-              data-complexity="12"
+              data-sloc="119"
+              data-bugs="1.06"
+              data-complexity="19"
           ></span>
+        </div>
       </li>
       
     </ul>
@@ -905,5 +1091,6 @@
 <script type="text/javascript" src="report.js"></script>
 <script type="text/javascript" src="report.history.js"></script>
 <script type="text/javascript" src="assets/scripts/plato-overview.js"></script>
+<script type="text/javascript" src="assets/scripts/plato-sortable-file-list.js"></script>
 </body>
 </html>

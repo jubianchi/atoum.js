@@ -13,7 +13,7 @@
   <![endif]-->
 
   <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/bootstrap-3.0.0-wip.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
   <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
   <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
   <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
@@ -26,8 +26,8 @@
 
 <div class="navbar navbar-fixed-top">
   <div class="container">
-    <a class="brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
-    <ul class="nav">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
       <li>
         <a href="../../index.html">Report Home</a>
       </li>
@@ -43,29 +43,29 @@
 
 <div class="container aggregate-stats">
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
       <p class="stat">69.19</p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
       <p class="stat">180</p>
     </div>
   </div>
   <div class="row historical">
-    <div class="span6">
+    <div class="col-md-6">
       <p id="chart_historical_maint" class="chart"></p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <p id="chart_historical_sloc" class="chart"></p>
     </div>
   </div>
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
       <p class="stat">35.26</p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
       <p class="stat">1.49</p>
     </div>
@@ -77,11 +77,11 @@
     <h2 class="header">Function weight</h2>
   </div>
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
       <div id="fn-by-complexity" class="stat"></div>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
       <div id="fn-by-sloc" class="stat"></div>
     </div>
@@ -90,90 +90,90 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="span12">"use strict";
+    <textarea id="file-source" class="col-md-12">&quot;use strict&quot;;
 
-require("../..")(module);
+require(&quot;../..&quot;)(module);
 
-var extend = require("node.extend"),
-    util = require("util"),
-    fs = require("fs"),
-    color = require("cli-color"),
-    Script = require("../script"),
+var extend = require(&quot;node.extend&quot;),
+    util = require(&quot;util&quot;),
+    fs = require(&quot;fs&quot;),
+    color = require(&quot;cli-color&quot;),
+    Script = require(&quot;../script&quot;),
     cli = module.exports = function cli(console) {
         Script.call(this);
 
-        this.console = (console || require("optimist"));
+        this.console = (console || require(&quot;optimist&quot;));
         this.definition = {};
 
         this
-            .addOption("help", {
-                alias : "h",
-                description: "Display this help message",
-                type: "boolean"
+            .addOption(&quot;help&quot;, {
+                alias : &quot;h&quot;,
+                description: &quot;Display this help message&quot;,
+                type: &quot;boolean&quot;
             })
-            .addOption("directory", {
-                alias: "d",
-                description: "Test directory",
+            .addOption(&quot;directory&quot;, {
+                alias: &quot;d&quot;,
+                description: &quot;Test directory&quot;,
                 default: [],
-                type: "string",
+                type: &quot;string&quot;,
                 check: function(args) {
-                    if(typeof args.directory === 'string') {
+                    if(typeof args.directory === &#039;string&#039;) {
                         args.directory = [ args.directory ];
                     }
 
                     args.directory.forEach(function(directory) {
                         if(fs.existsSync(directory) === false) {
-                            throw new Error(util.format(color.red("Directory '%s' does not exist"), directory));
+                            throw new Error(util.format(color.red(&quot;Directory &#039;%s&#039; does not exist&quot;), directory));
                         }
                     });
                 }
             })
-            .addOption("file", {
-                alias: "f",
-                description: "Test file",
+            .addOption(&quot;file&quot;, {
+                alias: &quot;f&quot;,
+                description: &quot;Test file&quot;,
                 default: [],
-                type: "string",
+                type: &quot;string&quot;,
                 check: function(args) {
-                    if(typeof args.file === 'string') {
+                    if(typeof args.file === &#039;string&#039;) {
                         args.file = [ args.file ];
                     }
 
                     args.file.forEach(function(file) {
                         if(fs.existsSync(file) === false) {
-                            throw new Error(util.format(color.red("File '%s' does not exist"), file));
+                            throw new Error(util.format(color.red(&quot;File &#039;%s&#039; does not exist&quot;), file));
                         }
                     });
                 }
             })
-            .addOption("xunit", {
-                description: "Enable xUnit report",
-                type: "boolean",
+            .addOption(&quot;xunit&quot;, {
+                description: &quot;Enable xUnit report&quot;,
+                type: &quot;boolean&quot;,
                 default: false
             })
-            .addOption("xunit-output", {
-                description: "Path to xUnit report file",
-                default: "xunit.xml",
-                type: "string"
+            .addOption(&quot;xunit-output&quot;, {
+                description: &quot;Path to xUnit report file&quot;,
+                default: &quot;xunit.xml&quot;,
+                type: &quot;string&quot;
             })
-            .addOption("coverage", {
-                description: "Enable code coverage report",
-                type: "boolean",
+            .addOption(&quot;coverage&quot;, {
+                description: &quot;Enable code coverage report&quot;,
+                type: &quot;boolean&quot;,
                 default: false
             })
-            .addOption("coverage-dir", {
-                description: "Path to sources to instrument",
-                default: "lib",
-                type: "string",
+            .addOption(&quot;coverage-dir&quot;, {
+                description: &quot;Path to sources to instrument&quot;,
+                default: &quot;lib&quot;,
+                type: &quot;string&quot;,
                 check: function(args) {
                     if(args.coverage) {
-                        if(typeof args["coverage-dir"] !== "undefined" && fs.existsSync(args["coverage-dir"]) === false) {
-                            throw new Error(util.format(color.red("Directory '%s' does not exist"), args["coverage-dir"]));
+                        if(typeof args[&quot;coverage-dir&quot;] !== &quot;undefined&quot; &amp;&amp; fs.existsSync(args[&quot;coverage-dir&quot;]) === false) {
+                            throw new Error(util.format(color.red(&quot;Directory &#039;%s&#039; does not exist&quot;), args[&quot;coverage-dir&quot;]));
                         }
                     }
                 }
             })
-            .addOption("inline", {
-                description: "Use inline engine instead of concurrent",
+            .addOption(&quot;inline&quot;, {
+                description: &quot;Use inline engine instead of concurrent&quot;,
                 boolean: true
             })
         ;
@@ -200,19 +200,19 @@ cli.prototype = extend(
             }
 
             if(argv.xunit) {
-                this.enableXunit(argv["xunit-output"]);
+                this.enableXunit(argv[&quot;xunit-output&quot;]);
             }
 
             if(argv.coverage) {
-                this.enableCoverage(argv["coverage-dir"]);
+                this.enableCoverage(argv[&quot;coverage-dir&quot;]);
             }
 
-            if(typeof argv.directory === "string") {
+            if(typeof argv.directory === &quot;string&quot;) {
                 argv.directory = [ argv.directory ];
             }
             argv.directory.forEach(function(directory) { this.addDirectory(directory); }, this);
 
-            if(typeof argv.file === "string") {
+            if(typeof argv.file === &quot;string&quot;) {
                 argv.file = [ argv.file ];
             }
             argv.file.forEach(function(file) { this.addFile(file); }, this);
@@ -262,7 +262,7 @@ cli.prototype = extend(
         },
 
         setReports: function (runner, process) {
-            var Cli = require("../reports/cli");
+            var Cli = require(&quot;../reports/cli&quot;);
 
             runner.addReport(new Cli(process.stdout));
 

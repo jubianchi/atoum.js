@@ -13,7 +13,7 @@
   <![endif]-->
 
   <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/bootstrap-3.0.0-wip.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
   <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
   <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
   <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
@@ -26,8 +26,8 @@
 
 <div class="navbar navbar-fixed-top">
   <div class="container">
-    <a class="brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
-    <ul class="nav">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
       <li>
         <a href="../../index.html">Report Home</a>
       </li>
@@ -43,29 +43,29 @@
 
 <div class="container aggregate-stats">
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
       <p class="stat">68.55</p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
       <p class="stat">175</p>
     </div>
   </div>
   <div class="row historical">
-    <div class="span6">
+    <div class="col-md-6">
       <p id="chart_historical_maint" class="chart"></p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <p id="chart_historical_sloc" class="chart"></p>
     </div>
   </div>
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
       <p class="stat">60.33</p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
       <p class="stat">1.52</p>
     </div>
@@ -77,11 +77,11 @@
     <h2 class="header">Function weight</h2>
   </div>
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
       <div id="fn-by-complexity" class="stat"></div>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
       <div id="fn-by-sloc" class="stat"></div>
     </div>
@@ -90,19 +90,19 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="span12">"use strict";
+    <textarea id="file-source" class="col-md-12">&quot;use strict&quot;;
 
-require("../..")(module);
+require(&quot;../..&quot;)(module);
 
-var extend = require("node.extend"),
-    underscore = require("underscore"),
-    util = require("util"),
-    Variable = require("./variable"),
-    Exception = require("../asserter/object/exception"),
+var extend = require(&quot;node.extend&quot;),
+    underscore = require(&quot;underscore&quot;),
+    util = require(&quot;util&quot;),
+    Variable = require(&quot;./variable&quot;),
+    Exception = require(&quot;../asserter/object/exception&quot;),
     object = module.exports = function object(generator) {
         Variable.call(this, generator);
 
-        this.locale.translations.loadTranslations(require("../../resources/locale/asserters/object.json"));
+        this.locale.translations.loadTranslations(require(&quot;../../resources/locale/asserters/object.json&quot;));
     };
 
 object.prototype = new Variable();
@@ -113,8 +113,8 @@ object.prototype = extend(
         check: function () {
             var type = Object.prototype.toString.call(this.value);
 
-            if(typeof this.value !== "object" || type === "[object Array]") {
-                this.fail(this.locale._("$[1] is not an object", this.value));
+            if(typeof this.value !== &quot;object&quot; || type === &quot;[object Array]&quot;) {
+                this.fail(this.locale._(&quot;$[1] is not an object&quot;, this.value));
             }
 
             return this.pass();
@@ -122,7 +122,7 @@ object.prototype = extend(
 
         isInstanceOf: function (expected) {
             if(false === (this.value instanceof expected)) {
-                this.fail(this.locale._("[object $[1]] is not an instance of $[2]", this.value.constructor.name, expected.name));
+                this.fail(this.locale._(&quot;[object $[1]] is not an instance of $[2]&quot;, this.value.constructor.name, expected.name));
             }
 
             return this.pass();
@@ -130,7 +130,7 @@ object.prototype = extend(
 
         isNotInstanceOf: function (expected) {
             if(this.value instanceof expected) {
-                this.fail(this.locale._("[object $[1]] is an instance of $[2]", this.value.constructor.name, expected.name));
+                this.fail(this.locale._(&quot;[object $[1]] is an instance of $[2]&quot;, this.value.constructor.name, expected.name));
             }
 
             return this.pass();
@@ -138,15 +138,15 @@ object.prototype = extend(
 
         hasMember: function (expected) {
             if(false === this.value.hasOwnProperty(expected)) {
-                this.fail(this.locale._("[object $[1]] does not have member $[1]"), this.value.constructor.name, expected);
+                this.fail(this.locale._(&quot;[object $[1]] does not have member $[1]&quot;), this.value.constructor.name, expected);
             }
 
             return this.pass();
         },
 
         hasMethod: function (expected) {
-            if(typeof this.value[expected] === "undefined" || typeof this.value[expected] !== "function") {
-                this.fail(this.locale._("[object $[1]] does not have method $[2]", this.value.constructor.name, expected));
+            if(typeof this.value[expected] === &quot;undefined&quot; || typeof this.value[expected] !== &quot;function&quot;) {
+                this.fail(this.locale._(&quot;[object $[1]] does not have method $[2]&quot;, this.value.constructor.name, expected));
             }
 
             return this.pass();
@@ -154,7 +154,7 @@ object.prototype = extend(
 
         hasLength: function (expected) {
             if(Object.keys(this.value).length !== expected) {
-                this.fail(this.locale._("Object($[1]) has not length $[2]", this.value.length, expected));
+                this.fail(this.locale._(&quot;Object($[1]) has not length $[2]&quot;, this.value.length, expected));
             }
 
             return this.pass();
@@ -162,7 +162,7 @@ object.prototype = extend(
 
         isEqualTo: function(expected) {
             if(this.compare(expected, this.value, false) === false) {
-                this.fail(this.locale._("$[1] is not equal to $[2]", this.value, expected), expected, this.value);
+                this.fail(this.locale._(&quot;$[1] is not equal to $[2]&quot;, this.value, expected), expected, this.value);
             }
 
             return this.pass();
@@ -172,7 +172,7 @@ object.prototype = extend(
             try {
                 this.isEqualTo(expected);
 
-                this.fail(this.locale._("$[1] is equal to $[2]", this.value, expected));
+                this.fail(this.locale._(&quot;$[1] is equal to $[2]&quot;, this.value, expected));
             } catch(exception) { }
 
             return this.pass();
@@ -180,7 +180,7 @@ object.prototype = extend(
 
         isIdenticalTo: function(expected) {
             if(this.compare(expected, this.value, true) === false) {
-                this.fail(this.locale._("$[1] is not identical to $[2]", this.value, expected), expected, this.value);
+                this.fail(this.locale._(&quot;$[1] is not identical to $[2]&quot;, this.value, expected), expected, this.value);
             }
 
             return this.pass();
@@ -193,7 +193,7 @@ object.prototype = extend(
                 return this.pass();
             }
 
-            this.fail(this.locale._("$[1] is identical to $[2]", this.value, expected));
+            this.fail(this.locale._(&quot;$[1] is identical to $[2]&quot;, this.value, expected));
 
             return this;
         },
@@ -202,7 +202,7 @@ object.prototype = extend(
             if(strict === false) {
                 var p;
                 for(p in value) {
-                    if(typeof expected[p] === "undefined" && typeof value[p] !== "undefined") {
+                    if(typeof expected[p] === &quot;undefined&quot; &amp;&amp; typeof value[p] !== &quot;undefined&quot;) {
                         return false;
                     }
                 }
@@ -210,13 +210,13 @@ object.prototype = extend(
                 for(p in value) {
                     if (value[p]) {
                         switch(typeof value[p]) {
-                            case "object":
+                            case &quot;object&quot;:
                                 if (!this.compare(expected[p], value[p], strict)) {
                                     return false;
                                 }
                                 break;
-                            case "function":
-                                if (typeof expected[p] === "undefined" || value[p].toString() != expected[p].toString()) {
+                            case &quot;function&quot;:
+                                if (typeof expected[p] === &quot;undefined&quot; || value[p].toString() != expected[p].toString()) {
                                     return false;
                                 }
                                 break;
@@ -233,7 +233,7 @@ object.prototype = extend(
                 }
 
                 for(p in expected) {
-                    if(typeof value[p] === "undefined" && typeof expected[p] !== "undefined") {
+                    if(typeof value[p] === &quot;undefined&quot; &amp;&amp; typeof expected[p] !== &quot;undefined&quot;) {
                         return false;
                     }
                 }

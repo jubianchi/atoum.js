@@ -13,7 +13,7 @@
   <![endif]-->
 
   <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/bootstrap-3.0.0-wip.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
   <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
   <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
   <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
@@ -26,8 +26,8 @@
 
 <div class="navbar navbar-fixed-top">
   <div class="container">
-    <a class="brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
-    <ul class="nav">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
       <li>
         <a href="../../index.html">Report Home</a>
       </li>
@@ -43,29 +43,29 @@
 
 <div class="container aggregate-stats">
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
       <p class="stat">57.34</p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
       <p class="stat">117</p>
     </div>
   </div>
   <div class="row historical">
-    <div class="span6">
+    <div class="col-md-6">
       <p id="chart_historical_maint" class="chart"></p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <p id="chart_historical_sloc" class="chart"></p>
     </div>
   </div>
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
       <p class="stat">32.44</p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
       <p class="stat">1.31</p>
     </div>
@@ -77,11 +77,11 @@
     <h2 class="header">Function weight</h2>
   </div>
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
       <div id="fn-by-complexity" class="stat"></div>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
       <div id="fn-by-sloc" class="stat"></div>
     </div>
@@ -90,14 +90,14 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="span12">"use strict";
+    <textarea id="file-source" class="col-md-12">&quot;use strict&quot;;
 
-require("../../..")(module);
+require(&quot;../../..&quot;)(module);
 
-var Dispatcher = require("events").EventEmitter,
+var Dispatcher = require(&quot;events&quot;).EventEmitter,
     concurrent = module.exports = function concurrent(dispatcher, child) {
         this.dispatcher = dispatcher || new Dispatcher();
-        this.child = child || require("child_process");
+        this.child = child || require(&quot;child_process&quot;);
     };
 
 concurrent.prototype = {
@@ -109,7 +109,7 @@ concurrent.prototype = {
         testCode = this.getTestMethodCode(method);
 
         try {
-            this.dispatcher.emit("testMethodStart", method);
+            this.dispatcher.emit(&quot;testMethodStart&quot;, method);
 
             proc = this.child.exec(
                 process.execPath,
@@ -118,34 +118,34 @@ concurrent.prototype = {
                 },
                 function(error, stdout) {
                     if(error) {
-                        error.stack = error.stack.split("\n").slice(1).join("\n");
+                        error.stack = error.stack.split(&quot;\n&quot;).slice(1).join(&quot;\n&quot;);
                         test.score.addError(error);
 
-                        self.dispatcher.emit("testError", test);
-                        self.dispatcher.emit("testStop", test);
+                        self.dispatcher.emit(&quot;testError&quot;, test);
+                        self.dispatcher.emit(&quot;testStop&quot;, test);
                     } else {
                         try {
                             var result = JSON.parse(stdout);
                             test.score.merge(result.score);
 
                             switch(true) {
-                                case (typeof test.score.methods[result.method].exception !== "undefined"):
-                                    self.dispatcher.emit("testMethodException", method);
+                                case (typeof test.score.methods[result.method].exception !== &quot;undefined&quot;):
+                                    self.dispatcher.emit(&quot;testMethodException&quot;, method);
                                     break;
-                                case (typeof test.score.methods[result.method].skipped !== "undefined"):
-                                    self.dispatcher.emit("testMethodSkipped", method);
+                                case (typeof test.score.methods[result.method].skipped !== &quot;undefined&quot;):
+                                    self.dispatcher.emit(&quot;testMethodSkipped&quot;, method);
                                     break;
                                 case (test.score.methods[result.method].passed === false):
-                                    self.dispatcher.emit("testMethodFailure", method);
+                                    self.dispatcher.emit(&quot;testMethodFailure&quot;, method);
                                     break;
                                 default:
-                                    self.dispatcher.emit("testMethodSuccess", method);
+                                    self.dispatcher.emit(&quot;testMethodSuccess&quot;, method);
                                     break;
                             }
 
-                            self.dispatcher.emit("testMethodStop", method);
+                            self.dispatcher.emit(&quot;testMethodStop&quot;, method);
                         } catch(exception) {
-                            console.log(exception + "\n" + stdout);
+                            console.log(exception + &quot;\n&quot; + stdout);
                         }
 
                         if(callback) {
@@ -157,54 +157,54 @@ concurrent.prototype = {
             proc.stdin.write(testCode);
             proc.stdin.end();
         } catch(error) {
-            error.stack = error.stack.split("\n").slice(1).join("\n");
+            error.stack = error.stack.split(&quot;\n&quot;).slice(1).join(&quot;\n&quot;);
             method.score.addException(error);
 
-            this.dispatcher.emit("testMethodException", method);
+            this.dispatcher.emit(&quot;testMethodException&quot;, method);
         }
     },
 
     getTestMethodCode: function(method, r) {
         var resolve = r ? (r.resolve || require.resolve) : require.resolve,
-            testCode = "var atoum = require(\"" + resolve("../../..") + "\")(module),\n"
-                .concat("    Generator = require(\"" + resolve("../../asserter/generator") + "\"),\n")
-                .concat("    Test = require(\"" + resolve("../../test") + "\"),\n")
-                .concat("    serializer = require(\"" + resolve("../../serializer") + "\");\n");
+            testCode = &quot;var atoum = require(\&quot;&quot; + resolve(&quot;../../..&quot;) + &quot;\&quot;)(module),\n&quot;
+                .concat(&quot;    Generator = require(\&quot;&quot; + resolve(&quot;../../asserter/generator&quot;) + &quot;\&quot;),\n&quot;)
+                .concat(&quot;    Test = require(\&quot;&quot; + resolve(&quot;../../test&quot;) + &quot;\&quot;),\n&quot;)
+                .concat(&quot;    serializer = require(\&quot;&quot; + resolve(&quot;../../serializer&quot;) + &quot;\&quot;);\n&quot;);
 
         if(method.test.coverage) {
             testCode = testCode
-                .concat("\n")
-                .concat("var Instrument = require(\"" + resolve("../../includer/instrument") + "\");\n")
-                .concat("atoum.includer = new Instrument(\"" + method.test.coveredDirectory + "\");\n")
-                .concat("require(\"jscoverage\").processFile(\n")
-                .concat("    \"" + method.test.coveredDirectory + "\",\n")
-                .concat("    \"" + method.test.coveredDirectory + "\".concat(\"-cov\"),\n")
-                .concat("    [],\n")
-                .concat("    {}\n")
-                .concat(");\n");
+                .concat(&quot;\n&quot;)
+                .concat(&quot;var Instrument = require(\&quot;&quot; + resolve(&quot;../../includer/instrument&quot;) + &quot;\&quot;);\n&quot;)
+                .concat(&quot;atoum.includer = new Instrument(\&quot;&quot; + method.test.coveredDirectory + &quot;\&quot;);\n&quot;)
+                .concat(&quot;require(\&quot;jscoverage\&quot;).processFile(\n&quot;)
+                .concat(&quot;    \&quot;&quot; + method.test.coveredDirectory + &quot;\&quot;,\n&quot;)
+                .concat(&quot;    \&quot;&quot; + method.test.coveredDirectory + &quot;\&quot;.concat(\&quot;-cov\&quot;),\n&quot;)
+                .concat(&quot;    [],\n&quot;)
+                .concat(&quot;    {}\n&quot;)
+                .concat(&quot;);\n&quot;);
         }
 
         testCode = testCode
-            .concat("var generator = new Generator(),\n")
-            .concat("    test = new Test(\"" + method.test.class + "\"),\n")
-            .concat("    method = test.getMethods(\"" +  method.name + "\").pop();\n")
-            .concat("\n");
+            .concat(&quot;var generator = new Generator(),\n&quot;)
+            .concat(&quot;    test = new Test(\&quot;&quot; + method.test.class + &quot;\&quot;),\n&quot;)
+            .concat(&quot;    method = test.getMethods(\&quot;&quot; +  method.name + &quot;\&quot;).pop();\n&quot;)
+            .concat(&quot;\n&quot;);
 
         if(method.test.coverage) {
-            testCode = testCode.concat("test.setCoverage(true, \"" + method.test.coveredDirectory + "\");\n");
+            testCode = testCode.concat(&quot;test.setCoverage(true, \&quot;&quot; + method.test.coveredDirectory + &quot;\&quot;);\n&quot;);
         }
 
         return testCode
-            .concat("generator.injectInto(test);\n")
-            .concat("method.run(global);\n")
-            .concat("method.score.assertions = generator.assertionsCount;\n")
-            .concat("process.stdout.write(new serializer().json({\n")
-            .concat("    test: \"" + method.test.class + "\",\n")
-            .concat("    method: \"" +  method.name + "\",\n")
-            .concat("    score: test.score.addMethod(method)\n")
-            .concat("}));")
-            .concat("\n")
-            .concat("process.exit();\n");
+            .concat(&quot;generator.injectInto(test);\n&quot;)
+            .concat(&quot;method.run(global);\n&quot;)
+            .concat(&quot;method.score.assertions = generator.assertionsCount;\n&quot;)
+            .concat(&quot;process.stdout.write(new serializer().json({\n&quot;)
+            .concat(&quot;    test: \&quot;&quot; + method.test.class + &quot;\&quot;,\n&quot;)
+            .concat(&quot;    method: \&quot;&quot; +  method.name + &quot;\&quot;,\n&quot;)
+            .concat(&quot;    score: test.score.addMethod(method)\n&quot;)
+            .concat(&quot;}));&quot;)
+            .concat(&quot;\n&quot;)
+            .concat(&quot;process.exit();\n&quot;);
     }
 };</textarea>
   </div>
