@@ -183,5 +183,41 @@ var util = require('util'),
                 .then()
                     .object(object.isEmpty()).isIdenticalTo(object)
             ;
+        },
+
+        testIsNull: function() {
+            var object, value;
+
+
+            this
+                .if(object = new testedClass({}))
+                .and(object.setWith(value = Math.random().toString(36).substring(7)))
+                .then()
+                    .error(function() {
+                        object.isNull();
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('%s is not null', value))
+                .if(object.setWith(null))
+                .then()
+                    .object(object.isNull()).isIdenticalTo(object)
+        },
+
+        testIsNotNull: function() {
+            var object;
+
+
+            this
+                .if(object = new testedClass({}))
+                .and(object.setWith(null))
+                .then()
+                    .error(function() {
+                        object.isNotNull();
+                    })
+                        .hasName('Failure')
+                        .hasMessage('Value is null')
+                .if(object.setWith(Math.random().toString(36).substring(7)))
+                .then()
+                    .object(object.isNotNull()).isIdenticalTo(object)
         }
     };
