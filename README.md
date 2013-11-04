@@ -37,7 +37,9 @@ $ bin/atoum -d path/to/tests/directory
 
 ## How to write tests
 
-Here is an [example test](https://github.com/jubianchi/atoum.js/blob/master/tests/asserters/error.js)
+Here is an [example test](https://github.com/jubianchi/atoum.js/blob/master/tests/asserters/error.js).
+
+[Other examples](https://github.com/jubianchi/atoum.js/tree/master/tests) with multiple test cases.
 
 ## Hacking atoum.js
 
