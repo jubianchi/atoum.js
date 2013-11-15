@@ -1,13 +1,14 @@
 var util = require('util'),
     atoum = require('../..')(module),
     asserter = require('../../lib/asserter'),
+    Generator = require('../../lib/asserter/generator'),
     testedClass = require('../../lib/asserters/variable'),
     unit = module.exports = {
         testClass: function() {
             var generator, object;
 
             this
-                .if(generator = {})
+                .if(generator = new Generator())
                 .then()
                     .object(object = new testedClass(generator)).isInstanceOf(asserter)
                     .object(object.generator).isEqualTo(generator)
@@ -18,7 +19,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .then()
                     .error(function() {
                         object.setWith(value)
@@ -45,7 +46,7 @@ var util = require('util'),
 
             this
                 .if(message = Math.random().toString(36).substring(7))
-                .and(object = new testedClass({}))
+                .and(object = new testedClass(new Generator()))
                 .and(object.setWith(value = Math.random().toString(36).substring(7)))
                 .then()
                     .error(function() {
@@ -61,7 +62,7 @@ var util = require('util'),
 
             this
                 .if(message = Math.random().toString(36).substring(7))
-                .and(object = new testedClass({}))
+                .and(object = new testedClass(new Generator()))
                 .and(object.setWith(value = Math.random().toString(36).substring(7)))
                 .then()
                     .error(function() {
@@ -77,7 +78,7 @@ var util = require('util'),
 
             this
                 .if(message = Math.random().toString(36).substring(7))
-                .and(object = new testedClass({}))
+                .and(object = new testedClass(new Generator()))
                 .then()
                     .error(function() {
                         object.fail(message)
@@ -90,7 +91,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(value = 1))
                 .then()
                     .error(function() {
@@ -113,7 +114,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(value = 0))
                 .then()
                     .error(function() {
@@ -133,7 +134,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(value = 0))
                 .then()
                     .error(function() {
@@ -149,7 +150,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(value = 0))
                 .then()
                     .error(function() {
@@ -165,7 +166,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(value = Math.random().toString(36).substring(7)))
                 .then()
                     .error(function() {
@@ -190,7 +191,7 @@ var util = require('util'),
 
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(value = Math.random().toString(36).substring(7)))
                 .then()
                     .error(function() {
@@ -208,7 +209,7 @@ var util = require('util'),
 
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(null))
                 .then()
                     .error(function() {

@@ -1,5 +1,6 @@
 var util = require('util'),
     atoum = require('../..')(module),
+    Generator = require('../../lib/asserter/generator'),
     variable = require('../../lib/asserters/variable'),
     failure = require('../../lib/asserter/exception'),
     testedClass = require('../../lib/asserters/error'),
@@ -8,7 +9,7 @@ var util = require('util'),
             var asserter, generator;
 
             this
-                .if(generator = {})
+                .if(generator = new Generator())
                 .then()
                     .object(asserter = new testedClass(generator)).isInstanceOf(variable)
                     .object(asserter.generator).isIdenticalTo(generator)
@@ -19,7 +20,7 @@ var util = require('util'),
             var value, object, notErroring, erroring, exception;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .then()
                     .error(function() {
                         object.setWith(value);
@@ -45,7 +46,7 @@ var util = require('util'),
             var object, erroring, exception, name, wrongName;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(exception = new Error())
                 .and(exception.name = name = Math.random().toString(36).substring(7))
                 .and(erroring = function() { throw exception; })
@@ -64,7 +65,7 @@ var util = require('util'),
             var object, erroring, exception, message, wrongMsg;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(exception = new Error())
                 .and(exception.message = message = Math.random().toString(36).substring(7))
                 .and(erroring = function() { throw exception; })

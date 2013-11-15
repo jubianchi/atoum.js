@@ -13,6 +13,7 @@ var atoum = require('..')(module),
                     .object(object = new testedClass(testClass, null, function() {}))
                     .string(object.class).isEqualTo(testClass)
                     .bool(object.coverage).isFalse()
+                    .undefined(object.getCurrentTestCase())
             ;
         },
 
@@ -56,6 +57,21 @@ var atoum = require('..')(module),
                     .object(object.run(engine)).isIdenticalTo(object)
                     .callback(testClassCode.setUp).wasCalled()
                     .callback(testClassCode.tearDown).wasCalled()
+            ;
+        },
+
+        testGetSetCurrentTestCase: function()
+        {
+            var dispatcher, testClass, object, testCase;
+
+            this
+                .if(dispatcher = { emit: callback() })
+                .and(testClass = Math.random().toString(36).substring(7))
+                .and(object = new testedClass(testClass, dispatcher, function() { return {}; }))
+                .then()
+                    .undefined(object.getCurrentTestCase())
+                    .object(object.setCurrentTestCase(testCase = Math.random().toString(36).substring(7))).isIdenticalTo(object)
+                    .string(object.getCurrentTestCase()).isEqualTo(testCase)
             ;
         }
     };

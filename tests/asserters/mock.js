@@ -1,14 +1,15 @@
 var util = require('util'),
     atoum = require('../..')(module),
     Controller = require('../../lib/test/mock/controller'),
-    Generator = require('../../lib/test/mock/generator'),
+    Generator = require('../../lib/asserter/generator'),
+    MockGenerator = require('../../lib/test/mock/generator'),
     testedClass = require('../../lib/asserters/mock'),
     unit = module.exports = {
         testClass: function() {
             var object, generator;
 
             this
-                .if(generator = {})
+                .if(generator = new Generator())
                 .then()
                     .object(object = new testedClass(generator))
                     .object(object.generator).isEqualTo(generator)
@@ -20,7 +21,7 @@ var util = require('util'),
 
             this
                 .if(mockInstance = {})
-                .and(object = new testedClass({}))
+                .and(object = new testedClass(new Generator()))
                 .then()
                     .error(function() {
                         object.setWith(mockInstance);
@@ -42,9 +43,9 @@ var util = require('util'),
                 .and(mockClass.prototype = {
                     foo: function() {}
                 })
-                .and(generator = new Generator())
+                .and(generator = new MockGenerator())
                 .and(mockInstance = new (generator.generate(mockClass)))
-                .and(object = new testedClass({}))
+                .and(object = new testedClass(new Generator()))
                 .and(method = Math.random().toString(36).substring(7))
                 .and(object.setWith(mockInstance))
                 .then()

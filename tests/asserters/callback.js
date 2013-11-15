@@ -1,6 +1,7 @@
 var util = require('util'),
     atoum = require('../..')(module),
     callback = require('../../lib/test/callback'),
+    Generator = require('../../lib/asserter/generator'),
     func = require('../../lib/asserters/function'),
     testedClass = require('../../lib/asserters/callback'),
     unit = module.exports = {
@@ -8,7 +9,7 @@ var util = require('util'),
             var object, generator;
 
             this
-                .if(generator = {})
+                .if(generator = new Generator())
                 .then()
                     .object(object = new testedClass(generator)).isInstanceOf(func)
                     .object(object.generator).isIdenticalTo(generator)
@@ -20,7 +21,7 @@ var util = require('util'),
 
             this
                 .if(value = callback())
-                .and(object = new testedClass({}))
+                .and(object = new testedClass(new Generator()))
                 .and(object.setWith(value))
                 .then()
                     .error(function() {
@@ -39,7 +40,7 @@ var util = require('util'),
 
             this
                 .if(value = callback())
-                .and(object = new testedClass({}))
+                .and(object = new testedClass(new Generator()))
                 .and(object.setWith(value))
                 .then()
                     .object(object.wasNotCalled()).isIdenticalTo(object)
@@ -57,7 +58,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .then()
                     .error(function() {
                         object.setWith(value)
@@ -83,7 +84,7 @@ var util = require('util'),
 
             this
                 .if(value = callback())
-                .and(object = new testedClass({}))
+                .and(object = new testedClass(new Generator()))
                 .and(object.setWith(value))
                 .and(value.apply(value, args = ['foo', 'bar']))
                 .then()
@@ -109,7 +110,7 @@ var util = require('util'),
 
             this
                 .if(value = callback())
-                .and(object = new testedClass({}))
+                .and(object = new testedClass(new Generator()))
                 .and(object.setWith(value))
                 .and(value.apply(value, args = ['foo', 'bar']))
                 .then()

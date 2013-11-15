@@ -7,7 +7,7 @@ var util = require('util'),
             var generator, object;
 
             this
-                .if(generator = {})
+                .if(generator = new Generator())
                 .then()
                     .object(object = new testedClass(generator)).isInstanceOf(asserter)
                     .object(object.generator).isEqualTo(generator)
@@ -18,7 +18,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .then()
                     .object(object.setWith(value)).isIdenticalTo(object)
                 .if(value = Math.random().toString(36).substring(7))

@@ -1,8 +1,28 @@
 # atoum.js - CHANGELOG
 
-## v0.0.10:
+## v0.0.11:
 * Add `variable#isNull` and `variable#isNotNull` assertions ([GH#4](https://github.com/jubianchi/atoum.js/issues/4))
 * Fix help not displaying correctly when atoum.js is run from `node_modules` ([GH#1](https://github.com/jubianchi/atoum.js/issues/1))
+* Add `assert` method to add labels to tests ([GH#7](https://github.com/jubianchi/atoum.js/issues/7)):
+
+```js
+module.exports = {
+    testAssert: function() {
+        this
+            .assert('Variable should be undefined')
+                .undefined(undefined)
+            .assert('Variable should be a string')
+                .string(undefined)
+        ;
+    }
+};
+
+/*
+> There was 1 failure:
+>> tests/assert.js
+>>> testAssert in "Variable should be a string": undefined is not a string
+*/
+```
 
 ## v0.0.10:
 * jsdom integration as a new engine

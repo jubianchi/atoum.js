@@ -1,6 +1,7 @@
 var util = require('util'),
     diff = require('diff'),
     atoum = require('../..')(module),
+    Generator = require('../../lib/asserter/generator'),
     variable = require('../../lib/asserters/variable'),
     testedClass = require('../../lib/asserters/string'),
     unit = module.exports = {
@@ -8,7 +9,7 @@ var util = require('util'),
             var generator, object;
 
             this
-                .if(generator = {})
+                .if(generator = new Generator())
                 .then()
                     .object(object = new testedClass(generator)).isInstanceOf(variable)
                     .object(object.generator).isIdenticalTo(generator)
@@ -19,7 +20,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .then()
                     .error(function() {
                         object.setWith(value)
@@ -44,7 +45,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(''))
                 .then()
                     .object(object.hasLength(0)).isIdenticalTo(object)
@@ -63,7 +64,7 @@ var util = require('util'),
             var object, value, wrongValue;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(value = Math.random().toString(36).substring(7))
                 .and(wrongValue = Math.random().toString(36).substring(7))
                 .and(object.setWith(wrongValue))
@@ -80,7 +81,7 @@ var util = require('util'),
             var object, value, wrongValue;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(value = Math.random().toString(36).substring(7))
                 .and(wrongValue = Math.random().toString(36).substring(7))
                 .and(object.setWith(value))

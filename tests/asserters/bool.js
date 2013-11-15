@@ -1,4 +1,5 @@
 var atoum = require('../..')(module),
+    Generator = require('../../lib/asserter/generator'),
     variable = require('../../lib/asserters/variable'),
     testedClass = require('../../lib/asserters/bool'),
     unit = module.exports = {
@@ -6,7 +7,7 @@ var atoum = require('../..')(module),
             var object, generator;
 
             this
-                .if(generator = {})
+                .if(generator = new Generator())
                 .then()
                     .object(object = new testedClass(generator)).isInstanceOf(variable)
                     .object(object.generator).isEqualTo(generator)
@@ -17,7 +18,7 @@ var atoum = require('../..')(module),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .then()
                     .error(function() {
                         object.setWith(value)
@@ -42,7 +43,7 @@ var atoum = require('../..')(module),
             var object;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(true))
                 .then()
                     .object(object.isTrue()).isIdenticalTo(object)

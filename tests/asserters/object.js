@@ -1,5 +1,6 @@
 var util = require('util'),
     atoum = require('../..')(module),
+    Generator = require('../../lib/asserter/generator'),
     variable = require('../../lib/asserters/variable'),
     testedClass = require('../../lib/asserters/object'),
     unit = module.exports = {
@@ -7,7 +8,7 @@ var util = require('util'),
             var generator, object;
 
             this
-                .if(generator = {})
+                .if(generator = new Generator())
                 .then()
                     .object(object = new testedClass(generator)).isInstanceOf(variable)
                     .object(object.generator).isIdenticalTo(generator)
@@ -18,7 +19,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .then()
                     .error(function() {
                         object.setWith(value)
@@ -43,7 +44,7 @@ var util = require('util'),
             var object, cls, otherCls, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(cls = function cls() {})
                 .and(otherCls = function otherCls() {})
                 .and(object.setWith(value = new cls()))
@@ -65,7 +66,7 @@ var util = require('util'),
             var object, cls, otherCls, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(cls = function cls() {})
                 .and(otherCls = function otherCls() {})
                 .and(object.setWith(value = new cls()))
@@ -87,7 +88,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(value = {}))
                 .then()
                     .error(function() {
@@ -103,7 +104,7 @@ var util = require('util'),
             var object, value;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(value = {}))
                 .then()
                     .error(function() {
@@ -119,7 +120,7 @@ var util = require('util'),
             var object, value, expected;
 
             this
-                .if(object = new testedClass({}))
+                .if(object = new testedClass(new Generator()))
                 .and(object.setWith(value = {}))
                 .then()
                     .object(object.isEqualTo(value)).isIdenticalTo(object)
