@@ -24,6 +24,8 @@ module.exports = {
 */
 ```
 
+* Add `array#contains` and `array#doesNotContain` assertions ([GH#12](https://github.com/jubianchi/atoum.js/issues/12))
+
 ## v0.0.10:
 * jsdom integration as a new engine
 

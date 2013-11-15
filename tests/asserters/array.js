@@ -84,5 +84,35 @@ var atoum = require('../..')(module),
                     .object(object.isEqualTo(value)).isIdenticalTo(object)
                     .object(object.isEqualTo([ undefined ])).isIdenticalTo(object)
             ;
+        },
+
+        testContains: function() {
+            var object, value, wrongValue, values;
+
+            this
+                .if(object = new testedClass(new Generator()))
+                .and(object.setWith(values = [ value = Math.random().toString(36).substring(7) ]))
+                .then()
+                    .error(function() {
+                        object.contains(wrongValue = Math.random().toString(36).substring(7));
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('%s does not contain %s', util.inspect(values), util.inspect(wrongValue)))
+                    .object(object.contains(value)).isIdenticalTo(object)
+        },
+
+        testContains: function() {
+            var object, value, values;
+
+            this
+                .if(object = new testedClass(new Generator()))
+                .and(object.setWith(values = [ value = Math.random().toString(36).substring(7) ]))
+                .then()
+                    .error(function() {
+                        object.doesNotContain(value);
+                    })
+                        .hasName('Failure')
+                        .hasMessage(util.format('%s contains %s', util.inspect(values), util.inspect(value)))
+                    .object(object.doesNotContain(Math.random().toString(36).substring(7))).isIdenticalTo(object)
         }
     };
