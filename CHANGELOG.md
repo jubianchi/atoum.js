@@ -1,6 +1,10 @@
 # atoum.js - CHANGELOG
 
 ## v0.0.10:
+* Add `variable#isNull` and `variable#isNotNull` assertions ([GH#4](https://github.com/jubianchi/atoum.js/issues/4))
+* Fix help not displaying correctly when atoum.js is run from `node_modules` ([GH#1](https://github.com/jubianchi/atoum.js/issues/1))
+
+## v0.0.10:
 * jsdom integration as a new engine
 
 ```js
