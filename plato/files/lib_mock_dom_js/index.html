@@ -94,8 +94,8 @@
 
 require(&quot;../..&quot;)(module);
 
-var fs = require(&#039;fs&#039;),
-    jsdom = require(&#039;jsdom&#039;),
+var fs = require(&quot;fs&quot;),
+    jsdom = require(&quot;jsdom&quot;),
     dom = module.exports = function dom(content, scripts) {
         if(fs.existsSync(content)) {
             this.content = fs.readFileSync(content).toString();
@@ -123,7 +123,7 @@ dom.prototype = {
                     throw new Error(errors);
                 }
 
-               method(global, window);
+                method(global, window);
             }
         });
     }

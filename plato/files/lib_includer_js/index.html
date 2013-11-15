@@ -93,8 +93,8 @@
     <textarea id="file-source" class="col-md-12">&quot;use strict&quot;;
 
 var path = require(&quot;path&quot;),
-    fs = require(&#039;fs&#039;),
-    vm = require(&#039;vm&#039;),
+    fs = require(&quot;fs&quot;),
+    vm = require(&quot;vm&quot;),
     underscore = require(&quot;underscore&quot;),
     includer = module.exports = function includer() {
         this.replacements = {};
@@ -113,7 +113,7 @@ includer.prototype = {
 
             module = self.resolve(module, target);
             if(null === module.match(/\.js$/)) {
-                module = module + &#039;.js&#039;;
+                module = module + &quot;.js&quot;;
             }
 
             code = fs.readFileSync(module);

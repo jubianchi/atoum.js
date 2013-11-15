@@ -195,7 +195,7 @@ concurrent.prototype = {
         }
 
         return testCode
-            .concat(&quot;generator.injectInto(test);\n&quot;)
+            .concat(&quot;generator.setTest(test);\n&quot;)
             .concat(&quot;method.run(global);\n&quot;)
             .concat(&quot;method.score.assertions = generator.assertionsCount;\n&quot;)
             .concat(&quot;process.stdout.write(new serializer().json({\n&quot;)

@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">64.37</p>
+      <p class="stat">70.27</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">63</p>
+      <p class="stat">56</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">32.15</p>
+      <p class="stat">28.42</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.55</p>
+      <p class="stat">0.51</p>
     </div>
   </div>
 </div>
@@ -103,6 +103,20 @@ var extend = require(&quot;node.extend&quot;),
 
         this.reference = reference;
         this.data = data;
+    },
+    mapper = function() {
+        return function (arg) {
+            switch(true) {
+                case typeof arg === &quot;function&quot;:
+                    return &quot;[Function &lt;&quot; + (arg.name || &quot;anonymous&quot;) + &quot;&gt;]&quot;;
+
+                case typeof arg === &quot;object&quot; &amp;&amp; arg !== null:
+                    return &quot;[Object &lt;&quot; + (arg.constructor.name || &quot;anonymous&quot;) + &quot;&gt;]&quot;;
+
+                default:
+                    return util.inspect(arg);
+            }
+        };
     };
 
 exception.prototype = new Failure();
@@ -115,35 +129,14 @@ exception.prototype = extend(
 
             for(var index = 0; index &lt; this.data.length; index += 1) {
                 if(this.data[index]) {
-                    var args = &quot;&quot;,
-                        sep = &quot;&quot;;
-
-                    underscore.map(
-                        this.data[index],
-                        function (arg) {
-                            switch(true) {
-                                case typeof arg === &quot;function&quot;:
-                                    args = args.concat(sep).concat(&quot;[Function &lt;&quot; + (arg.name || &quot;anonymous&quot;) + &quot;&gt;]&quot;);
-                                    break;
-
-                                case typeof arg === &quot;object&quot; &amp;&amp; arg !== null:
-                                    args = args.concat(sep).concat(&quot;[Object &lt;&quot; + (arg.constructor.name || &quot;anonymous&quot;) + &quot;&gt;]&quot;);
-                                    break;
-
-                                default:
-                                    args = args.concat(sep).concat(util.inspect(arg));
-                            }
-
-                            sep = &quot;, &quot;;
-                        }
-                    );
+                    this.data[index] = underscore.map(this.data[index], mapper());
 
                     str = str.concat(&quot;#&quot;)
                         .concat(index.toString())
                         .concat(&quot;: &quot;)
                         .concat(this.asserter.value.name || &quot;&lt;anonymous&gt;&quot;)
                         .concat(&quot;(&quot;)
-                        .concat(args)
+                        .concat(this.data[index].join(&quot;, &quot;))
                         .concat(&quot;)&quot;)
                         .concat(&quot;\n&quot;);
                 }

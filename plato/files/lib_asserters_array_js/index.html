@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">78.81</p>
+      <p class="stat">77.80</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">34</p>
+      <p class="stat">51</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">12.67</p>
+      <p class="stat">19.04</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.25</p>
+      <p class="stat">0.43</p>
     </div>
   </div>
 </div>
@@ -94,7 +94,8 @@
 
 require(&quot;../..&quot;)(module);
 
-var extend = require(&quot;node.extend&quot;),
+var util = require(&#039;util&#039;),
+    extend = require(&quot;node.extend&quot;),
     Obj = require(&quot;./object&quot;),
     array = module.exports = function array(generator) {
         Obj.call(this, generator);
@@ -121,6 +122,22 @@ array.prototype = extend(
             }
 
             return this.pass();
+        },
+
+        contains: function(expected) {
+            if(this.value.indexOf(expected) &lt; 0) {
+                this.fail(this.locale._(&quot;$[1] does not contain $[2]&quot;, util.inspect(this.value), util.inspect(expected)));
+            }
+
+            return this;
+        },
+
+        doesNotContain: function(expected) {
+            if(this.value.indexOf(expected) &gt;= 0) {
+                this.fail(this.locale._(&quot;$[1] contains $[2]&quot;, util.inspect(this.value), util.inspect(expected)));
+            }
+
+            return this;
         }
     }
 );</textarea>
