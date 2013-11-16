@@ -1,7 +1,6 @@
 var atoum = require('../../..')(module),
     Usage = require('../../../lib/test/score/usage'),
     Coverage = require('../../../lib/test/score/coverage'),
-    callback = require('../../../lib/test/callback'),
     testedClass = require('../../../lib/test/method/score'),
     unit = module.exports = {
         testClass: function() {
@@ -65,7 +64,7 @@ var atoum = require('../../..')(module),
 
             this
                 .if(object = new testedClass())
-                .and(object.coverage.addFromStat = callback())
+                .and(object.coverage.addFromStat = this.generateCallback())
                 .and(coverage = { "files": [] })
                 .then()
                     .object(object.setCoverage(coverage)).isIdenticalTo(object)

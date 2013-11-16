@@ -1,7 +1,6 @@
 require('../../..')(module);
 
-var callback = require('../../../lib/test/callback'),
-    Test = require('../../../lib/test'),
+var Test = require('../../../lib/test'),
     Method = require('../../../lib/test/method'),
     testedClass = require('../../../lib/test/engines/concurrent'),
     unit = module.exports = {
@@ -20,10 +19,10 @@ var callback = require('../../../lib/test/callback'),
             var object, dispatcher, test, method, child;
 
             this
-                .if(dispatcher = { emit: callback() })
+                .if(dispatcher = { emit: this.generateCallback() })
                 .and(test = new Test('test', dispatcher, function() {}))
                 .and(test.getMethods = function() { return []; })
-                .and(method = new Method('method', test, callback()))
+                .and(method = new Method('method', test, this.generateCallback()))
                 .and(child = {
                     exec: function(cmd, opts, cb) {
                         cb && cb(
@@ -43,8 +42,8 @@ var callback = require('../../../lib/test/callback'),
                         .withArguments('testMethodStart', method)
                         .withArguments('testMethodSuccess', method)
                         .withArguments('testMethodStop', method)
-                .if(dispatcher = { emit: callback() })
-                .and(method = new Method('method', test, callback()))
+                .if(dispatcher = { emit: this.generateCallback() })
+                .and(method = new Method('method', test, this.generateCallback()))
                 .and(test.getMethods = function() { return [ method ]; })
                 .and(child = {
                     exec: function(cmd, opts, cb) {
@@ -66,8 +65,8 @@ var callback = require('../../../lib/test/callback'),
                         .withArguments('testMethodStart', method)
                         .withArguments('testMethodFailure', method)
                         .withArguments('testMethodStop', method)
-                .if(dispatcher = { emit: callback() })
-                .and(method = new Method('method', test, callback()))
+                .if(dispatcher = { emit: this.generateCallback() })
+                .and(method = new Method('method', test, this.generateCallback()))
                 .and(test.getMethods = function() { return [ method ]; })
                 .and(child = {
                     exec: function(cmd, opts, cb) {
@@ -89,8 +88,8 @@ var callback = require('../../../lib/test/callback'),
                         .withArguments('testMethodStart', method)
                         .withArguments('testMethodException', method)
                         .withArguments('testMethodStop', method)
-                .if(dispatcher = { emit: callback() })
-                .and(method = new Method('method', test, callback()))
+                .if(dispatcher = { emit: this.generateCallback() })
+                .and(method = new Method('method', test, this.generateCallback()))
                 .and(test.getMethods = function() { return [ method ]; })
                 .and(child = {
                     exec: function(cmd, opts, cb) {
@@ -112,8 +111,8 @@ var callback = require('../../../lib/test/callback'),
                         .withArguments('testMethodStart', method)
                         .withArguments('testMethodSkipped', method)
                         .withArguments('testMethodStop', method)
-                .if(dispatcher = { emit: callback() })
-                .and(method = new Method('method', test, callback()))
+                .if(dispatcher = { emit: this.generateCallback() })
+                .and(method = new Method('method', test, this.generateCallback()))
                 .and(test.getMethods = function() { return [ method ]; })
                 .and(child = {
                     exec: function(cmd, opts, cb) {
@@ -126,8 +125,8 @@ var callback = require('../../../lib/test/callback'),
                     .callback(dispatcher.emit).wasCalled()
                     .withArguments('testMethodStart', method)
                     .withArguments('testMethodException', method)
-                .if(dispatcher = { emit: callback() })
-                .and(method = new Method('method', test, callback()))
+                .if(dispatcher = { emit: this.generateCallback() })
+                .and(method = new Method('method', test, this.generateCallback()))
                 .and(test.getMethods = function() { return [ method ]; })
                 .and(child = {
                     exec: function(cmd, opts, cb) {

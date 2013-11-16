@@ -1,5 +1,4 @@
 var atoum = require('../../..')(module),
-    callback = require('../../../lib/test/callback'),
     testedClass = require('../../../lib/test/mock/generator'),
     unit = module.exports = {
         testGenerate: function() {
@@ -14,11 +13,11 @@ var atoum = require('../../..')(module),
                 .if(cls = function cls() { this.prop = null; })
                 .and(returned = Math.random().toString(36).substring(7))
                 .and(cls.prototype = {
-                    "method": (method = callback(function() {
+                    "method": (method = this.generateCallback(function() {
                         return returned;
                     })),
 
-                    "otherMethod": (otherMethod = callback(function() {
+                    "otherMethod": (otherMethod = this.generateCallback(function() {
                         return this;
                     }))
                 })
@@ -35,11 +34,11 @@ var atoum = require('../../..')(module),
                     .object(mockInstance.otherMethod()).isIdenticalTo(mockInstance)
                     .callback(otherMethod).wasCalled().withoutArgument()
                 .if(cls = {
-                    "method": (method = callback(function() {
+                    "method": (method = this.generateCallback(function() {
                         return returned;
                     })),
 
-                    "otherMethod": (otherMethod = callback(function() {
+                    "otherMethod": (otherMethod = this.generateCallback(function() {
                         return this;
                     }))
                 })

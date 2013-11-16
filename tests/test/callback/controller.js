@@ -1,5 +1,4 @@
 var atoum = require('../../..')(module),
-    callback = require('../../../lib/test/callback'),
     testedClass = require('../../../lib/test/callback/controller'),
     unit = module.exports = {
         testClass: function() {
@@ -32,23 +31,23 @@ var atoum = require('../../..')(module),
                     .undefined(object.run(args[0], args[1]))
                     .array(object.args).hasLength(1)
                     .array(object.args[0]).isEqualTo(args)
-                .if(code = callback())
+                .if(code = this.generateCallback())
                 .and(object = new testedClass(code))
                 .then()
                     .undefined(object.run())
                     .callback(code).wasCalled().withoutArgument()
-                .if(code = callback())
+                .if(code = this.generateCallback())
                 .and(object = new testedClass(code))
                 .then()
                     .undefined(object.run(args[0], args[1]))
                     .callback(code).wasCalled().withArguments(args)
                 .if(returned = Math.random().toString(36).substring(7))
-                .and(code = callback(function() { return returned; }))
+                .and(code = this.generateCallback(function() { return returned; }))
                 .and(object = new testedClass(code))
                 .then()
                     .variable(object.run()).isIdenticalTo(returned)
                     .callback(code).wasCalled().withoutArgument()
-                .if(code = callback(function() { return this; }))
+                .if(code = this.generateCallback(function() { return this; }))
                 .and(object = new testedClass(code))
                 .then()
                     .object(object.run()).isIdenticalTo(object)

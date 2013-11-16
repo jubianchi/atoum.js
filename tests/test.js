@@ -2,7 +2,6 @@ var atoum = require('..')(module),
     testedClass = require('../lib/test'),
     Engine = require('../lib/test/engines/inline'),
     Dispatcher = require("events").EventEmitter,
-    callback = require('../lib/test/callback'),
     unit = module.exports = {
         testClass: function() {
             var object, testClass;
@@ -33,28 +32,29 @@ var atoum = require('..')(module),
         },
 
         testRun: function() {
-            var object, testClass, mockEngine, engine, dispatcher, testClassCode;
+            var object, testClass, engineMockClass, engine, dispatcher, dispatcherMockClass, testClassCode;
 
             this
-                .if(dispatcher = { emit: callback() })
+                .if(dispatcherMockClass = this.generateMock(Dispatcher))
+                .and(engineMockClass = this.generateMock(Engine))
+                .and(dispatcher = new dispatcherMockClass())
                 .and(testClass = Math.random().toString(36).substring(7))
-                .and(object = new testedClass(testClass, dispatcher, function() { return {}; }))
-                .and(this.generateStub(object, 'getMethods', []))
-                .and(mockEngine = this.generateMock(Engine))
-                .and(engine = new mockEngine())
-                .and(engine.controller.override('run'))
-                .then()
-                    .object(object.run(engine)).isIdenticalTo(object)
-                    .callback(dispatcher.emit).wasCalled()
-                        .withArguments('testStart', object)
-                        .withArguments('testStop', object)
                 .if(testClassCode = {
-                    setUp: callback(),
-                    tearDown: callback()
+                    setUp: this.generateCallback(),
+                    tearDown: this.generateCallback(),
+
+                    testFoo: function() {},
+                    testBar: function() {}
                 })
-                .and(object = new testedClass(testClass, null, function() { return testClassCode; }))
+                .and(object = new testedClass(testClass, dispatcher, function() { return testClassCode; }))
+                .and(engine = new engineMockClass())
+                .and(engine.controller.override('run', function() { dispatcher.emit('testMethodStop'); }))
+                .and(object.setDefaultEngine(engine))
                 .then()
-                    .object(object.run(engine)).isIdenticalTo(object)
+                    .object(object.run()).isIdenticalTo(object)
+                    .mock(dispatcher)
+                        .call('emit')//.withArguments('testStart', object)
+                        .call('emit')//.withArguments('testStop', object)
                     .callback(testClassCode.setUp).wasCalled()
                     .callback(testClassCode.tearDown).wasCalled()
             ;
@@ -65,7 +65,7 @@ var atoum = require('..')(module),
             var dispatcher, testClass, object, testCase;
 
             this
-                .if(dispatcher = { emit: callback() })
+                .if(dispatcher = { emit: this.generateCallback() })
                 .and(testClass = Math.random().toString(36).substring(7))
                 .and(object = new testedClass(testClass, dispatcher, function() { return {}; }))
                 .then()

@@ -1,7 +1,6 @@
 require('../../..')(module);
 
-var callback = require('../../../lib/test/callback'),
-    testedClass = require('../../../lib/test/stub/generator'),
+var testedClass = require('../../../lib/test/stub/generator'),
     globalObject = {
         method: function() { return "method"; }
     },
@@ -29,19 +28,19 @@ var callback = require('../../../lib/test/callback'),
             this
                 .if(global = {})
                 .and(method = Math.random().toString(36).substring(7))
-                .and(global[method] = callback())
+                .and(global[method] = this.generateCallback())
                 .and(generator = new testedClass())
                 .then()
                     .callback(generator.generate(global, method)).isIdenticalTo(global[method])
                     .array(generator.stubs).isEqualTo([global[method]])
                 .if(otherMethod = Math.random().toString(36).substring(7))
-                .and(global[otherMethod] = callback())
+                .and(global[otherMethod] = this.generateCallback())
                 .then()
                     .callback(generator.generate(global, otherMethod)).isIdenticalTo(global[otherMethod])
                     .array(generator.stubs).isEqualTo([global[method], global[otherMethod]])
                 .if(global = function global() {})
-                .and(global.prototype[method] = callback())
-                .and(global.prototype[otherMethod] = callback())
+                .and(global.prototype[method] = this.generateCallback())
+                .and(global.prototype[otherMethod] = this.generateCallback())
                 .and(object = new global())
                 .then()
                     .callback(generator.generate(object, method)).isIdenticalTo(object[method])
@@ -56,8 +55,8 @@ var callback = require('../../../lib/test/callback'),
                 .if(global = {})
                 .and(method = Math.random().toString(36).substring(7))
                 .and(otherMethod = Math.random().toString(36).substring(7))
-                .and(global[method] = callback())
-                .and(global[otherMethod] = callback())
+                .and(global[method] = this.generateCallback())
+                .and(global[otherMethod] = this.generateCallback())
                 .and(generator = new testedClass())
                 .and(stub = generator.generate(global, method))
                 .and(otherStub = generator.generate(global, otherMethod))

@@ -1,5 +1,4 @@
 var atoum = require('../../..')(module),
-    callback = require('../../../lib/test/callback'),
     testedClass = require('../../../lib/test/mock/controller'),
     unit = module.exports = {
         testClass: function() {
@@ -20,7 +19,7 @@ var atoum = require('../../..')(module),
             this
                 .if(returned = Math.random().toString(36).substring(7))
                 .and(mockInstance = {
-                    "method": method = callback(function () { return returned; })
+                    "method": method = this.generateCallback(function () { return returned; })
                 })
                 .and(controller = new testedClass(mockInstance))
                 .then()
@@ -43,30 +42,30 @@ var atoum = require('../../..')(module),
             var controller, mockInstance, method, overridden, unknown, otherMethod;
 
             this
-                .if(mockInstance = { "method": method = callback() })
+                .if(mockInstance = { "method": method = this.generateCallback() })
                 .and(controller = new testedClass(mockInstance))
                 .then()
-                    .object(controller.override('method', overridden = callback(function() { return this; }))).isIdenticalTo(controller)
+                    .object(controller.override('method', overridden = this.generateCallback(function() { return this; }))).isIdenticalTo(controller)
                     .object(controller.run('method', method)).isIdenticalTo(mockInstance)
                     .callback(method).wasNotCalled()
                     .callback(overridden).wasCalled().withoutArgument()
                 .if(controller = new testedClass(mockInstance))
-                .and(controller.override('unknown', unknown = callback(function() { return this; })))
+                .and(controller.override('unknown', unknown = this.generateCallback(function() { return this; })))
                 .then()
                     .object(controller.run('unknown')).isIdenticalTo(mockInstance)
                     .callback(unknown).wasCalled().withoutArgument()
-                .if(mockInstance = { "method": callback() })
+                .if(mockInstance = { "method": this.generateCallback() })
                 .and(controller = new testedClass(mockInstance))
                 .and(mockInstance.controller = controller)
-                .and(controller.override('method', method = callback(function() { return this; })))
+                .and(controller.override('method', method = this.generateCallback(function() { return this; })))
                 .then()
                     .object(controller.run('method')).isIdenticalTo(mockInstance)
                     .callback(method).wasCalled().withoutArgument()
-                .if(mockInstance = { "method": callback() })
+                .if(mockInstance = { "method": this.generateCallback() })
                 .and(controller = new testedClass(mockInstance))
                 .and(mockInstance.controller = controller)
-                .and(controller.override('method', method = callback(function() { return this; })))
-                .and(controller.override('method', otherMethod = callback(function() { return "foo"; }), 2))
+                .and(controller.override('method', method = this.generateCallback(function() { return this; })))
+                .and(controller.override('method', otherMethod = this.generateCallback(function() { return "foo"; }), 2))
                 .then()
                     .object(controller.run('method')).isIdenticalTo(mockInstance)
                     .callback(method).wasCalled().withoutArgument()

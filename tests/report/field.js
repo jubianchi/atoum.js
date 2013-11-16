@@ -1,7 +1,6 @@
 var util = require('util'),
     color = require('cli-color'),
     atoum = require('../..')(module),
-    callback = require('../../lib/test/callback'),
     testedClass = require('../../lib/report/field'),
     unit = module.exports = {
         testClass: function() {
@@ -25,10 +24,10 @@ var util = require('util'),
             var object, events, dispatcher, on, output;
 
             this
-                .if(dispatcher = { 'on': on = callback() })
+                .if(dispatcher = { 'on': on = this.generateCallback() })
                 .and(events = ['runnerStart', 'runnerStop'])
                 .and(object = new testedClass(events))
-                .and(object.render = callback())
+                .and(object.render = this.generateCallback())
                 .and(output = {})
                 .then()
                     .object(object.register(dispatcher, output)).isIdenticalTo(object)

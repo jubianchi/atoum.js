@@ -1,6 +1,5 @@
 var atoum = require('..')(module),
     underscore = require('underscore'),
-    callback = require('../lib/test/callback'),
     testedClass = require('../lib/includer'),
     unit = module.exports = {
         testResolve: function() {
@@ -20,11 +19,11 @@ var atoum = require('..')(module),
                     .string(object.resolve(module, target)).isEqualTo('/path/module')
                 .if(module = './lib/module')
                 .and(object.replace('lib', 'lib-cov'))
-                .and(fs = { existsSync: callback(function() { return false; }) })
+                .and(fs = { existsSync: this.generateCallback(function() { return false; }) })
                 .then()
                     .string(object.resolve(module, target, fs)).isEqualTo('/path/to/lib/module')
                     .callback(fs.existsSync).wasCalled().withArguments('/path/to/lib-cov/module.js')
-                .if(fs = { existsSync: callback(function() { return true; }) })
+                .if(fs = { existsSync: this.generateCallback(function() { return true; }) })
                     .string(object.resolve(module, target, fs)).isEqualTo('/path/to/lib-cov/module')
                     .callback(fs.existsSync).wasCalled().withArguments('/path/to/lib-cov/module.js')
             ;
