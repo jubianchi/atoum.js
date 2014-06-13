@@ -18,9 +18,9 @@ $ npm install
 $ bin/atoum -h
 
 Options:
-  --help, -h, -h       Display this help message                [boolean]
-  --directory, -d, -d  Test directory                           [string]   [default: []]
-  --file, -f, -f       Test file                                [string]   [default: []]
+  --help, -h           Display this help message                [boolean]
+  --directory, -d      Test directory                           [string]   [default: []]
+  --file, -f           Test file                                [string]   [default: []]
   --xunit              Enable xUnit report                      [boolean]  [default: false]
   --xunit-output       Path to xUnit report file                [string]   [default: "xunit.xml"]
   --coverage           Enable code coverage report              [boolean]  [default: false]
