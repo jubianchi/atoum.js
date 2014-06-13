@@ -7,7 +7,7 @@ The modern, simple and intuitive PHP 5.3+ unit testing framework, now for JS
 ## How to install
 
 ```sh
-$ git clone git@github.com:jubianchi/atoum.js.git
+$ git clone https://github.com/jubianchi/atoum.js.git
 $ cd atoum.js
 $ npm install
 ```
