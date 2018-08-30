@@ -1,6 +1,6 @@
 # atoum.js
 [![Build Status](https://travis-ci.org/jubianchi/atoum.js.png?branch=master)](https://travis-ci.org/jubianchi/atoum.js)
-[![Dependency Status](https://www.versioneye.com/user/projects/51beb211143e1a000200496c/badge.png)](https://www.versioneye.com/user/projects/51beb211143e1a000200496c)
+[![Dependency Status](https://www.versioneye.com/user/projects/51beb211143e1a000200496c/badge.png)](https://www.versioneye.com/user/projects/51beb211143e1a000200496c) [![Greenkeeper badge](https://badges.greenkeeper.io/jubianchi/atoum.js.svg)](https://greenkeeper.io/)
 
 The modern, simple and intuitive PHP 5.3+ unit testing framework, now for JS
 
